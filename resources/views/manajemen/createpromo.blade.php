@@ -18,113 +18,103 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('manajemen.storepromo') }}">
-    @csrf
+<form method="POST" action="{{ route('manajemen.storepromo') }}">
+        @csrf
 
-    {{-- NAMA & SKEMA --}}
-    <div class="row">
-        <input type="text" name="nama_promo" placeholder="Nama Promo" required>
-        <input type="text" name="skema" placeholder="Skema Promo" required>
-    </div>
-
-    {{-- BASIS PROMO --}}
-    <div class="row">
-        <select name="basis_promo" required>
-            <option value="">Basis Promo</option>
-            <option value="nominal">Promo Nominal (Rp)</option>
-            <option value="persentase">Promo Persentase (%)</option>
-        </select>
-
-        <input type="number" name="nilai_promo"
-               placeholder="Nilai Promo (Rp / %)"
-               min="0"
-               required>
-    </div>
-
-    {{-- STATUS & TANGGAL --}}
-    <div class="row">
-        <select name="status" class="col-equal" required>
-            <option value="">Status</option>
-            <option value="aktif">Aktif</option>
-            <option value="nonaktif">Non Aktif</option>
-        </select>
-
-        <div class="date-group col-equal">
-            <input type="date" name="tanggal_mulai" required placeholder=" ">
-            <label>Tanggal Mulai</label>
+        {{-- NAMA & SKEMA --}}
+        <div class="row">
+            <input type="text" name="nama_promo" placeholder="Nama Promo" required>
+            <input type="text" name="skema" placeholder="Skema Promo" required>
         </div>
 
-        <div class="date-group col-equal">
-            <input type="date" name="tanggal_selesai" required placeholder=" ">
-            <label>Tanggal Selesai</label>
+        {{-- BASIS & NILAI --}}
+        <div class="row">
+            <select name="basis_promo" required>
+                <option value="">Basis Promo</option>
+                <option value="nominal">Promo Nominal (Rp)</option>
+                <option value="persentase">Promo Persentase (%)</option>
+            </select>
+
+            <input type="number" name="nilai_promo"
+                placeholder="Nilai Promo (Rp / %)"
+                min="0"
+                required>
         </div>
 
-    </div>
+        {{-- STATUS & TANGGAL --}}
+        <div class="row">
+            <select name="status" class="col-equal" required>
+                <option value="">Status</option>
+                <option value="aktif">Aktif</option>
+                <option value="nonaktif">Non Aktif</option>
+            </select>
 
-    {{-- MINIMAL TRANSAKSI --}}
-    <div class="row">
-        <input type="number" name="minimal_transaksi"
-               placeholder="Minimal Transaksi (Rp)"
-               min="0">
-    </div>
+            <div class="date-group col-equal">
+                <input type="date" name="tanggal_mulai" required placeholder=" ">
+                <label>Tanggal Mulai</label>
+            </div>
 
-    {{-- DESKRIPSI --}}
-    <div class="row">
-        <textarea name="deskripsi_promo"
-                  placeholder="Deskripsi Promo"
-                  required></textarea>
-    </div>
+            <div class="date-group col-equal">
+                <input type="date" name="tanggal_selesai" required placeholder=" ">
+                <label>Tanggal Selesai</label>
+            </div>
+        </div>
 
-    {{-- ROLE AKSES --}}
-    <div class="row">
-        <select name="role_akses" required>
-            <option value="">Role Akses</option>
-            <option value="admin">Admin</option>
-            <option value="kasir">Kasir</option>
-            <option value="semua">Semua</option>
-        </select>
-    </div>
+        {{-- MIN TRANSAKSI | MAX PROMO | KUOTA --}}
+        <div class="row">
+            <input type="number" name="minimal_transaksi"
+                class="col-equal"
+                placeholder="Rp Min. Transaksi"
+                min="0">
 
-    {{-- KHUSUS MEMBER --}}
-    <div class="row">
-        <select name="khusus_member" required>
-            <option value="">Khusus Member?</option>
-            <option value="1">Ya</option>
-            <option value="0">Tidak</option>
-        </select>
-    </div>
+            <input type="number" name="maksimal_diskon"
+                class="col-equal"
+                placeholder="Rp Max. Promo"
+                min="0">
 
-    {{-- MAKSIMAL DISKON --}}
-    <div class="row">
-        <input type="number" name="maksimal_diskon"
-            placeholder="Maksimal Diskon (Rp)"
-            min="0">
-    </div>
+            <input type="number" name="kuota"
+                class="col-equal"
+                placeholder="Kuota Promo"
+                min="1">
+        </div>
 
-    {{-- KUOTA --}}
-    <div class="row">
-        <input type="number" name="kuota"
-            placeholder="Kuota Promo"
-            min="1">
-    </div>
+        {{-- ROLE | TARGET | KHUSUS MEMBER --}}
+        <div class="row">
+            <select name="role_akses" class="col-equal" required>
+                <option value="">Role Akses</option>
+                <option value="admin">Admin</option>
+                <option value="kasir">Kasir</option>
+                <option value="semua">Semua</option>
+            </select>
 
-    {{-- TARGET DISKON --}}
-    <div class="row">
-        <select name="target_diskon" required>
-            <option value="">Target Diskon</option>
-            <option value="produk">Harga Produk</option>
-            <option value="ongkir">Ongkir</option>
-            <option value="pelayanan">Biaya Pelayanan</option>
-        </select>
-    </div>
+            <select name="target_diskon" class="col-equal" required>
+                <option value="">Target Promo</option>
+                <option value="produk">Harga Produk</option>
+                <option value="ongkir">Ongkir</option>
+                <option value="pelayanan">Biaya Pelayanan</option>
+            </select>
 
-    <div class="btn-row">
-        <a href="{{ route('manajemen.indexpromo') }}"
-           class="btn btn-secondary btn-sm">Kembali</a>
+            <select name="khusus_member" class="col-equal" required>
+                <option value="">Khusus Member?</option>
+                <option value="1">Ya</option>
+                <option value="0">Tidak</option>
+            </select>
+        </div>
 
-        <button class="btn">Simpan Promo</button>
-    </div>
-    </form>
+        {{-- DESKRIPSI --}}
+        <div class="row">
+            <textarea name="deskripsi_promo"
+                    placeholder="Deskripsi Promo"
+                    required></textarea>
+        </div>
+
+        <div class="btn-row">
+            <a href="{{ route('manajemen.indexpromo') }}"
+            class="btn btn-secondary btn-sm">Batal</a>
+
+            <button class="btn">Tambah Promo</button>
+        </div>
+</form>
 
 </div>
 

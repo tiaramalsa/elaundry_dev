@@ -3,7 +3,6 @@
 @section('title', 'Manajemen Harga')
 
 @section('content')
-    <h3 class="page-title">Manajemen Harga</h3>
 
     <div class="card">
         <h4 class="page-title">Daftar Harga</h4>
@@ -17,18 +16,21 @@
         </div>
 
         {{-- FILTER KATEGORI --}}
-        <div style="margin-top: 12px;">
-            <form method="GET">
-                <select name="kategori" onchange="this.form.submit()" style="padding:6px 10px;">
-                    <option value="">Semua Kategori</option>
-                    <option value="laundry" {{ request('kategori') == 'laundry' ? 'selected' : '' }}>
-                        Laundry
-                    </option>
-                    <option value="jasa" {{ request('kategori') == 'jasa' ? 'selected' : '' }}>
-                        Jasa
-                    </option>
-                </select>
-            </form>
+        <div class="filter-tabs">
+            <a href="{{ route('manajemen.harga.index') }}"
+            class="tab {{ !request('kategori') ? 'active' : '' }}">
+                Semua
+            </a>
+
+            <a href="{{ route('manajemen.harga.index', ['kategori' => 'laundry']) }}"
+            class="tab {{ request('kategori') == 'laundry' ? 'active' : '' }}">
+                Laundry
+            </a>
+
+            <a href="{{ route('manajemen.harga.index', ['kategori' => 'jasa']) }}"
+            class="tab {{ request('kategori') == 'jasa' ? 'active' : '' }}">
+                Jasa
+            </a>
         </div>
 
         {{-- TABLE --}}
@@ -104,6 +106,40 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 10px;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 30px;
+            border-bottom: 2px solid #e2e8f0;
+            margin: 10px 0 20px 0;
+        }
+
+        .tab {
+            padding: 10px 0;
+            text-decoration: none;
+            font-weight: 600;
+            color: #64748b;
+            position: relative;
+        }
+
+        .tab:hover {
+            color: #16a39a;
+        }
+
+        .tab.active {
+            color: #16a39a;
+        }
+
+        .tab.active::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 100%;
+            height: 3px;
+            background: #16a39a;
+            border-radius: 2px;
         }
 
         .btn {

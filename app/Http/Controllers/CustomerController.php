@@ -7,9 +7,6 @@ use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
-    /**
-     * Tampilkan data customer
-     */
     public function index(Request $request)
     {
         $filter = $request->filter;
@@ -43,22 +40,29 @@ class CustomerController extends Controller
             'nama_lengkap' => 'required|string|max:255',
             'alamat'       => 'required|string',
             'no_telp'      => 'required|string|max:20',
-            'lokasi'       => 'nullable|string',
-            'email'        => 'nullable|email',
+            'latitude'     => 'nullable|string',
+            'longitude'    => 'nullable|string',
         ]);
 
-        $lokasi = null;
-
-        if ($request->latitude && $request->longitude) {
-            $lokasi = "https://www.google.com/maps?q={$request->latitude},{$request->longitude}";
-        }
-        Customer::create([
+        // SIMPAN & TANGKAP KE VARIABLE
+        $customer = Customer::create([
             'nama_lengkap' => $request->nama_lengkap,
             'alamat'       => $request->alamat,
             'no_telp'      => $request->no_telp,
-            'lokasi'       => $lokasi,
-            'email'        => $request->email,
+            'latitude'     => $request->latitude,
+            'longitude'    => $request->longitude,
+            'is_member'    => $request->has('is_member'),
         ]);
+
+        // Jika member aktif
+        if ($request->has('is_member')) {
+
+            $customer->update([
+                'member_since'  => now(),
+                'member_code'   => 'MBR' . str_pad($customer->id_cust, 4, '0', STR_PAD_LEFT),
+                'member_points' => 0,
+            ]);
+        }
 
         return redirect()
             ->route('manajemen.customer.index')

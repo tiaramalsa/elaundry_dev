@@ -5,70 +5,113 @@
 @section('content')
 <div class="page-title">Form Edit Customer</div>
 
-<div class="card" style="max-width: 100%; border: 2px solid #fb923c;">
+<div class="card" style="max-width: 100%;">
+
     <form method="POST" action="{{ route('manajemen.customer.update', $customer->id_cust) }}">
-        @csrf
-        @method('PUT')
+    @csrf
+    @method('PUT')
 
-        {{-- DATA CUSTOMER --}}
-        <h4>DATA CUSTOMER</h4>
+    <h4>DATA CUSTOMER</h4>
 
-        <input
-            type="text"
-            name="nama_lengkap"
-            placeholder="Nama Lengkap"
-            value="{{ old('nama_lengkap', $customer->nama_lengkap) }}"
-        >
+    {{-- ROW 1 : NAMA & NO HP --}}
+    <div style="display:flex; gap:20px; flex-wrap:wrap; margin-bottom:15px;">
+        <div style="flex:1; min-width:250px;">
+            <input
+                type="text"
+                name="nama_lengkap"
+                placeholder="Nama Lengkap"
+                value="{{ old('nama_lengkap', $customer->nama_lengkap) }}"
+            >
+        </div>
 
+        <div style="flex:1; min-width:250px;">
+            <input
+                type="text"
+                name="no_telp"
+                placeholder="No WhatsApp"
+                value="{{ old('no_telp', $customer->no_telp) }}"
+            >
+        </div>
+    </div>
+
+    {{-- ALAMAT --}}
+    <div style="margin-bottom:10px;">
         <textarea
             name="alamat"
             rows="3"
             placeholder="Alamat"
         >{{ old('alamat', $customer->alamat) }}</textarea>
+    </div>
 
-        <input
-            type="text"
-            name="no_telp"
-            placeholder="No WhatsApp"
-            value="{{ old('no_telp', $customer->no_telp) }}"
-        >
+    <input type="hidden" name="latitude" id="latitude"
+        value="{{ old('latitude', $customer->latitude) }}">
 
-        <input
-            type="url"
-            name="lokasi"
-            placeholder="Titik Lokasi (URL Google Maps)"
-            value="{{ old('lokasi', $customer->lokasi) }}"
-        >
+    <input type="hidden" name="longitude" id="longitude"
+        value="{{ old('longitude', $customer->longitude) }}">
 
-        <div class="toggle-wrapper">
-            <span>Aktifkan Member</span>
+    {{-- AMBIL LOKASI --}}
+    <div style="margin-bottom:20px;">
+        <span onclick="ambilLokasi()"
+            style="cursor:pointer; color:#1e3a8a; font-size:14px;">
+            📍 Ambil Titik Lokasi
+        </span>
 
-            <label class="switch">
-                <input type="checkbox" name="is_member"
-                    {{ $customer->is_member ? 'checked' : '' }}>
-                <span class="slider"></span>
-            </label>
+        <small id="lokasiStatus"
+            style="display:block; margin-top:5px; color:#64748b;">
+            @if($customer->latitude && $customer->longitude)
+                Lokasi tersimpan ✔
+            @endif
+        </small>
+    </div>
+
+    <hr style="margin:20px 0; border:0; border-top:1px solid #e5e7eb;">
+
+    {{-- MEMBER --}}
+    <div style="display:flex; justify-content:space-between; align-items:center; max-width:350px;">
+
+        <div>
+            <div style="font-weight:500;">Aktifkan Member</div>
+            <small style="color:#6b7280;">
+                Nonaktifkan jika customer bukan member
+            </small>
         </div>
 
-        @if($customer->is_member)
-            <div style="margin-top:15px; padding:12px; background:#f8fafc; border-radius:8px; border:1px solid #e2e8f0;">
-                <h5 style="margin-bottom:8px;">Detail Member</h5>
+        <label class="switch">
+            <input type="hidden" name="is_member" value="0">
+            <input type="checkbox"
+                name="is_member"
+                value="1"
+                {{ $customer->is_member ? 'checked' : '' }}>
+            <span class="slider"></span>
+        </label>
 
-                <p><b>Kode Member:</b> {{ $customer->member_code ?? '-' }}</p>
-                <p><b>Tanggal Bergabung:</b> {{ $customer->member_since ?? '-' }}</p>
-                <p><b>Poin:</b> {{ $customer->member_points ?? 0 }}</p>
-            </div>
-        @endif
+    </div>
 
-        {{-- ACTION --}}
-        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
-            <a href="{{ route('manajemen.customer.index') }}" class="btn" style="background:#e2e8f0;">
-                Batal
-            </a>
-            <button class="btn" style="background:#fb923c; color:white;">
-                Simpan Perubahan
-            </button>
-        </div>
+    {{-- DETAIL MEMBER --}}
+    @if($customer->is_member)
+    <div style="margin-top:15px; padding:12px; background:#f8fafc; border-radius:8px; border:1px solid #e2e8f0; max-width:400px;">
+        <h5 style="margin-bottom:8px;">Detail Member</h5>
+
+        <p><b>Kode Member:</b> {{ $customer->member_code ?? '-' }}</p>
+        <p><b>Tanggal Bergabung:</b> {{ $customer->member_since ?? '-' }}</p>
+        <p><b>Poin:</b> {{ $customer->member_points ?? 0 }}</p>
+    </div>
+    @endif
+
+    {{-- ACTION --}}
+    <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:25px;">
+        <a href="{{ route('manajemen.customer.index') }}"
+        class="btn"
+        style="background:#94a3b8;">
+            Batal
+        </a>
+
+        <button class="btn"
+            style="background:#fb923c; color:white;">
+            Simpan Perubahan
+        </button>
+    </div>
+
     </form>
 </div>
 
@@ -172,4 +215,25 @@
         transform: translateX(24px);
     }
 </style>
+
+{{-- Script Ambil Lokasi --}}
+<script>
+    function ambilLokasi() {
+        if (!navigator.geolocation) {
+            alert("Browser tidak mendukung GPS.");
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(function(position) {
+            document.getElementById('latitude').value = position.coords.latitude;
+            document.getElementById('longitude').value = position.coords.longitude;
+
+            document.getElementById('lokasiStatus').innerHTML =
+                "Lokasi berhasil diperbarui ✔";
+        }, function() {
+            alert("Gagal mengambil lokasi. Pastikan GPS aktif.");
+        });
+    }
+</script>
+
 @endsection

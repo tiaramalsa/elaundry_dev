@@ -55,12 +55,12 @@
                             <td>{{ $customer->nama_lengkap }}</td>
                             <td>{{ $customer->alamat }}</td>
                             <td>{{ $customer->no_telp }}</td>
-                            <td>
+                            <td class="text-center">
                                 @if ($customer->latitude && $customer->longitude)
                                     <a href="https://www.google.com/maps?q={{ $customer->latitude }},{{ $customer->longitude }}"
                                     target="_blank"
-                                    class="link-lokasi">
-                                        Lihat
+                                    class="btn-lokasi">
+                                        📍 Lihat
                                     </a>
                                 @else
                                     -
@@ -130,14 +130,14 @@
             line-height: 1;
         }
 
-        /* 🔥 BUTTON TAMBAH CUSTOMER - ORANGE */
+        /* BUTTON TAMBAH CUSTOMER - ORANGE */
         .btn-sm {
             padding: 10px 16px;
             font-size: 14px;
         }
 
         .btn-sm:hover {
-            background: #e67800; /* orange lebih gelap dikit */
+            background: #e67800; 
         }
 
         .table {
@@ -163,6 +163,27 @@
 
         .table tbody tr:hover {
             background: #f1f9f9;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .btn-lokasi {
+            background: rgba(22,163,154,0.15);
+            color: #16a39a;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: 0.2s ease;
+        }
+
+        .btn-lokasi:hover {
+            background: #16a39a;
+            color: white;
         }
 
         .aksi {
