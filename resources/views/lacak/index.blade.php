@@ -94,9 +94,15 @@
                     </option>
                 </select>
 
-                <input type="date" name="from" value="{{ request('from') }}">
-                <input type="date" name="to" value="{{ request('to') }}">
+                <div class="date-field floating">
+                    <input type="date" name="from" placeholder=" ">
+                    <label>Tanggal Mulai</label>
+                </div>
 
+                <div class="date-field floating">
+                    <input type="date" name="to" placeholder=" ">
+                    <label>Tanggal Selesai</label>
+                </div>
 
                 <div class="filter-action">
                     <button class="btn-apply">Terapkan</button>
@@ -105,7 +111,7 @@
         </form>
 
         {{-- TABLE --}}
-        <div style="margin-top: 20px; overflow-x: auto;">
+        <div class="table-wrapper">
             <table class="table">
                 <thead>
                     <tr>
@@ -163,10 +169,20 @@
 
     {{-- STYLE KHUSUS TABLE --}}
     <style>
+        html, body {
+            overflow-x: hidden;
+        }
+
         .table {
             width: 100%;
             border-collapse: collapse;
             font-size: 14px;
+        }
+
+        /* 🔥 TAMBAHKAN DI SINI */
+        .card {
+            max-width: 100%;
+            overflow: hidden;
         }
 
         .table thead {
@@ -266,19 +282,33 @@
    DESKTOP
 =============================== */
 .filter-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: nowrap;
+    display: grid;
+    grid-template-columns: 
+        minmax(150px, 1fr)
+        minmax(150px, 1fr)
+        minmax(120px, 1fr)
+        minmax(180px, 1fr)
+        minmax(180px, 1fr)
+        auto;
+    gap: 14px;
+    align-items: end;
 }
 
-/* input & select */
+/* input & select
 .filter-row select,
-.filter-row input {
-    flex: 1 1 160px;
-    min-width: 150px;
-    max-width: 180px;
-    height: 42px;
+.filter-row input,
+.date-field {
+    flex: 0 0 160px;        
+} */
+
+/* date tetap column */
+.date-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.date-field input {
+    height: 45px;
 }
 
 /* area button */
@@ -290,9 +320,9 @@
     background: #ff8c1a;      /* oren */
     color: #fff;
     border: none;
-    height: 42px;
+    height: 45px;
     padding: 0 22px;
-    border-radius: 20px;
+    border-radius: 6px;
     font-weight: 600;
     cursor: pointer;
     white-space: nowrap;
@@ -302,22 +332,26 @@
     background: #e67e0f;
 }
 
+.table-wrapper {
+    margin-top: 20px;
+}
+
+@media (max-width: 992px) {
+    .table-wrapper {
+        overflow-x: auto;
+    }
+}
+
 /* ===============================
    MOBILE
 =============================== */
-@media (max-width: 768px) {
+@media (max-width: 992px) {
     .filter-row {
-        flex-wrap: wrap;
-    }
-
-    .filter-row select,
-    .filter-row input {
-        flex: 1 1 48%;
-        max-width: 100%;
+        grid-template-columns: 1fr 1fr;
     }
 
     .filter-action {
-        flex: 1 1 100%;
+        grid-column: span 2;
     }
 
     .btn-apply {
@@ -325,5 +359,65 @@
     }
 }
 
+/* tanggal mulai selesai */
+/* .date-group {
+    display: flex;
+    gap: 12px;
+} */
+
+.date-field {
+    /* flex: 1;
+    min-width: 180px; */
+    display: flex;
+    flex-direction: column;
+}
+
+.date-field label {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    color: #0f766e; /* hijau lembut biar serasi */
+}
+
+.date-field input {
+    height: 42px;
+    padding: 0 10px;
+}
+
+.filter-row select,
+.filter-row input {
+    height: 45px;
+    padding: 0 10px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+}
+
+/* =========================
+   FLOATING DATE LABEL
+========================= */
+
+.date-field.floating {
+    position: relative;
+}
+
+.date-field.floating input {
+    height: 48px;
+    padding: 14px 10px 8px 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    width: 100%;
+    background: #fff;
+}
+
+.date-field.floating label {
+    position: absolute;
+    top: -8px;
+    left: 12px;
+    background: #fff;
+    padding: 0 6px;
+    font-size: 12px;
+    color: #0f766e;
+    font-weight: 500;
+}
     </style>
 @endsection
