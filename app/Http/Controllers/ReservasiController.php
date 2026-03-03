@@ -53,7 +53,7 @@ class ReservasiController extends Controller
             'jumlah_item'     => 'nullable|integer|min:1',
             'berat_cucian'    => 'nullable|numeric|min:0.1',
             'catatan_khusus'  => 'nullable|string',
-            'status_proses'   => 'in:diterima,dicuci,dikeringkan,disetrika',
+            'status_proses'   => 'in:diterima,dicuci,dikeringkan,disetrika,selesai',
             'status_bayar'    => 'in:belum,lunas',
             'latitude'        => 'required|numeric',
             'longitude'       => 'required|numeric',

@@ -198,9 +198,15 @@ class PemesananController extends Controller
     {
         $hargaList = Harga::laundry()->get();
 
+        $roleUser = auth()->user()->role;
+
         $promos = Promo::where('status', 'aktif')
             ->whereDate('tanggal_mulai', '<=', now())
             ->whereDate('tanggal_selesai', '>=', now())
+            ->where(function ($query) use ($roleUser) {
+                $query->where('role_akses', $roleUser)
+                    ->orWhere('role_akses', 'semua');
+            })
             ->get();
 
         return view('pemesanan.create', compact('hargaList', 'promos'));

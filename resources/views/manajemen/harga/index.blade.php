@@ -62,7 +62,9 @@
                             </td>
                             <td>Rp {{ number_format($item->harga, 0, ',', '.') }}</td>
                             <td>
-                                {{ $item->is_active ? 'Aktif' : 'Nonaktif' }}
+                                <span class="badge {{ $item->is_active ? 'badge-success' : 'badge-danger' }}">
+                                    {{ $item->is_active ? 'Aktif' : 'Nonaktif' }}
+                                </span>
                             </td>
                             <td class="aksi">
                                 <a href="{{ route('manajemen.harga.edit', $item->id) }}" title="Edit">✎</a>
@@ -173,6 +175,24 @@
         .aksi a:hover,
         .aksi button:hover {
             opacity: 0.7;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-success {
+            background: rgba(22,163,154,0.15);
+            color: #16a39a;
+        }
+
+        .badge-danger {
+            background: rgba(230,120,0,0.15);
+            color: #e67800;
         }
     </style>
 @endsection

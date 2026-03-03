@@ -50,8 +50,8 @@
                         <th>Nama</th>
                         <th>Total</th>
                         <th>Pembayaran</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
+                        <th >Status</th>
+                        <th style="text-align:center;">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -169,24 +169,24 @@
         }
 
         .badge.selesai {
-            background: #16a39a;
-            color: #fff;
+            background: rgba(22,163,154,0.15);
+            color: #16a39a;
             padding: 4px 10px;
             border-radius: 12px;
             font-size: 12px;
         }
 
         .badge.bayar-lunas {
-            background: #16a34a;
-            color: #fff;
+            background: rgba(22,163,154,0.15);
+            color: #16a39a;
             padding: 4px 10px;
             border-radius: 12px;
             font-size: 12px;
         }
 
         .badge.bayar-belum {
-            background: #dc2626;
-            color: #fff;
+            background: rgba(230,120,0,0.15);
+            color: #e67800;
             padding: 4px 10px;
             border-radius: 12px;
             font-size: 12px;
