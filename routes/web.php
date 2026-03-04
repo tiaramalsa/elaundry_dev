@@ -75,8 +75,8 @@ Route::middleware(['auth', 'role:kasir'])
             ->name('lacak.next');
     });
 
-Route::get('/admin/dashboard', [DashboardController::class, 'index'])
-    ->name('admin.dashboard');
+// Route::get('/admin/dashboard', [DashboardController::class, 'index'])
+//     ->name('admin.dashboard');
 
 // Route::get('/kasir/dashboard', function () {
 //     return view('kasir.dashboard'); // atau controller sendiri
