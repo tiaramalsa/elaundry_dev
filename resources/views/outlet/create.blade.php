@@ -1,113 +1,143 @@
-@extends('layouts.dashboard')
+@extends('layouts.admin')
 
-@section('title', 'Tambah Outlet')
+@section('title','Tambah Outlet')
 
 @section('content')
-<div class="page-title">Form Tambah Outlet</div>
 
-<div class="card" style="max-width:100%; padding:25px;">
+<div class="row">
+<div class="col-12">
 
-    <h3 style="margin-bottom:20px;">Form Tambah Outlet</h3>
+<div class="card">
+<div class="card-body">
 
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul style="margin:0;">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+<h3 class="card-title page-title">Form Tambah Outlet</h3>
 
-    <form method="POST" action="{{ route('outlet.store') }}">
-        @csrf
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
-        {{-- NAMA OUTLET --}}
-        <div style="margin-bottom:25px;">
-            <input type="text"
-                   name="nama_outlet"
-                   placeholder="Nama Outlet"
-                   style="width:100%; height:45px; padding:12px;">
-        </div>
+<form method="POST" action="{{ route('outlet.store') }}">
+@csrf
 
-        {{-- SECTION ALAMAT --}}
-        <div style="background:#f8fafc; padding:20px; border-radius:12px; margin-bottom:25px;">
-            <h4 style="margin-bottom:15px;">Alamat Outlet</h4>
-
-            {{-- Jalan --}}
-            <div style="margin-bottom:15px;">
-                <input type="text"
-                       name="jalan"
-                       placeholder="Jalan"
-                       style="width:100%; height:45px; padding:12px;">
-            </div>
-
-            {{-- Kelurahan & Kecamatan --}}
-            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:15px;">
-                <input type="text"
-                       name="kelurahan"
-                       placeholder="Desa / Kelurahan"
-                       style="flex:1; min-width:220px; height:45px; padding:12px;">
-
-                <input type="text"
-                       name="kecamatan"
-                       placeholder="Kecamatan"
-                       style="flex:1; min-width:220px; height:45px; padding:12px;">
-            </div>
-
-            {{-- Kota | Provinsi | Kode Pos --}}
-            <div style="display:flex; gap:12px; flex-wrap:wrap;">
-                <input type="text"
-                       name="kota_kab"
-                       placeholder="Kota / Kabupaten"
-                       style="flex:1; min-width:200px; height:45px; padding:12px;">
-
-                <input type="text"
-                       name="provinsi"
-                       placeholder="Provinsi"
-                       style="flex:1; min-width:200px; height:45px; padding:12px;">
-
-                <input type="text"
-                       name="kode_pos"
-                       placeholder="Kode Pos"
-                       style="flex:1; min-width:150px; height:45px; padding:12px;">
-            </div>
-        </div>
-
-        {{-- SECTION KONTAK --}}
-        <div style="background:#f1f5f9; padding:20px; border-radius:12px; margin-bottom:25px;">
-            <h4 style="margin-bottom:15px;">Kontak Outlet</h4>
-
-            <div style="display:flex; gap:12px; flex-wrap:wrap;">
-                <input type="text"
-                       name="no_telp"
-                       placeholder="Telepon"
-                       style="flex:1; min-width:220px; height:45px; padding:12px;">
-
-                <input type="email"
-                       name="email"
-                       placeholder="Email"
-                       style="flex:1; min-width:220px; height:45px; padding:12px;">
-
-                <input type="text"
-                       name="website"
-                       placeholder="Website"
-                       style="flex:1; min-width:220px; height:45px; padding:12px;">
-            </div>
-        </div>
-
-        {{-- BUTTON --}}
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <a href="{{ route('outlet.index') }}"
-               class="btn btn-secondary btn-sm">
-                Kembali
-            </a>
-
-            <button type="submit" class="btn">
-                Tambah Outlet
-            </button>
-        </div>
-
-    </form>
+{{-- NAMA OUTLET --}}
+<div class="mb-4">
+    <label class="form-label">Nama Outlet</label>
+    <input type="text" name="nama_outlet" class="form-control" placeholder="Nama Outlet">
 </div>
+
+{{-- ALAMAT --}}
+<h5 class="section-title">Alamat Outlet</h5>
+<div class="row mb-4">
+
+    <div class="col-12 mb-3">
+        <label class="form-label">Jalan</label>
+        <input type="text" name="jalan" class="form-control" placeholder="Jalan">
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <label class="form-label">Desa / Kelurahan</label>
+        <input type="text" name="kelurahan" class="form-control" placeholder="Desa / Kelurahan">
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <label class="form-label">Kecamatan</label>
+        <input type="text" name="kecamatan" class="form-control" placeholder="Kecamatan">
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <label class="form-label">Kota / Kabupaten</label>
+        <input type="text" name="kota_kab" class="form-control" placeholder="Kota / Kabupaten">
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <label class="form-label">Provinsi</label>
+        <input type="text" name="provinsi" class="form-control" placeholder="Provinsi">
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <label class="form-label">Kode Pos</label>
+        <input type="text" name="kode_pos" class="form-control" placeholder="Kode Pos">
+    </div>
+
+</div>
+
+{{-- KONTAK --}}
+<h5 class="section-title">Kontak Outlet</h5>
+<div class="row mb-4">
+
+    <div class="col-md-4 mb-3">
+        <label class="form-label">Telepon</label>
+        <input type="text" name="no_telp" class="form-control" placeholder="Telepon">
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" name="email" class="form-control" placeholder="Email">
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <label class="form-label">Website</label>
+        <input type="text" name="website" class="form-control" placeholder="Website">
+    </div>
+
+</div>
+
+{{-- BUTTON --}}
+<div class="d-flex gap-2">
+    <a href="{{ route('outlet.index') }}" class="btn btn-light">Kembali</a>
+    <button type="submit" class="btn btn-primary">Tambah Outlet</button>
+</div>
+
+</form>
+
+</div>
+</div>
+
+</div>
+</div>
+
 @endsection
+
+@push('styles')
+<style>
+.page-title {
+    font-size:26px;
+    font-weight:600;
+    margin-bottom:30px;
+}
+
+.section-title {
+    font-size:16px;
+    font-weight:600;
+    margin-top:35px;
+    margin-bottom:20px;
+    padding-bottom:6px;
+    border-bottom:1px solid #e5e7eb;
+}
+
+.form-label {
+    display:block;
+    margin-bottom:6px;
+    font-weight:500;
+}
+
+.form-control {
+    width:100%;
+    height:45px;
+    padding:10px 12px;
+    border-radius:6px;
+    border:1px solid #ced4da;
+    font-size:14px;
+}
+
+.row {
+    row-gap:10px;
+}
+</style>
+@endpush

@@ -1,204 +1,145 @@
-@extends('layouts.dashboard')
+@extends('layouts.admin')
 
-@section('title', 'Data Karyawan')
+@section('title','Data Karyawan')
 
 @section('content')
-    <h3 class="page-title">Data Karyawan</h3>
 
-    <div class="card">
+<div class="row">
+<div class="col-12">
 
-        {{-- TOP ACTION --}}
-        <div class="top-action">
-            <div class="export-btn">
-                <a href="{{ route('karyawan.export.pdf') }}" class="btn pdf">
-                    Unduh PDF
-                </a>
-                <a href="{{ route('karyawan.export.csv') }}" class="btn csv">
-                    Unduh CSV
-                </a>
-            </div>
+<div class="card">
+<div class="card-body">
 
-            <a href="{{ route('karyawan.create') }}" class="btn tambah">Tambah Karyawan +</a>
-        </div>
+<h4 class="card-title mb-4">Data Karyawan</h4>
 
-        {{-- TABLE --}}
-        <div style="margin-top: 20px; overflow-x: auto;">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th style="text-align:center;">No.</th>
-                        <th style="text-align:center;">Nama Karyawan</th>
-                        <th style="text-align:center;">ID Karyawan</th>
-                        <th style="text-align:center;">JK</th>
-                        <th style="text-align:center;">Outlet</th>
-                        <th style="text-align:center;">Status</th>
-                        <th style="text-align:center">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($karyawans as $karyawan)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $karyawan->nama_karyawan }}</td>
-                            <td>{{ $karyawan->id_karyawan }}</td>
-                            <td>{{ $karyawan->jenis_kelamin }}</td>
-                            <td>{{ $karyawan->outlet->nama_outlet ?? '-' }}</td>
-                            <td style="text-align:center;">
-                                @php
-                                    $status = strtolower(trim($karyawan->status));
-                                @endphp
+{{-- TOP ACTION --}}
+<div class="d-flex justify-content-between mb-3 flex-wrap gap-2">
 
-                                @if ($status == 'aktif')
-                                    <span class="badge aktif">Aktif</span>
-                                @elseif ($status == 'tidak_aktif')
-                                    <span class="badge nonaktif">Tidak Aktif</span>
-                                @else
-                                    <span class="badge nonaktif">Tidak Diketahui</span>
-                                @endif
-                            </td>
-                            <td class="aksi">
-                                {{-- DETAIL --}}
-                                <a href="{{ route('karyawan.show', $karyawan->id_karyawan) }}" title="Detail" class="icon-detail">👁</a>
+<div>
+<a href="{{ route('karyawan.export.pdf') }}" class="btn btn-danger btn-sm">
+<i class="mdi mdi-file-pdf"></i> Unduh PDF
+</a>
 
-                                {{-- HAPUS --}}
-                                <form action="{{ route('karyawan.destroy', $karyawan->id_karyawan) }}"
-                                    method="POST"
-                                    style="display:inline;"
-                                    onsubmit="return confirm('Yakin ingin menghapus karyawan ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" title="Hapus">🗑</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" style="text-align:center; color:#64748b;">
-                                Belum ada data karyawan
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-    </div>
+<a href="{{ route('karyawan.export.csv') }}" class="btn btn-success btn-sm">
+<i class="mdi mdi-file-excel"></i> Unduh CSV
+</a>
+</div>
 
-    {{-- STYLE KHUSUS DATA KARYAWAN --}}
-    <style>
-        .page-title {
-            font-weight: 600;
-            margin-bottom: 16px;
-        }
+<a href="{{ route('karyawan.create') }}" class="btn btn-primary btn-sm">
+<i class="mdi mdi-plus"></i> Tambah Karyawan
+</a>
 
-        .top-action {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
+</div>
 
-        .export-btn .btn {
-            margin-right: 6px;
-        }
+{{-- TABLE --}}
+<div class="table-responsive">
 
-        .btn {
-            padding: 8px 14px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            font-size: 13px;
-        }
+<table id="table-karyawan" class="table table-striped table-bordered">
 
-                /* 🔥 BUTTON TAMBAH KARYAWAN - ORANGE */
-        .btn.tambah {
-            background: #fb923c;
-            color: white;
-            text-decoration: none;
-            border: none;
-        }
+<thead class="table-dark">
+<tr>
+<th class="text-center">No</th>
+<th>Nama Karyawan</th>
+<th>ID Karyawan</th>
+<th>JK</th>
+<th>Outlet</th>
+<th class="text-center">Status</th>
+<th class="text-center">Aksi</th>
+</tr>
+</thead>
 
-        .btn.tambah:hover {
-            background: #f97316; /* orange lebih gelap dikit */
-        }
+<tbody>
 
-        .btn.pdf {
-            background: #fb923c;
-            color: white;
-        }
+@forelse ($karyawans as $karyawan)
 
-        .btn.csv {
-            background: #fb923c;
-            color: white;
-        }
+<tr>
+<td class="text-center">{{ $loop->iteration }}</td>
 
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
+<td>{{ $karyawan->nama_karyawan }}</td>
 
-        .table thead {
-            background: #16a39a;
-            color: white;
-        }
+<td>{{ $karyawan->id_karyawan }}</td>
 
-        .table th,
-        .table td {
-            padding: 10px 12px;
-            text-align: left;
-        }
+<td>{{ $karyawan->jenis_kelamin }}</td>
 
-        .table tbody tr {
-            border-bottom: 1px solid #e2e8f0;
-        }
+<td>{{ $karyawan->outlet->nama_outlet ?? '-' }}</td>
 
-        .table tbody tr:hover {
-            background: #f1f9f9;
-        }
+<td class="text-center">
 
-        .aksi {
-            text-align: center;
-        }
+@php
+$status = strtolower(trim($karyawan->status));
+@endphp
 
-        .aksi button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            margin: 0 4px;
-        }
+@if ($status == 'aktif')
+<span class="badge bg-success">Aktif</span>
 
-        .aksi button:hover {
-            opacity: 0.7;
-        }
+@elseif ($status == 'tidak_aktif')
+<span class="badge bg-secondary">Tidak Aktif</span>
 
-        .badge {
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 500;
-        }
+@else
+<span class="badge bg-dark">Tidak Diketahui</span>
+@endif
 
-        .badge.aktif {
-            background: rgba(22,163,154,0.15);
-            color: #16a39a;
-        }
+</td>
 
-        .badge.nonaktif {
-            background: rgba(230,120,0,0.15);
-            color: #e67800;
-        }
+<td class="text-center">
 
-        .aksi a.icon-detail {
-            text-decoration: none;
-            font-size: 16px;
-            margin: 0 4px;
-            color: #64748b; /* abu-abu */
-        }
+{{-- DETAIL --}}
+<a href="{{ route('karyawan.show', $karyawan->id_karyawan) }}"
+class="btn btn-info btn-sm">
+<i class="mdi mdi-eye"></i>
+</a>
 
-        .aksi a.icon-detail:hover {
-            opacity: 0.7;
-        }
-    </style>
+{{-- HAPUS --}}
+<form action="{{ route('karyawan.destroy', $karyawan->id_karyawan) }}"
+method="POST"
+style="display:inline;"
+onsubmit="return confirm('Yakin ingin menghapus karyawan ini?')">
+
+@csrf
+@method('DELETE')
+
+<button type="submit" class="btn btn-danger btn-sm">
+<i class="mdi mdi-delete"></i>
+</button>
+
+</form>
+
+</td>
+
+</tr>
+
+@empty
+
+<tr>
+<td colspan="7" class="text-center text-muted">
+Belum ada data karyawan
+</td>
+</tr>
+
+@endforelse
+
+</tbody>
+
+</table>
+
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
 @endsection
+
+
+@push('scripts')
+<script>
+
+$(document).ready(function(){
+
+$('#table-karyawan').DataTable();
+
+});
+
+</script>
+@endpush

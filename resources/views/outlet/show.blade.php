@@ -1,98 +1,92 @@
-@extends('layouts.dashboard')
+@extends('layouts.admin')
 
-@section('title', 'Detail Outlet')
+@section('title','Detail Outlet')
 
 @section('content')
-<h3 class="page-title">Detail Outlet</h3>
 
-<div class="card" style="max-width:100%; padding:25px;">
+<div class="page-header">
+    <h3 class="page-title">Detail Outlet</h3>
+</div>
+
+<div class="row">
+<div class="col-lg-12 grid-margin stretch-card">
+<div class="card">
+<div class="card-body">
 
     {{-- HEADER --}}
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px; flex-wrap:wrap; gap:10px;">
-
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
         <div>
-            <h2 style="margin:0;">{{ $outlet->nama_outlet }}</h2>
-            <small style="color:#64748b;">
+            <h4 class="card-title mb-1">{{ $outlet->nama_outlet }}</h4>
+            <small class="text-muted">
                 ID Outlet : {{ $outlet->id_outlet }}
             </small>
         </div>
 
-        <div>
-            <a href="{{ route('outlet.index') }}"
-               class="btn btn-secondary btn-sm">Kembali</a>
-        </div>
+        <a href="{{ route('outlet.index') }}"
+           class="btn btn-secondary btn-sm">
+            Kembali
+        </a>
     </div>
 
-    {{-- SECTION 1 : INFORMASI UMUM --}}
-    <div style="display:flex; flex-wrap:wrap; gap:15px; margin-bottom:20px;">
 
-        <div style="flex:1; min-width:250px; background:#f8fafc; padding:15px; border-radius:10px;">
-            <strong>Telepon</strong>
-            <div style="margin-top:5px;">
-                {{ $outlet->no_telp ?? '-' }}
+    {{-- INFORMASI KONTAK --}}
+    <div class="row mb-4">
+
+        <div class="col-md-4">
+            <div class="border rounded p-3 h-100 bg-light">
+                <strong>Telepon</strong>
+                <div class="mt-2">
+                    {{ $outlet->no_telp ?? '-' }}
+                </div>
             </div>
         </div>
 
-        <div style="flex:1; min-width:250px; background:#f8fafc; padding:15px; border-radius:10px;">
-            <strong>Email</strong>
-            <div style="margin-top:5px;">
-                {{ $outlet->email ?? '-' }}
+        <div class="col-md-4">
+            <div class="border rounded p-3 h-100 bg-light">
+                <strong>Email</strong>
+                <div class="mt-2">
+                    {{ $outlet->email ?? '-' }}
+                </div>
             </div>
         </div>
 
-        <div style="flex:1; min-width:250px; background:#f8fafc; padding:15px; border-radius:10px;">
-            <strong>Website</strong>
-            <div style="margin-top:5px;">
-                {{ $outlet->website ?? '-' }}
+        <div class="col-md-4">
+            <div class="border rounded p-3 h-100 bg-light">
+                <strong>Website</strong>
+                <div class="mt-2">
+                    {{ $outlet->website ?? '-' }}
+                </div>
             </div>
         </div>
 
     </div>
 
-    {{-- SECTION 2 : ALAMAT --}}
-    <div style="background:#f1f5f9; padding:20px; border-radius:12px; margin-bottom:20px;">
 
-        <strong style="font-size:15px;">Alamat Outlet</strong>
+    {{-- ALAMAT OUTLET --}}
+    <div class="border rounded p-4 mb-4 bg-light">
+        <h6 class="mb-3">Alamat Outlet</h6>
 
-        <div style="margin-top:10px; color:#475569; line-height:1.6;">
+        <div class="text-muted" style="line-height:1.7;">
             {{ $outlet->jalan }} <br>
             {{ $outlet->kelurahan }}, {{ $outlet->kecamatan }} <br>
             {{ $outlet->kota_kab }}, {{ $outlet->provinsi }} <br>
             Kode Pos: {{ $outlet->kode_pos }}
         </div>
-
     </div>
 
-    {{-- OPTIONAL : PENANGGUNG JAWAB (kalau mau aktifkan lagi) --}}
-    {{-- 
-    <div style="display:flex; flex-wrap:wrap; gap:15px; margin-bottom:20px;">
-        <div style="flex:1; min-width:250px; background:#f8fafc; padding:15px; border-radius:10px;">
-            <strong>Penanggung Jawab</strong>
-            <div style="margin-top:5px;">
-                {{ $outlet->pj_nama }}
-            </div>
-        </div>
-
-        <div style="flex:1; min-width:250px; background:#f8fafc; padding:15px; border-radius:10px;">
-            <strong>Kontak PJ</strong>
-            <div style="margin-top:5px;">
-                {{ $outlet->pj_kontak }}
-            </div>
-        </div>
-    </div>
-    --}}
 
     {{-- ACTION BUTTON --}}
-    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+    <div class="d-flex gap-2 flex-wrap">
 
         <a href="{{ route('outlet.edit', $outlet->id_outlet) }}"
-           class="btn btn-sm">
+           class="btn btn-primary btn-sm">
             Edit Outlet
         </a>
 
         <form action="{{ route('outlet.destroy', $outlet->id_outlet) }}"
               method="POST"
               onsubmit="return confirm('Yakin ingin menghapus outlet ini?')">
+
             @csrf
             @method('DELETE')
 
@@ -104,4 +98,8 @@
     </div>
 
 </div>
+</div>
+</div>
+</div>
+
 @endsection

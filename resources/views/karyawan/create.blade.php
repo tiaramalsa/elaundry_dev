@@ -1,118 +1,209 @@
-@extends('layouts.dashboard')
+@extends('layouts.admin')
 
-@section('title', 'Tambah Karyawan')
+@section('title','Tambah Karyawan')
 
 @section('content')
-<div class="page-title">Form Tambah Karyawan</div>
 
-<div class="card" style="max-width: 100%; border: 1px solid #93c5fd;">
-    <form method="POST" action="{{ route('karyawan.store') }}">
-        @csrf
+<div class="row">
+<div class="col-12">
 
-        {{-- DATA PRIBADI --}}
-        <h4>DATA PRIBADI</h4>
+<div class="card">
+<div class="card-body">
 
-        <input type="text" name="nama_karyawan" placeholder="Nama Karyawan">
+<h3 class="card-title page-title">Form Tambah Karyawan</h3>
 
-        <select name="jenis_kelamin">
-            <option value="">Jenis Kelamin</option>
-            <option value="L">Laki-laki</option>
-            <option value="P">Perempuan</option>
-        </select>
+<form method="POST" action="{{ route('karyawan.store') }}">
+@csrf
 
-        <input type="text" name="tempat_lahir" placeholder="Tempat Lahir">
+{{-- DATA PRIBADI --}}
+<h5 class="section-title">Data Pribadi</h5>
 
-        <select name="agama">
-            <option value="">Agama</option>
-            <option value="Islam">Islam</option>
-            <option value="Kristen">Kristen</option>
-            <option value="Katolik">Katolik</option>
-            <option value="Hindu">Hindu</option>
-            <option value="Buddha">Buddha</option>
-            <option value="Konghucu">Konghucu</option>
-            <option value="Konghucu">Kepercayaan Lain</option>
-        </select>
+<div class="row">
 
-        <input
-        type="text"
-        name="tanggal_lahir"
-        placeholder="Tanggal Lahir"
-        onfocus="this.type='date'"
-        onblur="if(!this.value)this.type='text'">
-
-        <input type="text" name="nik" placeholder="NIK">
-
-        {{-- DATA PEKERJAAN --}}
-        <h4 style="margin-top:20px;">DATA PEKERJAAN</h4>
-
-        <select name="jabatan">
-            <option value="">Jabatan</option>
-            <option value="Kasir">Kasir</option>
-            <option value="Admin">Admin</option>
-            <option value="Supervisor">Supervisor</option>
-            <option value="Kurir">Kurir</option>
-        </select>
-
-        <select name="id_outlet" required>
-            <option value="">Pilih Outlet</option>
-            @foreach($outlets as $outlet)
-                <option value="{{ $outlet->id_outlet }}">
-                    {{ $outlet->nama_outlet }}
-                </option>
-            @endforeach
-        </select>
-
-        <select name="status">
-            <option value="">Status Karyawan</option>
-            <option value="Aktif">Aktif</option>
-            <option value="Tidak Aktif">Tidak Aktif</option>
-        </select>
-
-        <input
-        type="text"
-        name="tanggal_masuk"
-        placeholder="Tanggal Masuk"
-        onfocus="this.type='date'"
-        onblur="if(!this.value)this.type='text'">
-
-        {{-- KONTAK --}}
-        <h4 style="margin-top:20px;">KONTAK</h4>
-
-        <input type="text" name="no_hp" placeholder="No HP">
-        <input type="email" name="email" placeholder="Email">
-        <textarea name="alamat" rows="3" placeholder="Alamat"></textarea>
-
-        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
-            <a href="{{ route('karyawan.index') }}" class="btn" style="background:#e2e8f0;">Batal</a>
-            <button class="btn">+ Tambah</button>
-        </div>
-    </form>
+<div class="col-md-6 mb-3">
+<label class="form-label">Nama Karyawan</label>
+<input type="text" name="nama_karyawan" class="form-control" placeholder="Nama Karyawan">
 </div>
-<style>
-    input, select, textarea {
-        width: 100%;
-        padding: 10px;
-        margin-top: 10px;
-        border: 1px solid #cbd5e1;
-        border-radius: 6px;
-        font-size: 14px;
-        color: #000;
-    }
 
-    input::placeholder,
-    textarea::placeholder {
-        color: #9ca3af;
-    }
+<div class="col-md-6 mb-3">
+<label class="form-label">Jenis Kelamin</label>
+<select name="jenis_kelamin" class="form-select">
+<option value="">Pilih Jenis Kelamin</option>
+<option value="L">Laki-laki</option>
+<option value="P">Perempuan</option>
+</select>
+</div>
 
-    input[type="text"]:placeholder-shown {
-        color: #9ca3af;
-    }
+<div class="col-md-6 mb-3">
+<label class="form-label">Tempat Lahir</label>
+<input type="text" name="tempat_lahir" class="form-control" placeholder="Tempat Lahir">
+</div>
 
-    input:not(:placeholder-shown),
-    textarea:not(:placeholder-shown),
-    select {
-        color: #000;
-    }
-</style>
+<div class="col-md-6 mb-3">
+<label class="form-label">Agama</label>
+<select name="agama" class="form-select">
+<option value="">Pilih Agama</option>
+<option value="Islam">Islam</option>
+<option value="Kristen">Kristen</option>
+<option value="Katolik">Katolik</option>
+<option value="Hindu">Hindu</option>
+<option value="Buddha">Buddha</option>
+<option value="Konghucu">Konghucu</option>
+<option value="Kepercayaan Lain">Kepercayaan Lain</option>
+</select>
+</div>
+
+<div class="col-md-6 mb-3">
+<label class="form-label">Tanggal Lahir</label>
+<input type="date" name="tanggal_lahir" class="form-control">
+</div>
+
+<div class="col-md-6 mb-3">
+<label class="form-label">NIK</label>
+<input type="text" name="nik" class="form-control" placeholder="NIK">
+</div>
+
+</div>
+
+{{-- DATA PEKERJAAN --}}
+<h5 class="section-title">Data Pekerjaan</h5>
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+<label class="form-label">Jabatan</label>
+<select name="jabatan" class="form-select">
+<option value="">Pilih Jabatan</option>
+<option value="Kasir">Kasir</option>
+<option value="Admin">Admin</option>
+<option value="Supervisor">Supervisor</option>
+<option value="Kurir">Kurir</option>
+</select>
+</div>
+
+<div class="col-md-6 mb-3">
+<label class="form-label">Outlet</label>
+<select name="id_outlet" class="form-select" required>
+<option value="">Pilih Outlet</option>
+@foreach($outlets as $outlet)
+<option value="{{ $outlet->id_outlet }}">
+{{ $outlet->nama_outlet }}
+</option>
+@endforeach
+</select>
+</div>
+
+<div class="col-md-6 mb-3">
+<label class="form-label">Status Karyawan</label>
+<select name="status" class="form-select">
+<option value="">Pilih Status</option>
+<option value="Aktif">Aktif</option>
+<option value="Tidak Aktif">Tidak Aktif</option>
+</select>
+</div>
+
+<div class="col-md-6 mb-3">
+<label class="form-label">Tanggal Masuk</label>
+<input type="date" name="tanggal_masuk" class="form-control">
+</div>
+
+</div>
+
+{{-- KONTAK --}}
+<h5 class="section-title">Kontak</h5>
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+<label class="form-label">No HP</label>
+<input type="text" name="no_hp" class="form-control" placeholder="No HP">
+</div>
+
+<div class="col-md-6 mb-3">
+<label class="form-label">Email</label>
+<input type="email" name="email" class="form-control" placeholder="Email">
+</div>
+
+<div class="col-md-12 mb-3">
+<label class="form-label">Alamat</label>
+<textarea name="alamat" rows="3" class="form-control" placeholder="Alamat"></textarea>
+</div>
+
+</div>
+
+{{-- BUTTON --}}
+<div class="d-flex justify-content-end gap-2 mt-4">
+
+<a href="{{ route('karyawan.index') }}" class="btn btn-light">
+Batal
+</a>
+
+<button type="submit" class="btn btn-primary">
+<i class="mdi mdi-plus"></i> Tambah
+</button>
+
+</div>
+
+</form>
+
+</div>
+</div>
+
+</div>
+</div>
 
 @endsection
+@push('styles')
+<style>
+
+.form-label{
+display:block;
+margin-bottom:6px;
+font-weight:500;
+}
+
+.form-control,
+.form-select{
+width:100%;
+height:45px;           /* samakan tinggi */
+padding:10px 12px;     /* samakan padding */
+border-radius:6px;
+border:1px solid #ced4da;
+font-size:14px;
+}
+
+textarea.form-control{
+height:auto;           /* supaya textarea tidak kependekan */
+}
+
+.row{
+row-gap:10px;
+}
+
+.card-body{
+max-width:900px;
+margin:auto;
+}
+
+/* subjudul */
+.page-title{
+font-size:26px;
+font-weight:600;
+margin-bottom:30px;
+}
+
+.section-title{
+font-size:16px;
+font-weight:600;
+padding-bottom:6px;
+margin-bottom:20px;   /* jarak ke form di bawahnya */
+margin-top:35px;      /* jarak dari section sebelumnya */
+border-bottom:1px solid #e5e7eb;
+}
+
+.section-title:first-of-type{
+margin-top:30px;
+}
+
+</style>
+@endpush

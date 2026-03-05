@@ -1,234 +1,147 @@
-@extends('layouts.dashboard')
+@extends('layouts.admin')
 
 @section('title', 'Manajemen Harga')
 
 @section('content')
 
-    <div class="card">
-        <h4 class="page-title">Daftar Harga</h4>
-        {{-- TOP ACTION --}}
-        <div class="top-action">
-            <div></div>
+<div class="page-header">
+    <h3 class="page-title">Manajemen Harga</h3>
+</div>
 
-            <a href="{{ route('manajemen.harga.create') }}" class="btn btn-sm">
-                + Tambah Harga 
-            </a>
-        </div>
+<div class="row">
+<div class="col-lg-12 grid-margin stretch-card">
+<div class="card">
 
-        {{-- FILTER KATEGORI --}}
-        <div class="filter-tabs">
-            <a href="{{ route('manajemen.harga.index') }}"
-            class="tab {{ !request('kategori') ? 'active' : '' }}">
-                Semua
-            </a>
+<div class="card-body">
 
-            <a href="{{ route('manajemen.harga.index', ['kategori' => 'laundry']) }}"
-            class="tab {{ request('kategori') == 'laundry' ? 'active' : '' }}">
-                Laundry
-            </a>
+{{-- HEADER --}}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="card-title mb-0">Daftar Harga</h4>
 
-            <a href="{{ route('manajemen.harga.index', ['kategori' => 'jasa']) }}"
-            class="tab {{ request('kategori') == 'jasa' ? 'active' : '' }}">
-                Jasa
-            </a>
-        </div>
+    <a href="{{ route('manajemen.harga.create') }}" class="btn btn-primary btn-sm">
+        <i class="mdi mdi-plus"></i> Tambah Harga
+    </a>
+</div>
 
-        {{-- TABLE --}}
-        <div style="margin-top: 20px; overflow-x: auto;">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>Kategori</th>
-                        <th>Jenis Layanan</th>
-                        <th>Satuan</th>
-                        <th>Jarak</th>
-                        <th>Harga</th>
-                        <th>Status</th>
-                        <th style="text-align:center">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($harga as $item)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ ucfirst($item->kategori) }}</td>
-                            <td>{{ $item->nama_layanan }}</td>
-                            <td>{{ $item->satuan }}</td>
-                            <td>
-                                @if ($item->kategori == 'jasa')
-                                    {{ $item->jarak ?? '-' }} km
-                                @else
-                                    -
-                                @endif
-                            </td>
-                            <td>Rp {{ number_format($item->harga, 0, ',', '.') }}</td>
-                            <td>
-                                <span class="badge {{ $item->is_active ? 'badge-success' : 'badge-danger' }}">
-                                    {{ $item->is_active ? 'Aktif' : 'Nonaktif' }}
-                                </span>
-                            </td>
-                            <td class="aksi">
-                                <a href="{{ route('manajemen.harga.edit', $item->id) }}" title="Edit">✎</a>
+{{-- FILTER --}}
+<div class="mb-3">
 
-                                <form action="{{ route('manajemen.harga.destroy', $item->id) }}"
-                                      method="POST"
-                                      style="display:inline"
-                                      onsubmit="return confirm('Yakin hapus data harga ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" title="Hapus">🗑</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="8" style="text-align:center; color:#64748b;">
-                                Belum ada data harga
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-    </div>
+    <a href="{{ route('manajemen.harga.index') }}"
+       class="btn btn-sm {{ !request('kategori') ? 'btn-info' : 'btn-outline-secondary' }}">
+        Semua
+    </a>
 
-    {{-- STYLE (SAMA DENGAN CUSTOMER) --}}
-    <style>
-        .page-title {
-            font-weight: 600;
-            margin-bottom: 16px;
-        }
+    <a href="{{ route('manajemen.harga.index', ['kategori' => 'laundry']) }}"
+       class="btn btn-sm {{ request('kategori') == 'laundry' ? 'btn-info' : 'btn-outline-secondary' }}">
+        Laundry
+    </a>
 
-        .top-action {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
+    <a href="{{ route('manajemen.harga.index', ['kategori' => 'jasa']) }}"
+       class="btn btn-sm {{ request('kategori') == 'jasa' ? 'btn-info' : 'btn-outline-secondary' }}">
+        Jasa
+    </a>
 
-        .filter-tabs {
-            display: flex;
-            gap: 30px;
-            border-bottom: 2px solid #e2e8f0;
-            margin: 10px 0 20px 0;
-        }
+</div>
 
-        .tab {
-            padding: 10px 0;
-            text-decoration: none;
-            font-weight: 600;
-            color: #64748b;
-            position: relative;
-        }
+{{-- TABLE --}}
+<div class="table-responsive">
 
-        .tab:hover {
-            color: #16a39a;
-        }
+<table class="table table-bordered table-striped" id="tableHarga">
+<thead>
+<tr>
+    <th>No</th>
+    <th>Kategori</th>
+    <th>Jenis Layanan</th>
+    <th>Satuan</th>
+    <th>Jarak</th>
+    <th>Harga</th>
+    <th>Status</th>
+    <th class="text-center">Aksi</th>
+</tr>
+</thead>
 
-        .tab.active {
-            color: #16a39a;
-        }
+<tbody>
+@forelse ($harga as $item)
 
-        .tab.active::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: -2px;
-            width: 100%;
-            height: 3px;
-            background: #16a39a;
-            border-radius: 2px;
-        }
+<tr>
 
-        .btn {
-            background: #ff8a00;
-            color: white;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: 600;
-            align-self: flex-end;
-            margin-top: 15px;
-            text-decoration: none;
-            display: inline-flex;
-            line-height: 1;
-        }
+<td>{{ $loop->iteration }}</td>
 
-        .btn-sm {
-            padding: 10px 16px;
-            font-size: 14px;
-        }
+<td>{{ ucfirst($item->kategori) }}</td>
 
-        .btn-sm:hover {
-            background: #e67800;
-        }
+<td>{{ $item->nama_layanan }}</td>
 
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
+<td>{{ $item->satuan }}</td>
 
-        .table thead {
-            background: #16a39a;
-            color: white;
-        }
+<td>
+@if ($item->kategori == 'jasa')
+    {{ $item->jarak ?? '-' }} km
+@else
+    -
+@endif
+</td>
 
-        .table th,
-        .table td {
-            padding: 10px 12px;
-            text-align: left;
-        }
+<td>Rp {{ number_format($item->harga,0,',','.') }}</td>
 
-        .table tbody tr {
-            border-bottom: 1px solid #e2e8f0;
-        }
+<td>
+<span class="badge {{ $item->is_active ? 'badge-success' : 'badge-danger' }}">
+    {{ $item->is_active ? 'Aktif' : 'Nonaktif' }}
+</span>
+</td>
 
-        .table tbody tr:hover {
-            background: #f1f9f9;
-        }
+<td class="text-center">
 
-        .aksi {
-            display: flex;
-            justify-content: center; 
-            align-items: center;   
-            gap: 8px;
-        }
+<a href="{{ route('manajemen.harga.edit', $item->id) }}"
+   class="btn btn-warning btn-sm">
+   <i class="mdi mdi-pencil"></i>
+</a>
 
-        .aksi a,
-        .aksi button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            margin: 0 4px;
-            color: inherit;
-        }
+<form action="{{ route('manajemen.harga.destroy', $item->id) }}"
+      method="POST"
+      style="display:inline"
+      onsubmit="return confirm('Yakin hapus data harga ini?')">
 
-        .aksi a:hover,
-        .aksi button:hover {
-            opacity: 0.7;
-        }
+@csrf
+@method('DELETE')
 
-        .badge {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            display: inline-block;
-        }
+<button class="btn btn-danger btn-sm">
+<i class="mdi mdi-delete"></i>
+</button>
 
-        .badge-success {
-            background: rgba(22,163,154,0.15);
-            color: #16a39a;
-        }
+</form>
 
-        .badge-danger {
-            background: rgba(230,120,0,0.15);
-            color: #e67800;
-        }
-    </style>
+</td>
+
+</tr>
+
+@empty
+
+<tr>
+<td colspan="8" class="text-center text-muted">
+Belum ada data harga
+</td>
+</tr>
+
+@endforelse
+</tbody>
+</table>
+
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
 @endsection
+
+
+@push('scripts')
+
+<script>
+$(document).ready(function(){
+    $('#tableHarga').DataTable();
+});
+</script>
+
+@endpush
