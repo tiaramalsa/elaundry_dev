@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="{{ asset('admin/assets/vendors/css/vendor.bundle.base.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/assets/vendors/mdi/css/materialdesignicons.min.css') }}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">
+
+    @stack('styles')
 </head>
 
 <body>
@@ -43,6 +46,10 @@
 <script src="{{ asset('admin/assets/js/off-canvas.js') }}"></script>
 <script src="{{ asset('admin/assets/js/hoverable-collapse.js') }}"></script>
 <script src="{{ asset('admin/assets/js/misc.js') }}"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
+
+@stack('scripts')
 
 </body>
 </html>
