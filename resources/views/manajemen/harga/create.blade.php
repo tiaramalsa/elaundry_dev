@@ -171,3 +171,141 @@ Simpan
 </div>
 
 @endsection
+
+@push('scripts')
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+
+const kategori = document.getElementById('kategori');
+const satuan = document.getElementById('satuan');
+const jarak = document.getElementById('jarak');
+const isOptional = document.getElementById('is_optional');
+
+const layananSelect = document.getElementById('layanan-select');
+const kodeSelect    = document.getElementById('kode_layanan');
+const hiddenNama    = document.getElementById('nama_layanan_input');
+
+
+/* =========================
+   LOGIKA KATEGORI
+========================= */
+
+kategori.addEventListener('change', function () {
+
+if (this.value === 'jasa') {
+
+    satuan.value = 'km';
+
+    satuan.querySelectorAll('option').forEach(opt => {
+        opt.disabled = opt.value !== 'km' && opt.value !== '';
+    });
+
+    jarak.disabled = false;
+    isOptional.disabled = false;
+
+} else {
+
+    satuan.value = '';
+
+    satuan.querySelectorAll('option').forEach(opt => {
+        opt.disabled = opt.value === 'km';
+    });
+
+    jarak.value = '';
+    jarak.disabled = true;
+
+    isOptional.checked = false;
+    isOptional.disabled = true;
+
+}
+
+filterLayanan();
+
+});
+
+
+/* =========================
+   FILTER JENIS LAYANAN
+========================= */
+
+function filterLayanan(){
+
+const kategoriVal = kategori.value;
+
+layananSelect.querySelectorAll('optgroup').forEach(group => {
+
+if(!kategoriVal){
+group.style.display = 'none';
+}
+
+else if(group.dataset.kategori === kategoriVal){
+group.style.display = 'block';
+}
+
+else{
+group.style.display = 'none';
+}
+
+});
+
+layananSelect.value = '';
+
+}
+
+filterLayanan();
+
+
+/* =========================
+   GENERATE KODE LAYANAN
+========================= */
+
+function generateKode(nama){
+
+return nama
+.toLowerCase()
+.replace(/[^a-z0-9\s]/g,'')
+.replace(/\s+/g,'_');
+
+}
+
+
+function updateKode(namaLayanan){
+
+kodeSelect.innerHTML = '<option value="">Pilih Kode Layanan</option>';
+
+if(!namaLayanan){
+hiddenNama.value = '';
+return;
+}
+
+hiddenNama.value = namaLayanan;
+
+const kode = generateKode(namaLayanan);
+
+const opt = document.createElement('option');
+opt.value = kode;
+opt.text  = kode;
+opt.selected = true;
+
+kodeSelect.appendChild(opt);
+
+}
+
+
+/* =========================
+   EVENT JENIS LAYANAN
+========================= */
+
+layananSelect.addEventListener('change',function(){
+
+updateKode(this.value);
+
+});
+
+});
+
+</script>
+
+@endpush

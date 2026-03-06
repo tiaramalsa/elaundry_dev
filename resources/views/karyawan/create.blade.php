@@ -15,6 +15,16 @@
 <form method="POST" action="{{ route('karyawan.store') }}">
 @csrf
 
+@if ($errors->any())
+<div class="alert alert-danger">
+<ul class="mb-0">
+@foreach ($errors->all() as $error)
+<li>{{ $error }}</li>
+@endforeach
+</ul>
+</div>
+@endif
+
 {{-- DATA PRIBADI --}}
 <h5 class="section-title">Data Pribadi</h5>
 
@@ -22,7 +32,8 @@
 
 <div class="col-md-6 mb-3">
 <label class="form-label">Nama Karyawan</label>
-<input type="text" name="nama_karyawan" class="form-control" placeholder="Nama Karyawan">
+<input type="text" name="nama_karyawan" class="form-control"
+value="{{ old('nama_karyawan') }}" placeholder="Nama Karyawan">
 </div>
 
 <div class="col-md-6 mb-3">
@@ -60,7 +71,7 @@
 
 <div class="col-md-6 mb-3">
 <label class="form-label">NIK</label>
-<input type="text" name="nik" class="form-control" placeholder="NIK">
+<input type="text" name="nik" class="form-control" value="{{ old('nik') }}" placeholder="NIK">
 </div>
 
 </div>

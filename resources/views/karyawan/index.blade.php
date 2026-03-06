@@ -111,9 +111,13 @@ onsubmit="return confirm('Yakin ingin menghapus karyawan ini?')">
 @empty
 
 <tr>
-<td colspan="7" class="text-center text-muted">
-Belum ada data karyawan
-</td>
+<td class="text-center">-</td>
+<td class="text-center">-</td>
+<td class="text-center">-</td>
+<td class="text-center">-</td>
+<td class="text-center">-</td>
+<td class="text-center">-</td>
+<td class="text-center text-muted">Belum ada data karyawan</td>
 </tr>
 
 @endforelse

@@ -115,13 +115,15 @@
 </tr>
 
 @empty
-
 <tr>
-<td colspan="8" class="text-center text-muted">
-Belum ada data harga
-</td>
-</tr>
-
+<td colspan="8" class="text-center text-muted">Belum ada data harga</td>
+<td style="display:none"></td>
+<td style="display:none"></td>
+<td style="display:none"></td>
+<td style="display:none"></td>
+<td style="display:none"></td>
+<td style="display:none"></td>
+<td style="display:none"></td>
 @endforelse
 </tbody>
 </table>
@@ -140,7 +142,13 @@ Belum ada data harga
 
 <script>
 $(document).ready(function(){
-    $('#tableHarga').DataTable();
+
+    $('#tableHarga').DataTable({
+        responsive: false,
+        autoWidth: false,
+        scrollX: true
+    });
+
 });
 </script>
 

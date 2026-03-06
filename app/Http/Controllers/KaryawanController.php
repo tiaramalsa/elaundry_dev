@@ -38,12 +38,13 @@ class KaryawanController extends Controller
             'nama_karyawan' => 'required|string|max:255',
             'nik'           => 'required|unique:karyawan,nik',
             'jabatan'       => 'required|string|max:100',
-            'status'        => 'required|in:aktif,tidak_aktif',
+            'status'        => 'required|in:Aktif,Tidak Aktif',
             'jenis_kelamin' => 'required|in:L,P',
             'tanggal_lahir' => 'required|date',
             'tanggal_masuk' => 'required|date',
             'no_hp'         => 'required',
             'email'         => 'required|email',
+            'alamat' => 'nullable|string',
             'tempat_lahir'  => 'required|string|max:255',  // baru
             'agama'         => 'required|string|max:50',   // baru
             'id_outlet' => 'required|exists:outlet,id_outlet',
@@ -58,7 +59,7 @@ class KaryawanController extends Controller
 
             'nama_karyawan'  => $request->nama_karyawan,
             'nik'            => $request->nik,
-            'status' => trim(strtolower($request->status)),
+            'status'         => $request->status,
             'alamat'         => $request->alamat ?? '-',
             'jabatan'        => $request->jabatan,
             'jenis_kelamin'  => $request->jenis_kelamin,
@@ -113,6 +114,8 @@ class KaryawanController extends Controller
             'no_hp'         => 'required',
             'email'         => 'required|email',
             'id_outlet'     => 'required|exists:outlet,id_outlet',
+            'tempat_lahir' => 'required|string|max:255',
+            'agama' => 'required|string|max:50',
         ]);
 
         $karyawan->update([
@@ -153,7 +156,7 @@ class KaryawanController extends Controller
      */
     public function exportPdf()
     {
-        $karyawans = Karyawan::latest()->get();
+        $karyawans = Karyawan::with('outlet')->latest()->get();
 
         $pdf = Pdf::loadView('karyawan.export-pdf', compact('karyawans'))
                 ->setPaper('a4', 'landscape');
@@ -168,7 +171,7 @@ class KaryawanController extends Controller
     {
         $fileName = 'data-karyawan.csv';
 
-        $karyawans = Karyawan::all();
+        $karyawans = Karyawan::with('outlet')->get();
 
         $headers = [
             "Content-Type" => "text/csv",
