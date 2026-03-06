@@ -15479,4 +15479,22 @@ dl {
   -ms-flex-positive: 1;
   flex-grow: 1; }
 
+  .main-panel {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+  }
+
+  .content-wrapper {
+      flex: 1;
+  }
+
+  .footer {
+    padding: 15px 0;
+  }
+
+  .footer i {
+    margin: 0 4px;
+  }
+
 /*# sourceMappingURL=style.css.map */

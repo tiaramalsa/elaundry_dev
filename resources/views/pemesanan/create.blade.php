@@ -1,124 +1,179 @@
 @extends(
     auth()->user()->role === 'admin'
-        ? 'layouts.dashboard'
+        ? 'layouts.admin'
         : 'layouts.dashboard_kasir'
 )
 
-@section('title', 'Pemesanan Laundio')
+@section('title','Pemesanan Laundio')
 
 @section('content')
-<div class="page-title">Pemesanan Laundio</div>
+
+<div class="form-row">
+<div class="col-lg-12 form-grid-margin stretch-card">
 
 <div class="card">
-    <h4>Form Pemesanan Laundio</h4>
+<div class="card-body">
 
-    @if ($errors->any())
-        <div style="color:red; margin-bottom:10px">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+<h4 class="card-title">Form Pemesanan Laundio</h4>
 
-    <form id="form-pemesanan" method="POST" action="{{ route('pemesanan.store') }}">
-    @csrf
-    <input type="hidden" name="id_outlet" value="3">
-
-    {{-- SECTION CUSTOMER --}}
-    <div class="card-section">
-        <div class="section-title">Data Customer</div>
-
-        <div class="row">
-            <input type="text" name="nama_lengkap" placeholder="Nama Customer" required>
-            <input type="text" name="no_telp" placeholder="No Telepon" required>
-        </div>
-
-        <div class="row">
-            <textarea id="alamat" name="alamat" placeholder="Alamat" required></textarea>
-        </div>
-
-        <div id="map" style="height:300px;border-radius:12px;margin-top:10px;"></div>
-
-        <input type="hidden" name="latitude" id="latitude">
-        <input type="hidden" name="longitude" id="longitude">
-        <input type="hidden" name="ongkir" id="ongkir_input">
-    </div>
-
-    {{-- SECTION DETAIL --}}
-    <div class="card-section">
-        <div class="section-title">Detail Layanan</div>
-
-        <div class="row-item header-row">
-            <div>Jenis</div>
-            <div>Harga</div>
-            <div>Qty</div>
-            <div>Total</div>
-            <div></div>
-        </div>
-
-        <div id="layanan-container"></div>
-
-        <button type="button" onclick="tambahRow()" class="btn-add">
-            + Tambah
-        </button>
-    </div>
-
-    {{-- TOTAL --}}
-    <div class="total-box">
-        <span>Total Pembayaran</span>
-        <span id="grand-total">Rp 0</span>
-    </div>
-
-    {{-- PROMO --}}
-    <div class="card-section">
-        <div class="section-title">Promo</div>
-
-        <select id="promo_select" name="id_promo" onchange="applyPromo()">
-            <option value="">-- Tanpa Promo --</option>
-
-            @foreach($promos as $promo)
-                <option 
-                    value="{{ $promo->id_promo }}"
-                    data-basis="{{ $promo->basis_promo }}"
-                    data-nilai="{{ $promo->nilai_promo }}"
-                    data-minimal="{{ $promo->minimal_transaksi }}"
-                >
-                    {{ $promo->nama_promo }}
-                    ({{ $promo->basis_promo == 'persentase'
-                        ? $promo->nilai_promo.'%'
-                        : 'Rp '.number_format($promo->nilai_promo,0,',','.') }})
-                </option>
-            @endforeach
-        </select>
-
-        <div style="margin-top:8px; font-weight:600; color:#16a34a">
-            Diskon: <span id="diskon_text">Rp 0</span>
-        </div>
-    </div>
-
-    <input type="hidden" name="total_harga" id="total_harga_input">
-    <input type="hidden" name="detail_layanan" id="detail_layanan_input">
-    <input type="hidden" name="diskon" id="diskon_input">
-
-    {{-- CATATAN --}}
-    <div class="card-section">
-        <div class="section-title">Catatan</div>
-        <textarea name="catatan_khusus" placeholder="Catatan Khusus"></textarea>
-    </div>
-
-
-
-    <div style="text-align:right; margin-top:10px;">
-        <button class="btn-submit">Pesan</button>
-    </div>
-
-    {{-- Untuk Maps --}}
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    </form>
+@if ($errors->any())
+<div class="alert alert-danger">
+<ul class="mb-0">
+@foreach ($errors->all() as $error)
+<li>{{ $error }}</li>
+@endforeach
+</ul>
 </div>
+@endif
+
+<form id="form-pemesanan" method="POST" action="{{ route('pemesanan.store') }}">
+@csrf
+
+<input type="hidden" name="id_outlet" value="3">
+
+{{-- DATA CUSTOMER --}}
+<div class="card-section">
+
+<div class="form-row">
+
+<div class="col-md-6">
+<input type="text" name="nama_lengkap"
+class="form-control"
+placeholder="Nama Customer" required>
+</div>
+
+<div class="col-md-6">
+<input type="text" name="no_telp"
+class="form-control"
+placeholder="No Telepon" required>
+</div>
+
+</div>
+
+<div class="row mt-3">
+
+<div class="col-md-12">
+<textarea id="alamat"
+name="alamat"
+class="form-control"
+placeholder="Alamat"
+rows="3"
+required></textarea>
+</div>
+
+</div>
+
+<div id="map" style="height:300px;border-radius:10px;margin-top:15px;"></div>
+
+<input type="hidden" name="latitude" id="latitude">
+<input type="hidden" name="longitude" id="longitude">
+<input type="hidden" name="ongkir" id="ongkir_input">
+
+</div>
+
+
+{{-- DETAIL LAYANAN --}}
+<div class="card-section mt-4">
+
+<h5 class="mb-3">Detail Layanan</h5>
+
+<div class="row font-weight-bold text-muted mb-2">
+    <div class="col-md-4">Jenis</div>
+    <div class="col-md-2">Harga</div>
+    <div class="col-md-2">Qty</div>
+    <div class="col-md-3">Total</div>
+    <div class="col-md-1"></div>
+</div>
+
+<div id="layanan-container"></div>
+
+<button type="button"
+onclick="tambahRow()"
+class="btn btn-primary btn-sm mt-2">
+<i class="mdi mdi-plus"></i> Tambah
+</button>
+
+</div>
+
+
+{{-- TOTAL --}}
+<div class="total-box mt-4">
+<span>Total Pembayaran</span>
+<span id="grand-total">Rp 0</span>
+</div>
+
+
+{{-- PROMO --}}
+<div class="card-section">
+
+<h5 class="mb-3">Promo</h5>
+
+<select id="promo_select"
+name="id_promo"
+class="form-control"
+onchange="applyPromo()">
+
+<option value="">-- Tanpa Promo --</option>
+
+@foreach($promos as $promo)
+<option
+value="{{ $promo->id_promo }}"
+data-basis="{{ $promo->basis_promo }}"
+data-nilai="{{ $promo->nilai_promo }}"
+data-minimal="{{ $promo->minimal_transaksi }}"
+>
+
+{{ $promo->nama_promo }}
+(
+{{ $promo->basis_promo == 'persentase'
+? $promo->nilai_promo.'%'
+: 'Rp '.number_format($promo->nilai_promo,0,',','.') }}
+)
+
+</option>
+@endforeach
+
+</select>
+
+<div class="mt-2 font-weight-bold text-success">
+Diskon: <span id="diskon_text">Rp 0</span>
+</div>
+
+</div>
+
+
+<input type="hidden" name="total_harga" id="total_harga_input">
+<input type="hidden" name="detail_layanan" id="detail_layanan_input">
+<input type="hidden" name="diskon" id="diskon_input">
+
+
+{{-- CATATAN --}}
+<div class="card-section">
+
+<h5 class="mb-3">Catatan</h5>
+
+<textarea name="catatan_khusus"
+class="form-control"
+placeholder="Catatan Khusus"
+rows="3"></textarea>
+
+</div>
+
+
+<div class="text-right mt-4">
+
+<button class="btn btn-success">
+<i class="mdi mdi-check"></i> Pesan
+</button>
+
+</div>
+
+
+{{-- MAP LIBRARY --}}
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+</form>
 
 <div id="successModal" class="modal-overlay" style="display:none">
     <div class="modal-box">
@@ -133,53 +188,48 @@
     </div>
 </div>
 
+</div>
+</div>
+</div>
+</div>
+@endsection
+
 <!-- Nota -->
 <script>
-    document.getElementById('form-pemesanan')
-    .addEventListener('submit', function(e) {
+    const form = document.getElementById('form-pemesanan');
 
-        e.preventDefault();
+    if(form){
+        form.addEventListener('submit', function(e){
 
-        const form = this;
-        const formData = new FormData(form);
+            e.preventDefault();
 
-        fetch(form.action, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: formData
-        })
-        .then(async res => {
+            const formData = new FormData(form);
 
-            if (!res.ok) {
-                const text = await res.text();
-                console.log("ERROR RESPONSE:", text);
-                alert("Server Error. Cek console.");
-                return null;
-            }
+            fetch(form.action,{
+                method:'POST',
+                headers:{
+                    'X-CSRF-TOKEN':'{{ csrf_token() }}'
+                },
+                body:formData
+            })
+            .then(res => res.json())
+            .then(res => {
 
-            return res.json();
-        })
-        .then(res => {
+                if(res.success){
 
-        if (!res) return;
+                    // tampilkan modal berhasil
+                    $('#modalBerhasil').modal('show');
 
-        if (res.success) {
+                    // isi link download nota
+                    document.getElementById('linkNota')
+                        .href = "/pemesanan/nota/" + res.id;
 
-            document.getElementById('successModal')
-                .style.display = 'flex';
+                }
 
-            document.getElementById('btnNota')
-                .href = `/pemesanan/${res.id}/nota`;
-        }
-    })
-    .catch(err => {
-        console.log(err);
-            alert('Terjadi kesalahan');
+            });
+
         });
-
-    });
+    }
 </script>
 
 
@@ -229,23 +279,48 @@
         const container = document.getElementById('layanan-container');
 
         const row = document.createElement('div');
-        row.className = 'row-item';
+        row.className = 'row mt-2 align-items-center';
 
         row.innerHTML = `
-            <select onchange="updateHarga(${rowIndex})" id="layanan_${rowIndex}">
-                <option value="">Pilih Layanan</option>
-                ${generateOptgroup()}
-            </select>
+            <div class="col-md-4">
+                <select class="form-control"
+                    onchange="updateHarga(${rowIndex})"
+                    id="layanan_${rowIndex}">
+                    <option value="">Pilih Layanan</option>
+                    ${generateOptgroup()}
+                </select>
+            </div>
 
-            <input type="text" id="harga_${rowIndex}" readonly>
+            <div class="col-md-2">
+                <input type="text"
+                    class="form-control"
+                    id="harga_${rowIndex}"
+                    readonly>
+            </div>
 
-            <input type="number" min="1" value="1"
-                oninput="hitungRow(${rowIndex})"
-                id="qty_${rowIndex}">
+            <div class="col-md-2">
+                <input type="number"
+                    class="form-control"
+                    min="1"
+                    value="1"
+                    oninput="hitungRow(${rowIndex})"
+                    id="qty_${rowIndex}">
+            </div>
 
-            <input type="text" id="total_${rowIndex}" readonly>
+            <div class="col-md-3">
+                <input type="text"
+                    class="form-control"
+                    id="total_${rowIndex}"
+                    readonly>
+            </div>
 
-            <button type="button" class="btn-remove" onclick="hapusRow(this)">✕</button>
+            <div class="col-md-1 text-center">
+                <button type="button"
+                    class="btn btn-danger btn-sm"
+                    onclick="hapusRow(this)">
+                    <i class="mdi mdi-close"></i>
+                </button>
+            </div>
         `;
 
         container.appendChild(row);
@@ -299,7 +374,7 @@
     }
 
     function hapusRow(btn) {
-        btn.parentElement.remove();
+        btn.closest('.row').remove();
         hitungGrandTotal();
     }
 
@@ -625,7 +700,7 @@
         color: #111827;
     }
 
-    .row {
+    .form-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 12px;
@@ -638,8 +713,8 @@
 
     .row-item {
         display: grid;
-        grid-template-columns: 2fr 1fr 1fr 1fr auto;
-        gap: 10px;
+        grid-template-columns: 1.6fr 1fr 0.7fr 1fr auto;
+        gap: 8px;
         align-items: center;
         margin-bottom: 8px;
     }
@@ -706,6 +781,7 @@
         transform: translateY(-2px);
         box-shadow: 0 10px 22px rgba(34,197,94,0.35);
     }
+
     .btn-remove {
         background: #fef2f2;
         color: #dc2626;
@@ -715,7 +791,10 @@
         height: 32px;
         cursor: pointer;
         font-size: 14px;
-        transition: all 0.2s ease;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .btn-remove:hover {
@@ -724,5 +803,3 @@
         transform: scale(1.05);
     }
 </style>
-
-@endsection

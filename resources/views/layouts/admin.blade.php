@@ -11,6 +11,45 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">
 
     @stack('styles')
+
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        .container-scroller{
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .sidebar{
+            width: 260px;
+            min-height: 100vh;
+        }
+
+        .page-body-wrapper{
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-panel{
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-wrapper{
+            flex: 1;
+            width: 100%;
+        }
+
+        .navbar{
+            width: 100%;
+        }
+
+    </style>
+
 </head>
 
 <body>

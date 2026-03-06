@@ -1,273 +1,214 @@
 @php
-    $role = auth()->user()->role;
+$role = auth()->user()->role;
 @endphp
 
 @extends(
     auth()->user()->role === 'admin'
-        ? 'layouts.dashboard'
+        ? 'layouts.admin'
         : 'layouts.dashboard_kasir'
 )
 
-@section('title', 'Riwayat Pemesanan')
+@section('title','Riwayat Pemesanan')
 
 @section('content')
-    <h3 class="page-title">Riwayat Pemesanan Laundry</h3>
 
-    <div class="card">
-        {{-- FILTER --}}
-        @php
-            $role = auth()->user()->role;
-        @endphp
-        <form method="GET" action="{{ route($role . '.riwayat.index') }}">
-            <div class="row filter-row">
+<h3 class="page-title mb-4">Riwayat Pemesanan Laundry</h3>
 
-                <div class="filter-item">
-                    <select name="layanan">
-                    <option value="">Jenis Layanan</option>
-                    <option value="cuci" {{ request('layanan')=='cuci'?'selected':'' }}>Cuci</option>
-                    <option value="setrika" {{ request('layanan')=='setrika'?'selected':'' }}>Setrika</option>
-                    <option value="cuci_setrika" {{ request('layanan')=='cuci_setrika'?'selected':'' }}>Cuci Setrika</option>
-                    <option value="sprei" {{ request('layanan')=='sprei'?'selected':'' }}>Sprei</option>
-                </select></div>
+<div class="card">
+<div class="card-body">
 
-                <div class="filter-item">
-                    <input type="date" name="from" value="{{ request('from') }}">
-                </div>
+{{-- ================= FILTER ================= --}}
+<form method="GET" action="{{ route($role.'.riwayat.index') }}">
 
-                    <div class="filter-item">
-                        <button class="btn" type="submit">Terapkan</button>
-                    </div>
-            </div>
-        </form>
+<div class="row mb-4">
 
+<div class="col-md-4">
+<select name="layanan" class="form-control">
 
-        {{-- TABLE --}}
-        <div style="margin-top: 20px; overflow-x: auto;">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>No. Order</th>
-                        <th>Nama</th>
-                        <th>Total</th>
-                        <th>Pembayaran</th>
-                        <th >Status</th>
-                        <th style="text-align:center;">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                @forelse($pemesanans as $p)
-                <tr>
-                    @php
-                        $history = $p->historyPemesanan->last();
-                        $pembayaran = $history->pembayaran ?? 'belum_bayar';
-                    @endphp
-                    <td>{{ $p->no_order }}</td>
+<option value="">Jenis Layanan</option>
 
-                    <td>{{ $p->customer->nama_lengkap ?? '-' }}</td>
+<option value="cuci"
+{{ request('layanan')=='cuci'?'selected':'' }}>
+Cuci
+</option>
 
-                    <td>
-                        Rp {{ number_format($p->total_harga ?? 0,0,',','.') }}
-                    </td>
+<option value="setrika"
+{{ request('layanan')=='setrika'?'selected':'' }}>
+Setrika
+</option>
 
-                    <td>
-                        @if($pembayaran === 'lunas')
-                            <span class="badge bayar-lunas">Lunas</span>
-                        @else
-                            <span class="badge bayar-belum">Belum Bayar</span>
-                        @endif
-                    </td>
+<option value="cuci_setrika"
+{{ request('layanan')=='cuci_setrika'?'selected':'' }}>
+Cuci Setrika
+</option>
 
-                    <td>
-                        <span class="badge selesai">
-                            {{ ucfirst($p->status_proses) }}
-                        </span>
-                    </td>
+<option value="sprei"
+{{ request('layanan')=='sprei'?'selected':'' }}>
+Sprei
+</option>
 
-                    <td class="aksi">
-                    {{-- UNDUH --}}
-                    @if(auth()->user()->role === 'admin')
-                    <a href="{{ route('admin.riwayat.download', $p->id_pemesanan) }}"
-                    title="Unduh"
-                    class="icon-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/>
-                        </svg>
-                    </a>
-                    @endif
+</select>
+</div>
 
-                    {{-- HAPUS --}}
-                    @if(auth()->user()->role === 'admin')
-                    <form method="POST"
-                        action="{{ route('admin.riwayat.destroy', $p->id_pemesanan) }}"
-                        class="inline"
-                        onsubmit="return confirm('Hapus riwayat ini?')">
-                        @csrf
-                        @method('DELETE')
-                        <button title="Hapus" class="icon-btn danger">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7h6m2 0H7m3-3h4a1 1 0 011 1v1H9V5a1 1 0 011-1z"/>
-                            </svg>
-                        </button>
-                    </form>
-                    @endif
-                </td>
+<div class="col-md-4">
+<input
+type="date"
+name="from"
+value="{{ request('from') }}"
+class="form-control">
+</div>
+
+<div class="col-md-4">
+<button class="btn btn-primary btn-block">
+<i class="mdi mdi-filter"></i> Terapkan
+</button>
+</div>
+
+</div>
+
+</form>
 
 
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="6">Tidak ada riwayat pemesanan</td>
-                </tr>
-                @endforelse
-                </tbody>
+{{-- ================= TABLE ================= --}}
+<div class="table-responsive">
 
-            </table>
-        </div>
-    </div>
+<table id="table-riwayat" class="table table-striped">
 
-    {{-- STYLE KHUSUS TABLE --}}
-    <style>
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
+<thead class="bg-dark text-white">
+<tr>
+<th>No Order</th>
+<th>Nama</th>
+<th>Total</th>
+<th>Pembayaran</th>
+<th>Status</th>
+<th class="text-center">Aksi</th>
+</tr>
+</thead>
 
-        .table thead {
-            background: #16a39a;
-            color: white;
-        }
+<tbody>
 
-        .table th,
-        .table td {
-            padding: 10px 12px;
-            text-align: left;
-        }
+@forelse($pemesanans as $p)
 
-        .table tbody tr {
-            border-bottom: 1px solid #e2e8f0;
-        }
+@php
+$history = $p->historyPemesanan->last();
+$pembayaran = $history->pembayaran ?? 'belum_bayar';
+@endphp
 
-        .table tbody tr:hover {
-            background: #f1f9f9;
-        }
+<tr>
 
-        .aksi button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            margin-right: 6px;
-        }
+<td>{{ $p->no_order }}</td>
 
-        .aksi button:hover {
-            opacity: 0.7;
-        }
+<td>{{ $p->customer->nama_lengkap ?? '-' }}</td>
 
-        .badge.selesai {
-            background: rgba(22,163,154,0.15);
-            color: #16a39a;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-        }
+<td>
+Rp {{ number_format($p->total_harga ?? 0,0,',','.') }}
+</td>
 
-        .badge.bayar-lunas {
-            background: rgba(22,163,154,0.15);
-            color: #16a39a;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-        }
+<td>
 
-        .badge.bayar-belum {
-            background: rgba(230,120,0,0.15);
-            color: #e67800;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-        }
+@if($pembayaran === 'lunas')
 
-        .aksi {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+<span class="badge badge-success">
+Lunas
+</span>
 
-        .icon-btn {
-            background: none;
-            border: none;
-            padding: 4px;
-            color: #475569; /* slate-600 */
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-        }
+@else
 
-        .icon-btn:hover {
-            color: #16a39a;
-        }
+<span class="badge badge-warning">
+Belum Bayar
+</span>
 
-        .icon-btn.danger:hover {
-            color: #dc2626; /* red-600 */
-        }
+@endif
 
-        .inline {
-            display: inline;
-        }
+</td>
 
-        /* ================= FILTER LAYOUT ================= */
+<td>
 
-        .filter-row {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
+<span class="badge badge-info">
+{{ ucfirst($p->status_proses) }}
+</span>
 
-        /* Select & Date memanjang */
-        .filter-item:nth-child(1),
-        .filter-item:nth-child(2) {
-            flex: 1;
-        }
+</td>
 
-        /* Tombol kecil di kanan */
-        .filter-item:nth-child(3) {
-            flex: 0;
-        }
+<td class="text-center">
 
-        /* Input full di dalam kotaknya */
-        .filter-item select,
-        .filter-item input {
-            width: 100%;
-            padding: 8px 10px;
-        }
+<div class="d-flex justify-content-center align-items-center">
 
-        /* Tombol tidak melebar */
-        .filter-item button {
-            white-space: nowrap;
-            padding: 8px 18px;
-        }
+{{-- UNDUH --}}
+@if(auth()->user()->role === 'admin')
 
-        /* ================= MOBILE ================= */
+<a
+href="{{ route('admin.riwayat.download',$p->id_pemesanan) }}"
+class="btn btn-sm btn-outline-primary mr-2"
+title="Unduh">
 
-        @media (max-width: 768px) {
+<i class="mdi mdi-download"></i>
 
-            .filter-row {
-                flex-direction: column;
-                align-items: stretch;
-            }
+</a>
 
-            .filter-item {
-                width: 100%;
-            }
+@endif
 
-            .filter-item button {
-                width: 100%;
-            }
-        }
-    </style>
+
+{{-- HAPUS --}}
+@if(auth()->user()->role === 'admin')
+
+<form
+method="POST"
+action="{{ route('admin.riwayat.destroy',$p->id_pemesanan) }}"
+onsubmit="return confirm('Hapus riwayat ini?')">
+
+@csrf
+@method('DELETE')
+
+<button
+class="btn btn-sm btn-outline-danger"
+title="Hapus">
+
+<i class="mdi mdi-delete"></i>
+
+</button>
+
+</form>
+
+@endif
+
+</div>
+
+</td>
+
+</tr>
+
+@empty
+
+<tr>
+<td colspan="6" class="text-center">
+Tidak ada riwayat pemesanan
+</td>
+</tr>
+
+@endforelse
+
+</tbody>
+</table>
+
+</div>
+
+</div>
+</div>
+
 @endsection
+
+
+@push('scripts')
+
+<script>
+
+$(document).ready(function(){
+
+$('#table-riwayat').DataTable();
+
+});
+
+</script>
+
+@endpush

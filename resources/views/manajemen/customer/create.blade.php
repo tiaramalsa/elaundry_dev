@@ -1,236 +1,139 @@
-@extends('layouts.dashboard')
+@extends('layouts.admin')
 
-@section('title', 'Tambah Customer')
+@section('title','Tambah Customer')
 
 @section('content')
-<div class="page-title">Form Tambah Customer</div>
 
-<div class="card" style="max-width: 100%;">
+<div class="row">
+<div class="col-lg-12 grid-margin stretch-card">
 
-    <form method="POST" action="{{ route('manajemen.customer.store') }}">
-    @csrf
+<div class="card">
+<div class="card-body">
 
-    <h4>DATA CUSTOMER</h4>
+<h1 class="card-title mb-5">Form Data Customer</h1>
 
-    {{-- ROW 1 : NAMA & NO HP --}}
-    <div style="display:flex; gap:20px; flex-wrap:wrap; margin-bottom:15px;">
-        <div style="flex:1; min-width:250px;">
-            <input
-                type="text"
-                name="nama_lengkap"
-                placeholder="Nama Lengkap"
-                value="{{ old('nama_lengkap') }}"
-            >
-        </div>
+<form method="POST" action="{{ route('manajemen.customer.store') }}">
+@csrf
 
-        <div style="flex:1; min-width:250px;">
-            <input
-                type="text"
-                name="no_telp"
-                placeholder="No WhatsApp"
-                value="{{ old('no_telp') }}"
-            >
-        </div>
-    </div>
 
-    {{-- ALAMAT --}}
-    <div style="margin-bottom:10px;">
-        <textarea
-            name="alamat"
-            rows="3"
-            placeholder="Alamat"
-        >{{ old('alamat') }}</textarea>
-    </div>
+{{-- NAMA & NO HP --}}
+<div class="row">
 
-    {{-- AMBIL LOKASI --}}
-    <div style="margin-bottom:20px;">
-        <span onclick="ambilLokasi()"
-            style="cursor:pointer; color:#1e3a8a; font-size:14px;">
-            📍 Ambil Titik Lokasi
-        </span>
-
-        <small id="lokasiStatus"
-            style="display:block; margin-top:5px; color:#64748b;">
-        </small>
-    </div>
-
-    <input type="hidden" name="latitude" id="latitude">
-    <input type="hidden" name="longitude" id="longitude">
-
-    <hr style="margin:20px 0; border:0; border-top:1px solid #e5e7eb;">
-
-    {{-- MEMBER --}}
-    <div style="display:flex; justify-content:space-between; align-items:center; max-width:350px;">
-
-        <div>
-            <div style="font-weight:500;">Member</div>
-            <small style="color:#6b7280;">
-                Aktifkan jika customer adalah member
-            </small>
-        </div>
-
-        <label class="switch">
-            <input type="hidden" name="is_member" value="0">
-            <input type="checkbox"
-                name="is_member"
-                value="1"
-                {{ old('is_member') ? 'checked' : '' }}>
-            <span class="slider"></span>
-        </label>
-
-    </div>
-
-    {{-- ACTION --}}
-    <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:25px;">
-        <a href="{{ route('manajemen.customer.index') }}"
-        class="btn"
-        style="background:#94a3b8;">
-            Batal
-        </a>
-
-        <button class="btn" style="background:#fb923c; color:white;">
-            + Tambah
-        </button>
-    </div>
-
-    </form>
+<div class="col-md-6">
+<div class="form-group">
+<label>Nama Lengkap</label>
+<input type="text"
+       name="nama_lengkap"
+       class="form-control"
+       placeholder="Masukkan nama customer"
+       value="{{ old('nama_lengkap') }}">
+</div>
 </div>
 
-<script>
-    async function ambilLokasi() {
+<div class="col-md-6">
+<div class="form-group">
+<label>No WhatsApp</label>
+<input type="text"
+       name="no_telp"
+       class="form-control"
+       placeholder="08xxxxxxxx"
+       value="{{ old('no_telp') }}">
+</div>
+</div>
 
-        if (!navigator.geolocation) {
-            alert("Browser tidak mendukung GPS.");
-            return;
-        }
+</div>
 
-        navigator.geolocation.getCurrentPosition(async function(position) {
 
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
+{{-- ALAMAT --}}
+<div class="form-group">
+<label>Alamat</label>
+<textarea name="alamat"
+          rows="3"
+          class="form-control"
+          placeholder="Masukkan alamat customer">{{ old('alamat') }}</textarea>
+</div>
 
-            document.getElementById('latitude').value = lat;
-            document.getElementById('longitude').value = lon;
 
-            document.getElementById('lokasiStatus').innerHTML =
-                "Mengambil alamat...";
+{{-- AMBIL LOKASI --}}
+<div class="form-group">
 
-            try {
-                // Reverse Geocoding via OpenStreetMap
-                const response = await fetch(
-                    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
-                );
+<a onclick="ambilLokasi()" class="btn btn-outline-primary btn-sm">
+<i class="mdi mdi-map-marker"></i> Ambil Titik Lokasi
+</a>
 
-                const data = await response.json();
+<small id="lokasiStatus" class="text-muted d-block mt-2"></small>
 
-                if (data.display_name) {
-                    document.querySelector('textarea[name="alamat"]').value =
-                        data.display_name;
+</div>
 
-                    document.getElementById('lokasiStatus').innerHTML =
-                        "Lokasi & alamat berhasil diambil ✔";
-                } else {
-                    document.getElementById('lokasiStatus').innerHTML =
-                        "Lokasi berhasil diambil, alamat tidak ditemukan";
-                }
 
-            } catch (error) {
-                document.getElementById('lokasiStatus').innerHTML =
-                    "Lokasi berhasil diambil, tapi gagal ambil alamat";
-            }
+<input type="hidden" name="latitude" id="latitude">
+<input type="hidden" name="longitude" id="longitude">
 
-        }, function() {
-            alert("Gagal mengambil lokasi. Pastikan GPS aktif.");
-        });
-    }
-</script>
 
-{{-- STYLE (KONSISTEN DENGAN HALAMAN KARYAWAN) --}}
+<hr>
+
+
+{{-- MEMBER --}}
+<div class="form-group d-flex align-items-center justify-content-between" style="max-width:400px;">
+
+<div>
+<label class="mb-0">Customer Member</label>
+<br>
+<small class="text-muted">Aktifkan jika customer adalah member</small>
+</div>
+
+<div class="form-check form-switch">
+<input type="hidden" name="is_member" value="0">
+
+<input type="checkbox"
+       name="is_member"
+       value="1"
+       class="form-check-input"
+       {{ old('is_member') ? 'checked' : '' }}>
+</div>
+
+</div>
+
+
+{{-- BUTTON --}}
+<div class="text-right mt-4">
+
+<a href="{{ route('manajemen.customer.index') }}"
+   class="btn btn-light">
+   Batal
+</a>
+
+<button class="btn btn-primary">
+<i class="mdi mdi-content-save"></i> Simpan
+</button>
+
+</div>
+
+
+</form>
+
+</div>
+</div>
+
+</div>
+</div>
+
 <style>
-    .page-title {
-        font-weight: 600;
-        margin-bottom: 16px;
+
+    .card-title{
+        margin-bottom: 50px; /* jarak title ke input */
     }
 
-    input, textarea {
-        width: 100%;
-        padding: 10px;
-        margin-top: 10px;
-        border: 1px solid #cbd5e1;
-        border-radius: 6px;
-        font-size: 14px;
+    .form-group{
+        margin-bottom: 20px;
     }
 
-    input::placeholder,
-    textarea::placeholder {
-        color: #9ca3af;
+    .form-group label{
+        font-weight: 500;
+        margin-bottom: 6px;
+        display:block;
     }
 
-    .btn {
-        padding: 8px 16px;
-        border-radius: 6px;
-        border: none;
-        cursor: pointer;
-        font-size: 13px;
-        text-decoration: none;
-    }
-
-    .btn:hover {
-        opacity: 0.9;
-    }
-
-    /* TOGGLE */
-
-    .toggle-wrapper {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-top: 15px;
-        max-width: 300px;
-    }
-
-    .switch {
-        position: relative;
-        display: inline-block;
-        width: 50px;
-        height: 26px;
-    }
-
-    .switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-    }
-
-    .slider {
-        position: absolute;
-        cursor: pointer;
-        inset: 0;
-        background-color: #e2e8f0;
-        transition: .4s;
-        border-radius: 34px;
-    }
-
-    .slider:before {
-        content: "";
-        position: absolute;
-        height: 20px;
-        width: 20px;
-        left: 3px;
-        bottom: 3px;
-        background-color: white;
-        transition: .4s;
-        border-radius: 50%;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    }
-
-    .switch input:checked + .slider {
-        background-color: #16a39a;
-    }
-
-    .switch input:checked + .slider:before {
-        transform: translateX(24px);
-    }
-    
 </style>
+
 @endsection

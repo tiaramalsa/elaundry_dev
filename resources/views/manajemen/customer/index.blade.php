@@ -1,299 +1,201 @@
-@extends('layouts.dashboard')
+@extends(
+    auth()->user()->role === 'admin'
+        ? 'layouts.admin'
+        : 'layouts.dashboard_kasir'
+)
 
-@section('title', 'Data Customer')
+@section('title','Data Customer')
 
 @section('content')
-{{-- <h3 class="page-title">Data Customer</h3> --}}
-    <div class="card">
-    <h3 class="page-title">Daftar Customer</h3>
 
-        {{-- TOP ACTION --}}
-        <div class="top-action">
-            <div></div>
+<div class="page-header">
+    <h3 class="page-title">Data Customer</h3>
+</div>
 
-            <a href="{{ route('manajemen.customer.create') }}" class="btn btn-sm">
-                + Tambah Customer 
-            </a>
-        </div>
-
-        <!-- 🔥 FILTER MEMBER -->
-        <div class="filter-tabs">
-            <a href="{{ route('manajemen.customer.index') }}"
-            class="tab {{ !$filter ? 'active' : '' }}">
-                Semua
-            </a>
-
-            <a href="{{ route('manajemen.customer.index', ['filter'=>'member']) }}"
-            class="tab {{ $filter=='member' ? 'active' : '' }}">
-                Member
-            </a>
-
-            <a href="{{ route('manajemen.customer.index', ['filter'=>'non']) }}"
-            class="tab {{ $filter=='non' ? 'active' : '' }}">
-                Non Member
-            </a>
-        </div>
-
-        {{-- TABLE --}}
-        <div style="margin-top: 20px; overflow-x: auto;">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>Nama</th>
-                        <th>Alamat</th>
-                        <th>No. WhatsApp</th>
-                        <th>Titik Lokasi</th>
-                        <th>Status Member</th>
-                        <th style="text-align:center">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($customers as $customer)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $customer->nama_lengkap }}</td>
-                            <td>{{ $customer->alamat }}</td>
-                            <td>{{ $customer->no_telp }}</td>
-                            <td class="text-center">
-                                @if ($customer->latitude && $customer->longitude)
-                                    <a href="https://www.google.com/maps?q={{ $customer->latitude }},{{ $customer->longitude }}"
-                                    target="_blank"
-                                    class="btn-lokasi">
-                                        📍 Lihat
-                                    </a>
-                                @else
-                                    -
-                                @endif
-                            </td>
-                            <td>
-                                @if($customer->is_member)
-                                    <span class="badge badge-member">Member</span>
-                                @else
-                                    <span class="badge badge-non">Non Member</span>
-                                @endif
-                            </td>
-                            <td class="aksi">
-                                {{-- EDIT --}}
-                                <a href="{{ route('manajemen.customer.edit', $customer->id_cust) }}" title="Edit">✎</a>
-
-                                {{-- HAPUS --}}
-                                <form action="{{ route('manajemen.customer.destroy', $customer->id_cust) }}"
-                                      method="POST"
-                                      style="display:inline;"
-                                      onsubmit="return confirm('Yakin ingin menghapus customer ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" title="Hapus">🗑</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" style="text-align:center; color:#64748b;">
-                                Belum ada data customer
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+<div class="row mb-3">
+    <div class="col-md-6">
+        <a href="{{ route('manajemen.customer.create') }}" class="btn btn-primary">
+            <i class="mdi mdi-plus"></i> Tambah Customer
+        </a>
     </div>
+</div>
 
-    {{-- STYLE (SAMA PERSIS DENGAN KARYAWAN) --}}
-    <style>
-        .page-title {
-            font-weight: 600;
-            margin-bottom: 16px;
-        }
+{{-- FILTER TABS --}}
+<div class="order-tabs mb-4">
 
-        .top-action {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
+    <a href="{{ route('manajemen.customer.index') }}"
+       class="tab {{ !$filter ? 'active' : '' }}">
+        Semua
+    </a>
 
-        .btn {
-            background: #ff8a00;
-            color: white;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: 600;
-            align-self: flex-end;
-            margin-top: 15px;
-            text-decoration: none;
-            display: inline-flex;
-            line-height: 1;
-        }
+    <a href="{{ route('manajemen.customer.index',['filter'=>'member']) }}"
+       class="tab {{ $filter=='member' ? 'active' : '' }}">
+        Member
+    </a>
 
-        /* BUTTON TAMBAH CUSTOMER - ORANGE */
-        .btn-sm {
-            padding: 10px 16px;
-            font-size: 14px;
-        }
+    <a href="{{ route('manajemen.customer.index',['filter'=>'non']) }}"
+       class="tab {{ $filter=='non' ? 'active' : '' }}">
+        Non Member
+    </a>
 
-        .btn-sm:hover {
-            background: #e67800; 
-        }
+</div>
 
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
 
-        .table thead {
-            background: #16a39a;
-            color: white;
-        }
+<div class="row">
+<div class="col-lg-12 grid-margin stretch-card">
 
-        .table th,
-        .table td {
-            padding: 10px 12px;
-            text-align: left;
-        }
+<div class="card">
+<div class="card-body">
 
-        .table tbody tr {
-            border-bottom: 1px solid #e2e8f0;
-        }
+<h4 class="card-title">Daftar Customer</h4>
 
-        .table tbody tr:hover {
-            background: #f1f9f9;
-        }
+<div class="table-responsive">
 
-        .text-center {
-            text-align: center;
-        }
+<table class="table table-striped" id="tabelCustomer">
 
-        .btn-lokasi {
-            background: rgba(22,163,154,0.15);
-            color: #16a39a;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-block;
-            transition: 0.2s ease;
-        }
+<thead>
+<tr>
+<th>No</th>
+<th>Nama</th>
+<th>Alamat</th>
+<th>No WhatsApp</th>
+<th>Titik Lokasi</th>
+<th>Status Member</th>
+<th class="text-center">Aksi</th>
+</tr>
+</thead>
 
-        .btn-lokasi:hover {
-            background: #16a39a;
-            color: white;
-        }
+<tbody>
 
-        .aksi {
-            text-align: center;
-        }
+@forelse($customers as $index => $customer)
 
-        /* ✏️ EDIT POLLOSAN */
-        .aksi {
-            display: flex;
-            justify-content: center;
-            align-items: center;     
-            gap: 8px;
-        }
+<tr>
 
-        .aksi form {
-            margin: 0;
-        }
+<td>{{ $index + 1 }}</td>
+<td>{{ $customer->nama_lengkap }}</td>
+<td>{{ $customer->alamat }}</td>
+<td>{{ $customer->no_telp }}</td>
 
-        .aksi a {
-            text-decoration: none;
-            color: inherit; /* ikut warna teks default */
-            font-size: 16px;
-            margin: 0 4px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-        }
+<td>
+@if ($customer->latitude && $customer->longitude)
 
-        .aksi button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            margin: 0 4px;
-        }
+<a href="https://www.google.com/maps?q={{ $customer->latitude }},{{ $customer->longitude }}"
+   target="_blank"
+   class="text-primary font-weight-bold">
+   Lihat Lokasi
+</a>
 
-        .aksi a:hover,
-        .aksi button:hover {
-            opacity: 0.7;
-        }
+@else
+-
+@endif
+</td>
 
-                /* 🔗 LINK TITIK LOKASI */
-        .link-lokasi {
-            color: #f97316; /* biru default */
-            text-decoration: underline;
-        }
+<td>
+@if($customer->is_member)
+<span class="badge badge-success">Member</span>
+@else
+<span class="badge badge-warning">Non Member</span>
+@endif
+</td>
 
-        .link-lokasi:hover {
-            color: #f97316;
-        }
+<td class="text-center">
 
-        /* ============================= */
-        /* 🔥 FILTER TAB MODEL ORDER HISTORY */
-        /* ============================= */
+<a href="{{ route('manajemen.customer.edit',$customer->id_cust) }}"
+   class="btn btn-sm btn-outline-primary">
+   <i class="mdi mdi-pencil"></i>
+</a>
 
-        .filter-tabs {
-            display: flex;
-            gap: 30px;
-            border-bottom: 2px solid #e2e8f0;
-            margin: 10px 0 20px 0;
-        }
+<form action="{{ route('manajemen.customer.destroy',$customer->id_cust) }}"
+      method="POST"
+      style="display:inline;"
+      onsubmit="return confirm('Yakin ingin menghapus customer ini?')">
 
-        .tab {
-            padding: 10px 0;
-            text-decoration: none;
-            font-weight: 600;
-            color: #64748b;
-            position: relative;
-        }
+@csrf
+@method('DELETE')
 
-        .tab:hover {
-            color: #16a39a;
-        }
+<button class="btn btn-sm btn-outline-danger">
+<i class="mdi mdi-delete"></i>
+</button>
 
-        .tab.active {
-            color: #16a39a;
-        }
+</form>
 
-        .tab.active::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: -2px;
-            width: 100%;
-            height: 3px;
-            background: #16a39a;
-            border-radius: 2px;
-        }
+</td>
 
-        /* ============================= */
-        /* 🎨 BADGE STATUS MEMBER */
-        /* ============================= */
+</tr>
 
-        .badge {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            display: inline-block;
-        }
+@empty
 
-        .badge-member {
-            background: rgba(22,163,154,0.15);
-            color: #16a39a;
-        }
+<tr>
+<td colspan="7" class="text-center py-4">
+Tidak ada data
+</td>
+</tr>
 
-        .badge-non {
-            background: rgba(230,120,0,0.15);
-            color: #e67800;
-        }
-    </style>
+@endforelse
+
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
 @endsection
+
+
+@push('styles')
+<style>
+
+.order-tabs{
+display:flex;
+gap:25px;
+border-bottom:2px solid #e2e8f0;
+padding-bottom:8px;
+}
+
+.order-tabs .tab{
+text-decoration:none;
+font-weight:600;
+font-size:14px;
+color:#6c757d;
+padding-bottom:6px;
+position:relative;
+}
+
+.order-tabs .tab.active{
+color:#4B49AC;
+}
+
+.order-tabs .tab.active::after{
+content:'';
+position:absolute;
+left:0;
+bottom:-10px;
+width:100%;
+height:3px;
+background:#4B49AC;
+border-radius:3px;
+}
+
+.order-tabs .tab:hover{
+color:#4B49AC;
+}
+
+</style>
+@endpush
+
+
+@push('scripts')
+<script>
+
+$(document).ready(function(){
+
+$('#tabelCustomer').DataTable();
+
+});
+
+</script>
+@endpush

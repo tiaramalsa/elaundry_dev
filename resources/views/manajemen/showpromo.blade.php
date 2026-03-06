@@ -1,9 +1,8 @@
-@extends('layouts.dashboard')
+@extends('layouts.admin')
 
 @section('title', 'Detail Promo')
 
 @section('content')
-<h3 class="page-title">Detail Promo</h3>
 
 <div class="card" style="max-width:100%; padding:25px;">
 
