@@ -29,7 +29,8 @@
 
         @foreach($promos as $promo)
 
-            <div class="promo-card {{ $promo->status === 'aktif' ? 'aktif' : 'nonaktif' }}">
+            <div class="promo-card 
+            {{ ($promo->status === 'aktif' && \Carbon\Carbon::today()->lte($promo->tanggal_selesai)) ? 'aktif' : 'nonaktif' }}">
 
                 <div class="promo-icon">
                     <i class="mdi mdi-tag"></i>

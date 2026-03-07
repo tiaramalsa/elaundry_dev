@@ -167,7 +167,7 @@
                         <th>Nama</th>
                         <th>Payment</th>
                         <th>Tipe</th>
-                        <th>Jenis Layanan</th>
+                        <th class="layanan-col">Jenis Layanan</th>
                         <th class="text-center aksi-col">Aksi</th>
                         </tr>
                     </thead>
@@ -188,7 +188,11 @@
                             @endif
                         </td>
                         <td>{{ $p->tipe }}</td>
-                        <td>{{ $p->jenis_layanan }}</td>
+                        <td class="layanan-col">
+                            @foreach(explode(',', $p->jenis_layanan) as $layanan)
+                            <div class="layanan-item">{{ trim($layanan) }}</div>
+                            @endforeach
+                        </td>
                         <td class="text-left aksi-col">
 
                             @php
@@ -229,20 +233,47 @@
 @endsection
 
 <style>
+    #table-lacak{
+        width:100% !important;
+    }
     .aksi-col{
         width:100px;
         text-align:left;
     }
-</style>
 
+    .layanan-col{
+        max-width:260px;
+        white-space:normal !important;
+        word-break:break-word;
+        line-height:1.7;
+    }
+
+    .layanan-item{
+        margin-bottom:6px;   
+        line-height:1.4;
+    }
+
+    .aksi-col{
+        width:90px;
+    }
+</style>
 
 @push('scripts')
 <script>
 
 $(document).ready(function(){
 
-$('#table-lacak').DataTable();
-
+    $('#table-lacak').DataTable({
+        autoWidth:false,
+        columnDefs:[
+            { width:"220px", targets:0 }, // No Order
+            { width:"120px", targets:1 }, // Nama
+            { width:"120px", targets:2 }, // Payment
+            { width:"120px", targets:3 }, // Tipe
+            { width:"260px", targets:4 }, // Jenis layanan
+            { width:"90px",  targets:5 }  // Aksi
+        ]
+    });
 });
 
 </script>

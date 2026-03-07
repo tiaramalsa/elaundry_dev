@@ -73,7 +73,7 @@
 
 <td>{{ $index + 1 }}</td>
 <td>{{ $customer->nama_lengkap }}</td>
-<td>{{ $customer->alamat }}</td>
+<td>{{ Str::limit($customer->alamat, 60) }}</td>
 <td>{{ $customer->no_telp }}</td>
 
 <td>
@@ -149,40 +149,47 @@ Tidak ada data
 @push('styles')
 <style>
 
-.order-tabs{
-display:flex;
-gap:25px;
-border-bottom:2px solid #e2e8f0;
-padding-bottom:8px;
-}
+    .order-tabs{
+    display:flex;
+    gap:25px;
+    border-bottom:2px solid #e2e8f0;
+    padding-bottom:8px;
+    }
 
-.order-tabs .tab{
-text-decoration:none;
-font-weight:600;
-font-size:14px;
-color:#6c757d;
-padding-bottom:6px;
-position:relative;
-}
+    .order-tabs .tab{
+    text-decoration:none;
+    font-weight:600;
+    font-size:14px;
+    color:#6c757d;
+    padding-bottom:6px;
+    position:relative;
+    }
 
-.order-tabs .tab.active{
-color:#4B49AC;
-}
+    .order-tabs .tab.active{
+    color:#4B49AC;
+    }
 
-.order-tabs .tab.active::after{
-content:'';
-position:absolute;
-left:0;
-bottom:-10px;
-width:100%;
-height:3px;
-background:#4B49AC;
-border-radius:3px;
-}
+    .order-tabs .tab.active::after{
+    content:'';
+    position:absolute;
+    left:0;
+    bottom:-10px;
+    width:100%;
+    height:3px;
+    background:#4B49AC;
+    border-radius:3px;
+    }
 
-.order-tabs .tab:hover{
-color:#4B49AC;
-}
+    .order-tabs .tab:hover{
+    color:#4B49AC;
+    }
+
+    #tabelCustomer td:nth-child(3),
+    #tabelCustomer th:nth-child(3){
+        max-width: 300px;
+        white-space: normal;
+        word-wrap: break-word;
+    }
 
 </style>
 @endpush

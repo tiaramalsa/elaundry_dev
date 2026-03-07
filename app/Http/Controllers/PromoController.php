@@ -5,11 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\Promo;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Carbon\Carbon;
 
 class PromoController extends Controller
 {
     public function index(): View
     {
+        $today = Carbon::today();
+
+        // Nonaktifkan promo yang sudah lewat tanggal selesai
+        Promo::where('status', 'aktif')
+            ->whereDate('tanggal_selesai', '<', $today)
+            ->update([
+                'status' => 'nonaktif'
+            ]);
+
         $promos = Promo::orderByDesc('tanggal_mulai')->get();
 
         return view('manajemen.indexpromo', compact('promos'));

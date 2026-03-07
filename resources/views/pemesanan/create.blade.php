@@ -192,44 +192,54 @@ rows="3"></textarea>
 </div>
 </div>
 </div>
-@endsection
 
 <!-- Nota -->
 <script>
-    const form = document.getElementById('form-pemesanan');
+    document.getElementById('form-pemesanan')
+    .addEventListener('submit', function(e) {
 
-    if(form){
-        form.addEventListener('submit', function(e){
+        e.preventDefault();
 
-            e.preventDefault();
+        const form = this;
+        const formData = new FormData(form);
 
-            const formData = new FormData(form);
+        fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: formData
+        })
+        .then(async res => {
 
-            fetch(form.action,{
-                method:'POST',
-                headers:{
-                    'X-CSRF-TOKEN':'{{ csrf_token() }}'
-                },
-                body:formData
-            })
-            .then(res => res.json())
-            .then(res => {
+            if (!res.ok) {
+                const text = await res.text();
+                console.log("ERROR RESPONSE:", text);
+                alert("Server Error. Cek console.");
+                return null;
+            }
 
-                if(res.success){
+            return res.json();
+        })
+        .then(res => {
 
-                    // tampilkan modal berhasil
-                    $('#modalBerhasil').modal('show');
+        if (!res) return;
 
-                    // isi link download nota
-                    document.getElementById('linkNota')
-                        .href = "/pemesanan/nota/" + res.id;
+        if (res.success) {
 
-                }
+            document.getElementById('successModal')
+                .style.display = 'flex';
 
-            });
-
+            document.getElementById('btnNota')
+                .href = `/pemesanan/${res.id}/nota`;
+        }
+    })
+    .catch(err => {
+        console.log(err);
+            alert('Terjadi kesalahan');
         });
-    }
+
+    });
 </script>
 
 
@@ -474,12 +484,10 @@ rows="3"></textarea>
             document.getElementById('latitude').value = lat;
             document.getElementById('longitude').value = lng;
 
-            // Hapus marker lama kalau ada
             if (customerMarker) {
                 map.removeLayer(customerMarker);
             }
 
-            // Buat marker baru
             customerMarker = L.marker([lat, lng], {
                 draggable: true
             }).addTo(map);
@@ -492,14 +500,18 @@ rows="3"></textarea>
 
             updateGrandTotalDenganOngkir(ongkir);
 
-            // Kalau marker digeser
+            // AUTO ISI ALAMAT SAAT KLIK MAP
+            reverseGeocode(lat, lng);
+
             customerMarker.on('dragend', function(e) {
+
                 const pos = e.target.getLatLng();
 
                 document.getElementById('latitude').value = pos.lat;
                 document.getElementById('longitude').value = pos.lng;
 
                 const ongkir = hitungOngkir(pos.lat, pos.lng);
+
                 document.getElementById('ongkir_input').value = ongkir;
 
                 updateGrandTotalDenganOngkir(ongkir);
@@ -649,7 +661,6 @@ rows="3"></textarea>
         document.getElementById('successModal').style.display = 'none';
     }
 </script>
-
 <style>
     .modal-overlay {
         position: fixed;
@@ -803,3 +814,7 @@ rows="3"></textarea>
         transform: scale(1.05);
     }
 </style>
+
+@endsection
+
+
