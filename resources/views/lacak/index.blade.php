@@ -71,81 +71,56 @@
     <div class="card-body">
 
     @php
-    $role = auth()->user()->role;
-    @endphp
-
-        <form method="GET" action="{{ route($role.'.lacak.index') }}">
-
-            <div class="row">
-
-                <div class="col-md-2">
-                    <select name="outlet_id" class="form-control">
-                        <option value="">Semua Outlet</option>
-
-                        @foreach($outlets as $outlet)
-                            <option value="{{ $outlet->id }}"
+            $role = auth()->user()->role;
+        @endphp
+        <form method="GET" action="{{ route($role . '.lacak.index') }}">
+            <div class="filter-row">
+                <select name="outlet_id">
+                    <option value="">Semua Outlet</option>
+                    @foreach($outlets as $outlet)
+                        <option value="{{ $outlet->id }}"
                             {{ request('outlet_id') == $outlet->id ? 'selected' : '' }}>
                             {{ $outlet->nama_outlet }}
-                            </option>
-                        @endforeach
-
-                    </select>
-                </div>
-
-                <div class="col-md-2">
-                    <select name="tipe_pemesanan" class="form-control">
-
-                        <option value="">Tipe Pemesanan</option>
-
-                        <option value="pemesanan"
-                        {{ request('tipe_pemesanan')=='pemesanan'?'selected':'' }}>
+                        </option>
+                    @endforeach
+                </select>
+                <select name="tipe_pemesanan">
+                    <option value="">Tipe Pemesanan</option>
+                    <option value="pemesanan" {{ request('tipe_pemesanan') == 'pemesanan' ? 'selected' : '' }}>
                         Pemesanan
-                        </option>
-
-                        <option value="reservasi"
-                        {{ request('tipe_pemesanan')=='reservasi'?'selected':'' }}>
+                    </option>
+                    <option value="reservasi" {{ request('tipe_pemesanan') == 'reservasi' ? 'selected' : '' }}>
                         Reservasi
-                        </option>
-
-                    </select>
-                </div>
-
-                <div class="col-md-2">
-                    <select name="status" class="form-control">
-
-                        <option value="">Proses</option>
-
-                        <option value="diterima" {{ request('status')=='diterima'?'selected':'' }}>
+                    </option>
+                </select>
+                <select name="status">
+                    <option value="">Proses</option>
+                    <option value="diterima" {{ request('status') == 'diterima' ? 'selected' : '' }}>
                         Diterima
-                        </option>
-
-                        <option value="dicuci" {{ request('status')=='dicuci'?'selected':'' }}>
+                    </option>
+                    <option value="dicuci" {{ request('status') == 'dicuci' ? 'selected' : '' }}>
                         Dicuci
-                        </option>
-
-                        <option value="dikeringkan" {{ request('status')=='dikeringkan'?'selected':'' }}>
+                    </option>
+                    <option value="dikeringkan" {{ request('status') == 'dikeringkan' ? 'selected' : '' }}>
                         Dikeringkan
-                        </option>
-
-                        <option value="disetrika" {{ request('status')=='disetrika'?'selected':'' }}>
+                    </option>
+                    <option value="disetrika" {{ request('status') == 'disetrika' ? 'selected' : '' }}>
                         Disetrika
-                        </option>
+                    </option>
+                </select>
 
-                    </select>
+                <div class="date-field floating">
+                    <input type="date" name="from" placeholder=" ">
+                    <label>Tanggal Mulai</label>
                 </div>
 
-                <div class="col-md-2">
-                    <input type="date" name="from" class="form-control">
+                <div class="date-field floating">
+                    <input type="date" name="to" placeholder=" ">
+                    <label>Tanggal Selesai</label>
                 </div>
 
-                <div class="col-md-2">
-                    <input type="date" name="to" class="form-control">
-                </div>
-
-                <div class="col-md-2">
-                    <button class="btn btn-primary btn-block">
-                    <i class="mdi mdi-filter"></i> Terapkan
-                    </button>
+                <div class="filter-action">
+                    <button class="btn-apply">Terapkan</button>
                 </div>
             </div>
         </form>
@@ -180,19 +155,20 @@
 
                         <td>{{ $p->no_order }}</td>
                         <td>{{ $p->customer->nama_lengkap ?? '-' }}</td>
-                        <td>
-                            @if($p->source === 'pemesanan')
-                            {{ optional(optional($p->historyPemesanan)->last())->pembayaran ?? 'belum_bayar' }}
-                            @else
-                            belum_bayar
-                            @endif
-                        </td>
+                        @php
+$history = $p->historyPemesanan->last();
+$pembayaran = $history->pembayaran ?? 'belum_bayar';
+@endphp
+
+<td>{{ $p->source === 'pemesanan' ? $pembayaran : 'belum_bayar' }}</td>
                         <td>{{ $p->tipe }}</td>
                         <td class="layanan-col">
-                            @foreach(explode(',', $p->jenis_layanan) as $layanan)
-                            <div class="layanan-item">{{ trim($layanan) }}</div>
-                            @endforeach
-                        </td>
+@foreach(explode(',', $p->jenis_layanan ?? '') as $layanan)
+@if(trim($layanan) != '')
+<div class="layanan-item">{{ trim($layanan) }}</div>
+@endif
+@endforeach
+</td>
                         <td class="text-left aksi-col">
 
                             @php
@@ -233,29 +209,101 @@
 @endsection
 
 <style>
-    #table-lacak{
-        width:100% !important;
-    }
-    .aksi-col{
-        width:100px;
-        text-align:left;
-    }
+    /* ===== FILTER LAYOUT ===== */
+.filter-row{
+display:flex;
+align-items:center;
+gap:10px;
+flex-wrap:nowrap;
+overflow-x:auto;
+}
 
-    .layanan-col{
-        max-width:260px;
-        white-space:normal !important;
-        word-break:break-word;
-        line-height:1.7;
-    }
+/* ===== SEMUA INPUT FILTER ===== */
+.filter-row select,
+.filter-row input{
+height:40px;
+padding:6px 10px;
+border:1px solid #d1d5db;
+border-radius:6px;
+background:#fff;
+font-size:14px;
+}
 
-    .layanan-item{
-        margin-bottom:6px;   
-        line-height:1.4;
-    }
+.filter-row select{
+text-overflow:ellipsis;
+white-space:nowrap;
+overflow:hidden;
+}
 
-    .aksi-col{
-        width:90px;
-    }
+/* ukuran masing-masing filter */
+/* OUTLET */
+.filter-row select[name="outlet_id"]{
+width:160px;
+}
+
+/* TIPE */
+.filter-row select[name="tipe_pemesanan"]{
+width:140px;
+}
+
+/* PROSES */
+.filter-row select[name="status"]{
+width:120px;
+}
+
+/* DATE */
+.filter-row input[type="date"]{
+width:170px;
+}
+
+/* BUTTON */
+.btn-apply{
+height:40px;
+padding:0 18px;
+white-space:nowrap;
+}
+
+/* ===== DATE FIELD ===== */
+.date-field{
+position:relative;
+min-width:170;
+}
+
+.date-field input{
+padding-top:14px;
+}
+
+.date-field label{
+position:absolute;
+top:-7px;
+left:10px;
+background:#fff;
+padding:0 4px;
+font-size:11px;
+color:#64748b;
+}
+
+/* ===== BUTTON ===== */
+.filter-action{
+display:flex;
+align-items:center;
+}
+
+.btn-apply{
+height:40px;
+padding:0 16px;
+border:none;
+border-radius:6px;
+background:#4f46e5;
+color:white;
+font-weight:500;
+cursor:pointer;
+}
+
+.btn-apply:hover{
+background:#4338ca;
+}
+
 </style>
 
 @push('scripts')
@@ -263,17 +311,22 @@
 
 $(document).ready(function(){
 
-    $('#table-lacak').DataTable({
-        autoWidth:false,
-        columnDefs:[
-            { width:"220px", targets:0 }, // No Order
-            { width:"120px", targets:1 }, // Nama
-            { width:"120px", targets:2 }, // Payment
-            { width:"120px", targets:3 }, // Tipe
-            { width:"260px", targets:4 }, // Jenis layanan
-            { width:"90px",  targets:5 }  // Aksi
-        ]
-    });
+if ($.fn.DataTable.isDataTable('#table-lacak')) {
+$('#table-lacak').DataTable().destroy();
+}
+
+$('#table-lacak').DataTable({
+autoWidth:false,
+columnDefs:[
+{ width:"220px", targets:0 },
+{ width:"120px", targets:1 },
+{ width:"120px", targets:2 },
+{ width:"120px", targets:3 },
+{ width:"260px", targets:4 },
+{ width:"90px", targets:5 }
+]
+});
+
 });
 
 </script>

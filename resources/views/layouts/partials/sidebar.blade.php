@@ -2,7 +2,7 @@
 
   <div class="text-center sidebar-brand-wrapper d-flex align-items-center">
     <a class="sidebar-brand brand-logo" href="{{ route(auth()->user()->role.'.dashboard') }}">
-      <img src="{{ asset('admin/assets/images/logo.svg') }}" alt="logo"/>
+        <img src="{{ asset('admin/assets/images/Logo C24.png') }}" alt="logo" style="height:50px; width:auto;">
     </a>
     <a class="sidebar-brand brand-logo-mini pl-4 pt-3" href="{{ route(auth()->user()->role.'.dashboard') }}">
       <img src="{{ asset('admin/assets/images/logo-mini.svg') }}" alt="logo"/>

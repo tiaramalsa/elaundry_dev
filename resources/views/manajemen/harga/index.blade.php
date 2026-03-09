@@ -56,7 +56,7 @@
     <th>Jarak</th>
     <th>Harga</th>
     <th>Status</th>
-    <th class="text-center">Aksi</th>
+    <th class="text-center" style="width:120px">Aksi</th>
 </tr>
 </thead>
 
@@ -89,7 +89,8 @@
 </span>
 </td>
 
-<td class="text-center">
+<td class="text-center align-middle">
+<div class="aksi-btn justify-content-center">
 
 <a href="{{ route('manajemen.harga.edit', $item->id) }}"
    class="btn btn-warning btn-sm">
@@ -98,7 +99,7 @@
 
 <form action="{{ route('manajemen.harga.destroy', $item->id) }}"
       method="POST"
-      style="display:inline"
+      class="d-inline-flex"
       onsubmit="return confirm('Yakin hapus data harga ini?')">
 
 @csrf
@@ -109,7 +110,7 @@
 </button>
 
 </form>
-
+</div>
 </td>
 
 </tr>
@@ -153,3 +154,22 @@ $(document).ready(function(){
 </script>
 
 @endpush
+
+<style>
+#tableHarga td:last-child{
+width:120px;
+text-align:center;
+}
+
+.aksi-btn{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:8px;
+}
+
+.aksi-btn form{
+margin:0;
+display:flex;
+}
+</style>
