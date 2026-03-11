@@ -253,7 +253,7 @@ width:120px;
 
 /* DATE */
 .filter-row input[type="date"]{
-width:170px;
+width:150px;
 }
 
 /* BUTTON */
@@ -266,7 +266,11 @@ white-space:nowrap;
 /* ===== DATE FIELD ===== */
 .date-field{
 position:relative;
-min-width:170;
+min-width:150px;
+}
+
+.date-field{
+overflow:visible;
 }
 
 .date-field input{
@@ -275,11 +279,12 @@ padding-top:14px;
 
 .date-field label{
 position:absolute;
-top:-7px;
-left:10px;
+top:-8px;
+left:8px;
 background:#fff;
 padding:0 4px;
 font-size:11px;
+white-space:nowrap;
 color:#64748b;
 }
 
