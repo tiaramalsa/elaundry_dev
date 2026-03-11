@@ -120,24 +120,31 @@
 </div>
 </div>
 
-
 {{-- OPSIONAL --}}
 <div class="col-md-3">
 <div class="form-group">
-<label>Layanan Opsional</label><br>
-<input type="checkbox" name="is_optional" id="is_optional" value="1" disabled>
-</div>
-</div>
+<label>Layanan Opsional (Jasa)</label><br>
 
+<label class="switch">
+<input type="checkbox" name="is_optional" id="is_optional" value="1" disabled>
+<span class="slider"></span>
+</label>
+
+</div>
+</div>
 
 {{-- AKTIF --}}
 <div class="col-md-3">
 <div class="form-group">
 <label>Aktif</label><br>
-<input type="checkbox" name="is_active" value="1" checked>
-</div>
-</div>
 
+<label class="switch">
+<input type="checkbox" name="is_active" value="1" checked>
+<span class="slider"></span>
+</label>
+
+</div>
+</div>
 
 {{-- KETERANGAN --}}
 <div class="col-md-12">
@@ -191,9 +198,7 @@ const hiddenNama    = document.getElementById('nama_layanan_input');
 /* =========================
    LOGIKA KATEGORI
 ========================= */
-
 kategori.addEventListener('change', function () {
-
 if (this.value === 'jasa') {
 
     satuan.value = 'km';
@@ -225,15 +230,11 @@ filterLayanan();
 
 });
 
-
 /* =========================
    FILTER JENIS LAYANAN
 ========================= */
-
 function filterLayanan(){
-
 const kategoriVal = kategori.value;
-
 layananSelect.querySelectorAll('optgroup').forEach(group => {
 
 if(!kategoriVal){
@@ -260,16 +261,13 @@ filterLayanan();
 /* =========================
    GENERATE KODE LAYANAN
 ========================= */
-
 function generateKode(nama){
-
 return nama
 .toLowerCase()
 .replace(/[^a-z0-9\s]/g,'')
 .replace(/\s+/g,'_');
 
 }
-
 
 function updateKode(namaLayanan){
 
@@ -281,31 +279,79 @@ return;
 }
 
 hiddenNama.value = namaLayanan;
-
 const kode = generateKode(namaLayanan);
-
 const opt = document.createElement('option');
 opt.value = kode;
 opt.text  = kode;
 opt.selected = true;
-
 kodeSelect.appendChild(opt);
-
 }
 
 
 /* =========================
    EVENT JENIS LAYANAN
 ========================= */
-
 layananSelect.addEventListener('change',function(){
-
 updateKode(this.value);
-
 });
-
 });
 
 </script>
 
 @endpush
+
+<style>
+
+/* SWITCH BADGE */
+
+.switch {
+position: relative;
+display: inline-block;
+width: 55px;
+height: 30px;
+}
+
+.switch input {
+opacity: 0;
+width: 0;
+height: 0;
+}
+
+.slider {
+position: absolute;
+cursor: pointer;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: #ccc;
+transition: .4s;
+border-radius: 34px;
+}
+
+.slider:before {
+position: absolute;
+content: "";
+height: 22px;
+width: 22px;
+left: 4px;
+bottom: 4px;
+background-color: white;
+transition: .4s;
+border-radius: 50%;
+}
+
+.switch input:checked + .slider {
+background-color: #22c55e;
+}
+
+.switch input:checked + .slider:before {
+transform: translateX(24px);
+}
+
+.switch input:disabled + .slider {
+background-color: #e5e7eb;
+cursor: not-allowed;
+}
+
+</style>

@@ -91,7 +91,7 @@ class="form-control">
 
 @php
 $history = $p->historyPemesanan->last();
-$pembayaran = $history->pembayaran ?? 'belum_bayar';
+$pembayaran = optional($history)->pembayaran ?? 'belum_bayar';
 @endphp
 
 <tr>
@@ -181,9 +181,12 @@ title="Hapus">
 @empty
 
 <tr>
-<td colspan="6" class="text-center">
-Tidak ada riwayat pemesanan
-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td class="text-center">Tidak ada data</td>
 </tr>
 
 @endforelse
