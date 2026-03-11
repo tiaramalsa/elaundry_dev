@@ -2,10 +2,12 @@
 
   <div class="text-center sidebar-brand-wrapper d-flex align-items-center">
     <a class="sidebar-brand brand-logo" href="{{ route(auth()->user()->role.'.dashboard') }}">
-        <img src="{{ asset('admin/assets/images/Logo C24.png') }}" alt="logo" style="height:50px; width:auto;">
-    </a>
+    <img src="{{ asset('admin/assets/images/Logo C24-text.png') }}" 
+         alt="logo"
+         style="max-height:55px; width:auto; object-fit:contain;">
+</a>
     <a class="sidebar-brand brand-logo-mini pl-4 pt-3" href="{{ route(auth()->user()->role.'.dashboard') }}">
-      <img src="{{ asset('admin/assets/images/logo-mini.svg') }}" alt="logo"/>
+      <img src="{{ asset('admin/assets/images/logo C24.png') }}" alt="logo"/>
     </a>
   </div>
 
@@ -155,3 +157,24 @@
   </ul>
 
 </nav>
+
+<style>
+.sidebar-brand-wrapper{
+height:80px !important;
+padding:10px 0;
+}
+
+.sidebar .brand-logo{
+display:flex;
+align-items:center;
+justify-content:center;
+width:100%;
+}
+
+.sidebar .brand-logo img{
+height:60px !important;
+width:auto !important;
+max-width:none !important;
+object-fit:contain;
+}
+</style>
