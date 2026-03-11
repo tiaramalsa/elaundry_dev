@@ -9,7 +9,7 @@
 @section('content')
 
 <div class="page-header">
-    <h3 class="page-title">Data Pemesanan</h3>
+    <h3 class="page-title">Data Order</h3>
 </div>
 
 <div class="row mb-3">
@@ -47,7 +47,7 @@
         <div class="card">
         <div class="card-body">
 
-        <h4 class="card-title">Daftar Pemesanan</h4>
+        {{-- <h4 class="card-title">Daftar Order Masuk</h4> --}}
 
         <div class="table-responsive">
 

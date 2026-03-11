@@ -12,7 +12,7 @@ $role = auth()->user()->role;
 
 @section('content')
 
-<h3 class="page-title mb-4">Riwayat Pemesanan Laundry</h3>
+<h3 class="page-title mb-4">Riwayat Order</h3>
 
 <div class="card">
 <div class="card-body">

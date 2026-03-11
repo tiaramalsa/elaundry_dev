@@ -1,142 +1,249 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>@yield('title', 'Auth')</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>@yield('title','Auth')</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ asset('admin/assets/vendors/css/vendor.bundle.base.css') }}">
+<link rel="stylesheet" href="{{ asset('admin/assets/css/style.css') }}">
 
-    <style>
-        * {
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
+<style>
 
-        body {
-            margin: 0;
-            background: #f7fbfc;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
+:root{
+--primary:#3f50f6;
+--gray:#434a54;
+--light:#e8eff4;
+--cyan:#57c7d4;
+}
 
-        /* CARD LOGIN */
-        .auth-card {
-            display: flex;
-            width: 900px;
-            max-width: 95%;
-            background: #ffffff;
-            border-radius: 18px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,.12);
-        }
+/* BACKGROUND */
 
-        /* LEFT PANEL */
-        .auth-left {
-            width: 40%;
-            background: linear-gradient(135deg, #1fc8b8, #16a39a);
-            color: white;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+body{
+min-height:100vh;
+background:linear-gradient(135deg,#f5f7fb,#e8eff4);
+display:flex;
+align-items:center;
+justify-content:center;
+font-family:var(--font-family-sans-serif);
+}
 
-        .auth-left h1 {
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
+/* CONTAINER */
 
-        .auth-left p {
-            font-size: 14.5px;
-            opacity: .95;
-            line-height: 1.6;
-        }
+.auth-container{
+width:1100px;
+min-height:520px;
+background:white;
+border-radius:20px;
+padding:60px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+box-shadow:0 15px 40px rgba(0,0,0,.08);
+}
 
-        /* RIGHT PANEL */
-        .auth-right {
-            width: 60%;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+/* LEFT */
 
-        .auth-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #0b2c4d;
-            margin-bottom: 25px;
-        }
+.auth-left{
+width:42%;
+display:flex;
+flex-direction:column;
+justify-content:center;
+}
 
-        .form-group {
-            margin-bottom: 14px;
-        }
+.logo{
+font-size:20px;
+font-weight:600;
+color:var(--primary);
+margin-bottom:35px;
+}
 
-        input {
-            width: 100%;
-            padding: 12px 14px;
-            border-radius: 8px;
-            border: 1px solid #cbd5e1;
-            font-size: 14px;
-        }
+.auth-title{
+font-size:34px;
+font-weight:600;
+color:var(--gray);
+margin-bottom:8px;
+}
 
-        input:focus {
-            outline: none;
-            border-color: #16a39a;
-        }
+.auth-sub{
+color:#7a7a7a;
+margin-bottom:35px;
+}
 
-        .btn {
-            background: #ff8a00;
-            color: white;
-            border: none;
-            padding: 12px 18px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: 600;
-            width: 100%;
-            margin-top: 10px;
-        }
+.form-group{
+margin-bottom:18px;
+}
 
-        .btn:hover {
-            background: #e67800;
-        }
+.form-control{
+border-radius:6px;
+padding:10px 12px;
+}
 
-        .auth-footer {
-            margin-top: 20px;
-            font-size: 14px;
-            text-align: center;
-        }
+/* BUTTON */
 
-        .auth-footer a {
-            color: #16a39a;
-            font-weight: 600;
-            text-decoration: none;
-        }
+.btn-login{
+background:var(--primary);
+color:white;
+border:none;
+padding:12px;
+border-radius:6px;
+margin-top:10px;
+width:100%;
+font-weight:500;
+transition:.2s;
+}
 
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .auth-card {
-                flex-direction: column;
-            }
+.btn-login:hover{
+opacity:.9;
+}
 
-            .auth-left,
-            .auth-right {
-                width: 100%;
-            }
+/* CTA REGISTER */
 
-            .auth-left {
-                text-align: center;
-            }
-        }
-    </style>
+.auth-register{
+margin-top:18px;
+font-size:14px;
+color:#6c757d;
+}
+
+.auth-register a{
+color:var(--primary);
+font-weight:600;
+margin-left:4px;
+text-decoration:none;
+}
+
+.auth-register a:hover{
+text-decoration:underline;
+}
+
+/* RIGHT */
+
+.auth-right{
+width:50%;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+/* WASHING MACHINE */
+
+.machine{
+width:280px;
+height:340px;
+background:#f3f6fb;
+border-radius:15px;
+border:5px solid #dfe6ef;
+position:relative;
+box-shadow:0 10px 20px rgba(0,0,0,.05);
+}
+
+.machine-panel{
+height:60px;
+background:#e8eff4;
+border-bottom:3px solid #d8e0ea;
+border-radius:10px 10px 0 0;
+}
+
+/* DRUM */
+
+.drum{
+width:170px;
+height:170px;
+border-radius:50%;
+background:#cfe5ff;
+border:8px solid #5e7df7;
+position:absolute;
+top:110px;
+left:50%;
+transform:translateX(-50%);
+display:flex;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+
+animation:spin 6s linear infinite;
+}
+
+/* WATER */
+
+.water{
+width:100%;
+height:60%;
+background:linear-gradient(#57c7d4,#3f50f6);
+position:absolute;
+bottom:0;
+border-radius:50%;
+}
+
+/* BUBBLES */
+
+.bubble{
+position:absolute;
+background:white;
+border-radius:50%;
+opacity:.7;
+animation:float 4s infinite;
+}
+
+.b1{width:15px;height:15px;top:80px;right:20px;}
+.b2{width:10px;height:10px;top:120px;left:20px;}
+.b3{width:12px;height:12px;top:150px;right:40px;}
+.b4{width:8px;height:8px;top:200px;left:50px;}
+
+/* ANIMATION */
+
+@keyframes spin{
+0%{transform:translateX(-50%) rotate(0deg);}
+100%{transform:translateX(-50%) rotate(360deg);}
+}
+
+@keyframes float{
+0%{transform:translateY(0);}
+50%{transform:translateY(-10px);}
+100%{transform:translateY(0);}
+}
+
+/* GRID FORM (UNTUK REGISTER) */
+
+.form-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:14px;
+}
+
+.form-group-full{
+grid-column:1 / -1;
+}
+
+/* RESPONSIVE */
+
+@media (max-width:900px){
+
+.auth-container{
+flex-direction:column;
+padding:40px;
+}
+
+.auth-left{
+width:100%;
+margin-bottom:40px;
+}
+
+.auth-right{
+width:100%;
+}
+
+}
+
+</style>
 </head>
+
 <body>
 
-<div class="auth-card">
-    @yield('content')
+<div class="auth-container">
+
+@yield('content')
+
 </div>
 
 </body>

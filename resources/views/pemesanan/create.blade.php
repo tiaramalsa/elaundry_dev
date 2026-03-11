@@ -14,7 +14,7 @@
 <div class="card">
 <div class="card-body">
 
-<h4 class="card-title">Form Pemesanan Laundio</h4>
+<h3 class="card-title">Input Order</h3>
 
 @if ($errors->any())
 <div class="alert alert-danger">
@@ -160,7 +160,11 @@ rows="3"></textarea>
 </div>
 
 
-<div class="text-right mt-4">
+<div class="d-flex justify-content-between mt-4">
+
+<a href="{{ route('pemesanan.index') }}" class="btn btn-secondary">
+<i class="mdi mdi-arrow-left"></i> Kembali
+</a>
 
 <button class="btn btn-success">
 <i class="mdi mdi-check"></i> Pesan
