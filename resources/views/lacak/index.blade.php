@@ -8,7 +8,7 @@
 
 @section('content')
 
-<h3 class="page-title mb-4">Update Status Pemesanan Laundry</h3>
+<h3 class="page-title mb-4">Proses Order</h3>
 
 {{-- ================= DASHBOARD STATUS ================= --}}
 <div class="row mb-4">

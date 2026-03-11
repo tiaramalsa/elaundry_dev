@@ -1,4 +1,4 @@
-@extends('layouts.dashboard_kasir')
+@extends('layouts.admin')
 
 @section('title', 'Dashboard Kasir')
 
@@ -187,6 +187,7 @@
 </div>
 </div>
 
+@push('styles')
 <style>
     .stats-grid {
     display: grid;
@@ -433,4 +434,5 @@ html, body {
 }
 
 </style>
+@endpush
 @endsection

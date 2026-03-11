@@ -48,9 +48,9 @@
 
     {{-- PEMESANAN --}}
     <li class="nav-item">
-      <a class="nav-link" href="{{ route('pemesanan.create') }}">
+      <a class="nav-link" href="{{ route('pemesanan.index') }}">
         <i class="mdi mdi-package-variant menu-icon"></i>
-        <span class="menu-title">Pemesanan</span>
+        <span class="menu-title">Input Order</span>
       </a>
     </li>
 
@@ -58,7 +58,7 @@
     <li class="nav-item">
       <a class="nav-link" href="{{ route($role.'.lacak.index') }}">
         <i class="mdi mdi-update menu-icon"></i>
-        <span class="menu-title">Update Status</span>
+        <span class="menu-title">Proses Order</span>
       </a>
     </li>
 
@@ -66,7 +66,7 @@
     <li class="nav-item">
       <a class="nav-link" href="{{ route($role.'.riwayat.index') }}">
         <i class="mdi mdi-history menu-icon"></i>
-        <span class="menu-title">Riwayat</span>
+        <span class="menu-title">Riwayat Order</span>
       </a>
     </li>
 
