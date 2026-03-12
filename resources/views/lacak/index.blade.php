@@ -71,58 +71,51 @@
     <div class="card-body">
 
     @php
-            $role = auth()->user()->role;
-        @endphp
-        <form method="GET" action="{{ route($role . '.lacak.index') }}">
+    $role = auth()->user()->role;
+    @endphp
+
+        <form method="GET" action="{{ route($role.'.lacak.index') }}">
+
             <div class="filter-row">
-                <select name="outlet_id">
-                    <option value="">Semua Outlet</option>
-                    @foreach($outlets as $outlet)
-                        <option value="{{ $outlet->id }}"
-                            {{ request('outlet_id') == $outlet->id ? 'selected' : '' }}>
-                            {{ $outlet->nama_outlet }}
-                        </option>
-                    @endforeach
-                </select>
-                <select name="tipe_pemesanan">
-                    <option value="">Tipe Pemesanan</option>
-                    <option value="pemesanan" {{ request('tipe_pemesanan') == 'pemesanan' ? 'selected' : '' }}>
-                        Pemesanan
-                    </option>
-                    <option value="reservasi" {{ request('tipe_pemesanan') == 'reservasi' ? 'selected' : '' }}>
-                        Reservasi
-                    </option>
-                </select>
-                <select name="status">
-                    <option value="">Proses</option>
-                    <option value="diterima" {{ request('status') == 'diterima' ? 'selected' : '' }}>
-                        Diterima
-                    </option>
-                    <option value="dicuci" {{ request('status') == 'dicuci' ? 'selected' : '' }}>
-                        Dicuci
-                    </option>
-                    <option value="dikeringkan" {{ request('status') == 'dikeringkan' ? 'selected' : '' }}>
-                        Dikeringkan
-                    </option>
-                    <option value="disetrika" {{ request('status') == 'disetrika' ? 'selected' : '' }}>
-                        Disetrika
-                    </option>
-                </select>
 
-                <div class="date-field floating">
-                    <input type="date" name="from" placeholder=" ">
-                    <label>Tanggal Mulai</label>
-                </div>
+            <select name="outlet_id" required>
+            <option value="" disabled selected>Outlet</option>
+            @foreach($outlets as $outlet)
+            <option value="{{ $outlet->id }}"
+            {{ request('outlet_id') == $outlet->id ? 'selected' : '' }}>
+            {{ $outlet->nama_outlet }}
+            </option>
+            @endforeach
+            </select>
 
-                <div class="date-field floating">
-                    <input type="date" name="to" placeholder=" ">
-                    <label>Tanggal Selesai</label>
-                </div>
+            <select name="tipe_pemesanan" required>
+            <option value="" disabled {{ request('tipe_pemesanan') ? '' : 'selected' }}>Tipe Pemesanan</option>
+            <option value="pemesanan" {{ request('tipe_pemesanan') == 'pemesanan' ? 'selected' : '' }}>Pemesanan</option>
+            <option value="reservasi" {{ request('tipe_pemesanan') == 'reservasi' ? 'selected' : '' }}>Reservasi</option>
+            </select>
 
-                <div class="filter-action">
-                    <button class="btn-apply">Terapkan</button>
-                </div>
+            <select name="status" required>
+            <option value="" disabled {{ request('status') ? '' : 'selected' }}>Proses</option>
+            <option value="diterima" {{ request('status') == 'diterima' ? 'selected' : '' }}>Diterima</option>
+            <option value="dicuci" {{ request('status') == 'dicuci' ? 'selected' : '' }}>Dicuci</option>
+            <option value="dikeringkan" {{ request('status') == 'dikeringkan' ? 'selected' : '' }}>Dikeringkan</option>
+            <option value="disetrika" {{ request('status') == 'disetrika' ? 'selected' : '' }}>Disetrika</option>
+            </select>
+
+            <div class="date-field">
+            <label>Tanggal Mulai</label>
+            <input type="date" name="from" value="{{ request('from') }}" required>
             </div>
+
+            <div class="date-field">
+            <label>Tanggal Selesai</label>
+            <input type="date" name="to" value="{{ request('to') }}" required>
+            </div>
+
+            <button class="btn-apply">Terapkan</button>
+
+            </div>  
+
         </form>
     </div>
 </div>
@@ -212,27 +205,45 @@
     /* ===== FILTER LAYOUT ===== */
 .filter-row{
 display:flex;
-align-items:center;
-gap:10px;
-flex-wrap:nowrap;
+align-items:flex-end;
+gap:14px;
+flex-wrap:wrap;
 overflow-x:auto;
 }
 
 /* ===== SEMUA INPUT FILTER ===== */
 .filter-row select,
 .filter-row input{
-height:40px;
-padding:6px 10px;
+height:36px;
+padding:0px 10px;
 border:1px solid #d1d5db;
 border-radius:6px;
 background:#fff;
-font-size:14px;
+font-size:13px;
+box-sizing:border-box;
+flex:1;
+min-width:140px;
 }
 
 .filter-row select{
 text-overflow:ellipsis;
 white-space:nowrap;
 overflow:hidden;
+color:#9ca3af;
+}
+
+.filter-row select:valid{
+color:#111827;
+}
+
+/* placeholder input biasa */
+.filter-row input::placeholder{
+color:#9ca3af;
+}
+
+/* saat user mengetik */
+.filter-row input:focus::placeholder{
+color:#cbd5f5;
 }
 
 /* ukuran masing-masing filter */
@@ -263,46 +274,60 @@ padding:0 18px;
 white-space:nowrap;
 }
 
-/* ===== DATE FIELD ===== */
-.date-field{
-position:relative;
-min-width:150px;
-}
-
-.date-field{
-overflow:visible;
-}
-
-.date-field input{
-padding-top:14px;
-}
-
-.date-field label{
-position:absolute;
-top:-8px;
-left:8px;
-background:#fff;
-padding:0 4px;
-font-size:11px;
-white-space:nowrap;
-color:#64748b;
-}
-
 /* ===== BUTTON ===== */
 .filter-action{
 display:flex;
 align-items:center;
 }
 
+/* DATE FIELD */
+.date-field{
+position:relative;
+flex:1;
+width:160px;
+padding-top:6px; /* ruang untuk label */
+}
+
+.date-field input{
+width:100%;
+height:36px;
+padding:10px 8px 4px 8px;
+border:1px solid #d1d5db;
+border-radius:6px;
+font-size:13px;
+background:#fff;
+box-sizing:border-box;
+}
+
+.date-field label{
+position:absolute;
+top:0;
+left:10px;
+background:#fff;
+padding:0 4px;
+font-size:10px;
+color:#64748b;
+line-height:1;
+pointer-events:none;
+}
+
+.filter-row{
+display:flex;
+align-items:flex-end;
+gap:10px;
+flex-wrap:nowrap;
+}
+
 .btn-apply{
-height:40px;
-padding:0 16px;
+height:px36;
+padding:0 18px;
 border:none;
 border-radius:6px;
 background:#4f46e5;
 color:white;
 font-weight:500;
 cursor:pointer;
+flex:0;
 }
 
 .btn-apply:hover{

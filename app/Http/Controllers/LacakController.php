@@ -169,7 +169,7 @@ class LacakController extends Controller
             'dicuci'      => 'dikeringkan',
             'dikeringkan' => 'disetrika',
             'disetrika'   => 'selesai',
-            default       => null,
+             default      => null,
         };
 
         if (!$next) {
