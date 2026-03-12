@@ -1,3 +1,8 @@
+@php
+$role = auth()->user()->role;
+@endphp
+
+@if($role !== 'kasir')
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
 
   <div class="text-center sidebar-brand-wrapper d-flex align-items-center">
@@ -157,6 +162,7 @@
   </ul>
 
 </nav>
+@endif
 
 <style>
 .sidebar-brand-wrapper{

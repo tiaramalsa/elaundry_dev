@@ -48,6 +48,49 @@
             width: 100%;
         }
 
+/* FIX NAVBAR KASIR */
+@if(auth()->user()->role === 'kasir')
+
+.container-fluid.page-body-wrapper{
+    margin-left:0 !important;
+    padding-left:0 !important;
+}
+
+.page-body-wrapper{
+    margin-left:0 !important;
+}
+
+.sidebar{
+    display:none !important;
+}
+
+.navbar{
+    left:0 !important;
+    width:100% !important;
+}
+
+.main-panel{
+    margin-left:0 !important;
+    width:100% !important;
+}
+
+/* TAMBAHAN FIX */
+.container-scroller{
+    display:block !important;
+}
+
+.page-body-wrapper{
+    width:100% !important;
+}
+
+.navbar{
+    position:fixed;
+    left:0 !important;
+    width:100% !important;
+}
+
+@endif
+
     </style>
 
 </head>
@@ -56,7 +99,11 @@
 <div class="container-scroller">
 
     {{-- SIDEBAR --}}
+    @php $role = auth()->user()->role; @endphp
+
+    @if($role !== 'kasir')
     @include('layouts.partials.sidebar')
+    @endif
 
     <div class="container-fluid page-body-wrapper">
 
