@@ -156,19 +156,19 @@
                         <td>{{ $p->no_order }}</td>
                         <td>{{ $p->customer->nama_lengkap ?? '-' }}</td>
                         @php
-$history = $p->historyPemesanan->last();
-$pembayaran = $history->pembayaran ?? 'belum_bayar';
-@endphp
+                        $history = $p->historyPemesanan?->last();
+                        $pembayaran = $history->pembayaran ?? 'belum_bayar';
+                        @endphp
 
-<td>{{ $p->source === 'pemesanan' ? $pembayaran : 'belum_bayar' }}</td>
-                        <td>{{ $p->tipe }}</td>
-                        <td class="layanan-col">
-@foreach(explode(',', $p->jenis_layanan ?? '') as $layanan)
-@if(trim($layanan) != '')
-<div class="layanan-item">{{ trim($layanan) }}</div>
-@endif
-@endforeach
-</td>
+                        <td>{{ $p->source === 'pemesanan' ? $pembayaran : 'belum_bayar' }}</td>
+                                                <td>{{ $p->tipe }}</td>
+                                                <td class="layanan-col">
+                        @foreach(explode(',', $p->jenis_layanan ?? '') as $layanan)
+                        @if(trim($layanan) != '')
+                        <div class="layanan-item">{{ trim($layanan) }}</div>
+                        @endif
+                        @endforeach
+                        </td>
                         <td class="text-left aksi-col">
 
                             @php
