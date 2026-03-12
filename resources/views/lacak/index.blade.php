@@ -1,7 +1,7 @@
 @extends(
     auth()->user()->role === 'admin'
         ? 'layouts.admin'
-        : 'layouts.dashboard_kasir'
+        : 'layouts.admin'
 )
 
 @section('title','Lacak Pemesanan')
