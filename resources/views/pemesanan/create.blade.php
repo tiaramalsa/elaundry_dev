@@ -29,7 +29,7 @@
 <form id="form-pemesanan" method="POST" action="{{ route('pemesanan.store') }}">
 @csrf
 
-<input type="hidden" name="id_outlet" value="3">
+<input type="hidden" name="id_outlet" value="2">
 
 {{-- DATA CUSTOMER --}}
 <div class="card-section">

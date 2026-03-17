@@ -1,54 +1,93 @@
-@extends('layouts.dashboard_kasir')
+@extends('layouts.admin')
+
+@section('title','Detail Pemesanan')
 
 @section('content')
-<div class="container">
-    <h3>Detail Pemesanan</h3>
 
-    <div class="card">
-        <div class="card-body">
+<div class="row">
+<div class="col-lg-12 grid-margin stretch-card">
 
-            <p><strong>No Order:</strong> {{ $data->no_order }}</p>
+<div class="card">
+<div class="card-body">
 
-            <hr>
+<h4 class="card-title">Detail Pemesanan</h4>
 
-            <h4>Data Customer</h4>
-            <p><strong>Nama:</strong> {{ $data->customer->nama_lengkap ?? '-' }}</p>
-            <p><strong>No Telepon:</strong> {{ $data->customer->no_telp ?? '-' }}</p>
-            <p><strong>Alamat:</strong> {{ $data->customer->alamat ?? '-' }}</p>
+<div class="row">
 
-            <hr>
+<div class="col-md-6">
 
-            <h4>Detail Pesanan</h4>
-            <p><strong>Outlet:</strong> {{ $data->outlet->nama_outlet ?? '-' }}</p>
-            <p><strong>Jenis Layanan:</strong> {{ $data->jenis_layanan }}</p>
-            <p><strong>Berat Cucian:</strong> {{ $data->berat_cucian }} Kg</p>
-            <p><strong>Jumlah Item:</strong> {{ $data->jumlah_item }}</p>
-            <p><strong>Catatan:</strong> {{ $data->catatan_khusus ?? '-' }}</p>
+<p><strong>No Order :</strong> {{ $data->no_order }}</p>
 
-            <hr>
+<hr>
 
-            <h4>Status</h4>
-            <p><strong>Status Proses:</strong> {{ ucfirst($data->status_proses) }}</p>
-            <p><strong>Status Bayar:</strong> {{ ucfirst($data->status_bayar) }}</p>
+<h5 class="mb-3">Data Customer</h5>
 
-            <hr>
+<p><strong>Nama :</strong> {{ $data->customer->nama_lengkap ?? '-' }}</p>
+<p><strong>No Telepon :</strong> {{ $data->customer->no_telp ?? '-' }}</p>
+<p><strong>Alamat :</strong> {{ $data->customer->alamat ?? '-' }}</p>
 
-            <h4>Pembayaran</h4>
-            <p><strong>Total Harga:</strong> 
-                Rp {{ number_format($data->total_harga,0,',','.') }}
-            </p>
+<hr>
 
-            <p><strong>Tanggal Masuk:</strong> 
-                {{ \Carbon\Carbon::parse($data->tanggal_masuk)->format('d M Y H:i') }}
-            </p>
+<h5 class="mb-3">Detail Pesanan</h5>
 
-            <br>
+<p><strong>Outlet :</strong> {{ $data->outlet->nama_outlet ?? '-' }}</p>
+<p><strong>Jenis Layanan :</strong> {{ $data->jenis_layanan }}</p>
+<p><strong>Berat Cucian :</strong> {{ $data->berat_cucian }} Kg</p>
+<p><strong>Jumlah Item :</strong> {{ $data->jumlah_item }}</p>
+<p><strong>Catatan :</strong> {{ $data->catatan_khusus ?? '-' }}</p>
 
-            <a href="{{ route('kasir.dashboard') }}" class="btn btn-secondary">
-                Kembali
-            </a>
-
-        </div>
-    </div>
 </div>
+
+
+<div class="col-md-6">
+
+<hr class="d-md-none">
+
+<h5 class="mb-3">Status Pesanan</h5>
+
+<p>
+<strong>Status Proses :</strong> 
+<span class="badge badge-warning">
+{{ ucfirst($data->status_proses) }}
+</span>
+</p>
+
+<p>
+<strong>Status Bayar :</strong> 
+<span class="badge badge-success">
+{{ ucfirst($data->status_bayar) }}
+</span>
+</p>
+
+<hr>
+
+<h5 class="mb-3">Pembayaran</h5>
+
+<p>
+<strong>Total Harga :</strong>  
+Rp {{ number_format($data->total_harga,0,',','.') }}
+</p>
+
+<p>
+<strong>Tanggal Masuk :</strong>  
+{{ \Carbon\Carbon::parse($data->tanggal_masuk)->format('d M Y H:i') }}
+</p>
+
+</div>
+
+</div>
+
+
+<div class="mt-4">
+<a href="{{ route('kasir.dashboard') }}" class="btn btn-light">
+<i class="mdi mdi-arrow-left"></i> Kembali
+</a>
+</div>
+
+</div>
+</div>
+
+</div>
+</div>
+
 @endsection
