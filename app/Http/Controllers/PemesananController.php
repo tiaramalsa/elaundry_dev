@@ -47,6 +47,7 @@ class PemesananController extends Controller
                 'detail_layanan' => 'required',
                 'latitude'       => 'required',
                 'longitude'      => 'required',
+                'jenis_pengambilan' => 'required|in:ambil_sendiri,pickup_kurir',
             ]);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -96,23 +97,26 @@ class PemesananController extends Controller
             $jarak = 0;
             $ongkir = 0;
 
-            if ($request->latitude && $request->longitude) {
+            if ($request->jenis_pengambilan === 'pickup_kurir') {
 
-                $outlet = \App\Models\Outlet::find($request->id_outlet);
+                if ($request->latitude && $request->longitude) {
 
-                if ($outlet && $outlet->latitude && $outlet->longitude) {
+                    $outlet = \App\Models\Outlet::find($request->id_outlet);
 
-                    $jarak = $this->hitungJarak(
-                        $outlet->latitude,
-                        $outlet->longitude,
-                        $request->latitude,
-                        $request->longitude
-                    );
+                    if ($outlet && $outlet->latitude && $outlet->longitude) {
 
-                    $tarifPerKm = 2000; // ganti sesuai aturan kamu
-                    $ongkir = round($jarak) * $tarifPerKm;
+                        $jarak = $this->hitungJarak(
+                            $outlet->latitude,
+                            $outlet->longitude,
+                            $request->latitude,
+                            $request->longitude
+                        );
 
-                    $totalFinal += $ongkir;
+                        $tarifPerKm = 2000;
+                        $ongkir = round($jarak) * $tarifPerKm;
+
+                        $totalFinal += $ongkir;
+                    }
                 }
             }
 
@@ -164,10 +168,14 @@ class PemesananController extends Controller
                 'latitude'       => $request->latitude,
                 'longitude'      => $request->longitude,
                 'catatan_khusus' => $request->catatan_khusus,
-                'status_proses'  => 'diterima',
+                'status_proses'  => 
+                    $request->jenis_pengambilan === 'pickup_kurir'
+                        ? 'menunggu_pickup'
+                        : 'diproses',
                 'status_bayar'   => 'belum',
                 'detail_layanan' => json_encode($detail),
-                'tipe_pemesanan' => 'offline', // TAMBAHKAN INI
+                'tipe_pemesanan' => 'offline',
+                'jenis_pengambilan' => $request->jenis_pengambilan,
             ]);
 
             $linkMaps = "https://www.google.com/maps?q={$request->latitude},{$request->longitude}";

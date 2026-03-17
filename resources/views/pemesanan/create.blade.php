@@ -29,7 +29,7 @@
 <form id="form-pemesanan" method="POST" action="{{ route('pemesanan.store') }}">
 @csrf
 
-<input type="hidden" name="id_outlet" value="2">
+<input type="hidden" name="id_outlet" value="3">
 
 {{-- DATA CUSTOMER --}}
 <div class="card-section">
@@ -59,6 +59,14 @@ class="form-control"
 placeholder="Alamat"
 rows="3"
 required></textarea>
+</div>
+
+<div class="form-group mt-3">
+    <label><strong>Metode Pengambilan</strong></label>
+    <select name="jenis_pengambilan" class="form-control" required>
+        <option value="ambil_sendiri">Ambil Sendiri</option>
+        <option value="pickup_kurir">Jemput Kurir</option>
+    </select>
 </div>
 
 </div>

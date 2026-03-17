@@ -19,8 +19,8 @@
         }
 
         .container-scroller{
-    min-height: 100vh;
-}
+            min-height: 100vh;
+        }
 
         .sidebar{
             width: 260px;
@@ -51,61 +51,61 @@
             width: 100%;
         }
 
-/* FIX NAVBAR KASIR */
-@if(auth()->user()->role === 'kasir')
+        /* FIX NAVBAR KASIR */
+        @if(auth()->user()->role === 'kasir')
 
-.container-fluid.page-body-wrapper{
-    margin-left:0 !important;
-    padding-left:0 !important;
-}
+        .container-fluid.page-body-wrapper{
+            margin-left:0 !important;
+            padding-left:0 !important;
+        }
 
-.page-body-wrapper{
-    margin-left:0 !important;
-}
+        .page-body-wrapper{
+            margin-left:0 !important;
+        }
 
-.sidebar{
-    display:none !important;
-}
+        .sidebar{
+            display:none !important;
+        }
 
-.navbar{
-    left:0 !important;
-    width:100% !important;
-}
+        .navbar{
+            left:0 !important;
+            width:100% !important;
+        }
 
-.main-panel{
-    margin-left:0 !important;
-    width:100% !important;
-}
+        .main-panel{
+            margin-left:0 !important;
+            width:100% !important;
+        }
 
-/* TAMBAHAN FIX */
-.container-scroller{
-    display:block !important;
-}
+        /* TAMBAHAN FIX */
+        .container-scroller{
+            display:block !important;
+        }
 
-.page-body-wrapper{
-    width:100% !important;
-}
+        .page-body-wrapper{
+            width:100% !important;
+        }
 
-.navbar{
-    position:fixed;
-    left:0 !important;
-    width:100% !important;
-}
+        .navbar{
+            position:fixed;
+            left:0 !important;
+            width:100% !important;
+        }
 
-@endif
+        @endif
 
-@if(auth()->user()->role === 'kurir')
-.content-wrapper{
-    padding-bottom:80px !important;
-}
-@endif
+        @if(auth()->user()->role === 'kurir')
+        .content-wrapper{
+            padding-bottom:80px !important;
+        }
+        @endif
 
-@media (max-width: 767px) {
-    nav.navbar {
-        position: absolute;
-        top: -100px;
-    }
-}
+        @media (max-width: 767px) {
+            nav.navbar {
+                position: absolute;
+                top: -100px;
+            }
+        }
 
     </style>
 
@@ -119,7 +119,7 @@
 
     @if(auth()->user()->role === 'admin')
     @include('layouts.partials.sidebar')
-@endif
+    @endif
 
     <div class="container-fluid page-body-wrapper">
 
@@ -142,22 +142,22 @@
     </div>
 </div>
 
-{{-- BOTTOM NAV KHUSUS KURIR --}}
-            @if(auth()->user()->role === 'kurir')
-                @include('layouts.partials.bottom-nav')
-            @endif
+    {{-- BOTTOM NAV KHUSUS KURIR --}}
+        @if(auth()->user()->role === 'kurir')
+            @include('layouts.partials.bottom-nav')
+        @endif
 
-{{-- JS --}}
-<script src="{{ asset('admin/assets/vendors/js/vendor.bundle.base.js') }}"></script>
-<script src="{{ asset('admin/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
+    {{-- JS --}}
+    <script src="{{ asset('admin/assets/vendors/js/vendor.bundle.base.js') }}"></script>
+    <script src="{{ asset('admin/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
 
-<script src="{{ asset('admin/assets/js/off-canvas.js') }}"></script>
-<script src="{{ asset('admin/assets/js/hoverable-collapse.js') }}"></script>
-<script src="{{ asset('admin/assets/js/misc.js') }}"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
+    <script src="{{ asset('admin/assets/js/off-canvas.js') }}"></script>
+    <script src="{{ asset('admin/assets/js/hoverable-collapse.js') }}"></script>
+    <script src="{{ asset('admin/assets/js/misc.js') }}"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
 
-@stack('scripts')
+    @stack('scripts')
 
 </body>
 </html>

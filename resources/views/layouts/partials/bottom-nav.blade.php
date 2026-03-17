@@ -9,7 +9,7 @@
         <span>Tugas</span>
     </a>
 
-    <a href="{{ route('kurir.riwayat') }}" class="nav-item">
+    <a href="{{ route('kurir.riwayat.index') }}" class="nav-item">
         <i class="mdi mdi-history"></i>
         <span>Riwayat</span>
     </a>

@@ -33,7 +33,8 @@ class Pemesanan extends Model
         'diskon',
         'total_akhir',
         'status_proses',
-        'status_bayar'
+        'status_bayar',
+        'jenis_pengambilan'
         ];
 
     public function customer()

@@ -184,13 +184,13 @@ $countNotif = $notifikasiOrder->count();
       </li>
 
       <li class="nav-item">
-          <a class="nav-link" href="{{ route('kurir.riwayat') }}">
+          <a class="nav-link" href="#">
               <i class="mdi mdi-history"></i> Riwayat
           </a>
       </li>
 
       <li class="nav-item">
-          <a class="nav-link" href="{{ route('kurir.riwayat') }}">
+          <a class="nav-link" href="#">
               <i class="mdi mdi-history"></i> Riwayat
           </a>
       </li>
