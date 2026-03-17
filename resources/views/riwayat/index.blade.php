@@ -70,11 +70,17 @@ class="form-control">
 
 
 {{-- ================= TABLE ================= --}}
+<div class="row">
+<div class="col-lg-12 grid-margin stretch-card">
+
+<div class="card">
+<div class="card-body">
+
 <div class="table-responsive">
 
-<table id="table-riwayat" class="table table-striped">
+<table class="table table-striped" id="table-riwayat">
 
-<thead class="bg-dark text-white">
+<thead>
 <tr>
 <th>No Order</th>
 <th>Nama</th>
@@ -134,7 +140,6 @@ Belum Bayar
 
 <div class="d-flex justify-content-center align-items-center">
 
-{{-- UNDUH --}}
 @if(auth()->user()->role === 'admin')
 
 <a
@@ -149,7 +154,6 @@ title="Unduh">
 @endif
 
 
-{{-- HAPUS --}}
 @if(auth()->user()->role === 'admin')
 
 <form
@@ -181,19 +185,19 @@ title="Hapus">
 @empty
 
 <tr>
-<td>-</td>
-<td>-</td>
-<td>-</td>
-<td>-</td>
-<td>-</td>
-<td class="text-center">Tidak ada data</td>
+<td colspan="6" class="text-center py-4">
+Tidak ada data
+</td>
 </tr>
 
 @endforelse
 
 </tbody>
+
 </table>
 
+</div>
+</div>
 </div>
 
 </div>

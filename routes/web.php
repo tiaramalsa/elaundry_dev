@@ -16,6 +16,7 @@ use App\Http\Controllers\HargaController;
 use App\Http\Controllers\ManajemenUserController;
 use App\Http\Controllers\KasirController;
 use App\Http\Controllers\KasirDashboardController;
+use App\Http\Controllers\KurirController;
 
 //AUTH
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -73,6 +74,15 @@ Route::middleware(['auth', 'role:kasir'])
 
         Route::post('/lacak/{id}/next', [LacakController::class, 'next'])
             ->name('lacak.next');
+    });
+
+Route::middleware(['auth', 'role:kurir'])
+    ->prefix('kurir')
+    ->name('kurir.')
+    ->group(function () {
+
+        Route::get('/dashboard', [KurirController::class, 'index'])
+            ->name('dashboard');
     });
 
 // Route::get('/admin/dashboard', [DashboardController::class, 'index'])

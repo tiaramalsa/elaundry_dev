@@ -122,81 +122,101 @@
 
 
 {{-- ================= TABLE ================= --}}
+{{-- ================= TABLE ================= --}}
+<div class="row">
+<div class="col-lg-12 grid-margin stretch-card">
+
 <div class="card">
-    <div class="card-body">
+<div class="card-body">
 
-        <div class="table-responsive">
+<div class="table-responsive">
 
-            <table id="table-lacak" class="table table-striped">
+<table class="table table-striped" id="table-lacak">
 
-                    <thead class="bg-dark text-white">
-                        <tr>
-                        <th>No Order</th>
-                        <th>Nama</th>
-                        <th>Payment</th>
-                        <th>Tipe</th>
-                        <th class="layanan-col">Jenis Layanan</th>
-                        <th class="text-center aksi-col">Aksi</th>
-                        </tr>
-                    </thead>
+<thead>
+<tr>
+<th>No Order</th>
+<th>Nama</th>
+<th>Payment</th>
+<th>Tipe</th>
+<th class="layanan-col">Jenis Layanan</th>
+<th class="text-center aksi-col">Aksi</th>
+</tr>
+</thead>
 
-                <tbody>
+<tbody>
 
-                    @forelse($pemesanans as $p)
+@forelse($pemesanans as $p)
 
-                    <tr>
+<tr>
 
-                        <td>{{ $p->no_order }}</td>
-                        <td>{{ $p->customer->nama_lengkap ?? '-' }}</td>
-                        @php
-                        $history = $p->historyPemesanan?->last();
-                        $pembayaran = $history->pembayaran ?? 'belum_bayar';
-                        @endphp
+<td>{{ $p->no_order }}</td>
+<td>{{ $p->customer->nama_lengkap ?? '-' }}</td>
 
-                        <td>{{ $p->source === 'pemesanan' ? $pembayaran : 'belum_bayar' }}</td>
-                                                <td>{{ $p->tipe }}</td>
-                                                <td class="layanan-col">
-                        @foreach(explode(',', $p->jenis_layanan ?? '') as $layanan)
-                        @if(trim($layanan) != '')
-                        <div class="layanan-item">{{ trim($layanan) }}</div>
-                        @endif
-                        @endforeach
-                        </td>
-                        <td class="text-left aksi-col">
+@php
+$history = $p->historyPemesanan?->last();
+$pembayaran = $history->pembayaran ?? 'belum_bayar';
+@endphp
 
-                            @php
-                            $role = auth()->user()->role;
+<td>{{ $p->source === 'pemesanan' ? $pembayaran : 'belum_bayar' }}</td>
 
-                            $id = $p->source === 'pemesanan'
-                            ? $p->id_pemesanan
-                            : $p->id_reservasi;
-                            @endphp
+<td>{{ $p->tipe }}</td>
 
-                            <form method="POST" action="{{ route($role.'.lacak.next',$id) }}">
-                                @csrf
-                                <input type="hidden" name="source" value="{{ $p->source ?? '' }}">
-                                <button
-                                    type="submit"
-                                    class="btn {{ $p->status_proses === 'disetrika' ? 'btn-success' : 'btn-warning' }} btn-sm">
+<td class="layanan-col">
+@foreach(explode(',', $p->jenis_layanan ?? '') as $layanan)
+@if(trim($layanan) != '')
+<div class="layanan-item">{{ trim($layanan) }}</div>
+@endif
+@endforeach
+</td>
 
-                                    {{ $p->status_proses === 'disetrika' ? 'Selesai' : 'Next' }}
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                        @empty
+<td class="text-left aksi-col">
 
-                        <tr>
-                            <td colspan="6" class="text-center">
-                            Tidak ada data
-                            </td>
-                        </tr>
+@php
+$role = auth()->user()->role;
 
-                        @endforelse
-                </tbody>
-            </table>
-        </div>
-    </div>
+$id = $p->source === 'pemesanan'
+? $p->id_pemesanan
+: $p->id_reservasi;
+@endphp
+
+<form method="POST" action="{{ route($role.'.lacak.next',$id) }}">
+@csrf
+<input type="hidden" name="source" value="{{ $p->source ?? '' }}">
+
+<button
+type="submit"
+class="btn {{ $p->status_proses === 'disetrika' ? 'btn-success' : 'btn-warning' }} btn-sm">
+
+{{ $p->status_proses === 'disetrika' ? 'Selesai' : 'Next' }}
+
+</button>
+
+</form>
+
+</td>
+
+</tr>
+
+@empty
+
+<tr>
+<td colspan="6" class="text-center py-4">
+Tidak ada data
+</td>
+</tr>
+
+@endforelse
+
+</tbody>
+
+</table>
+
+</div>
+</div>
+</div>
+
+</div>
 </div>
 
 @endsection

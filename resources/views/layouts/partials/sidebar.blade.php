@@ -7,11 +7,9 @@ $role = auth()->user()->role;
 
   <div class="text-center sidebar-brand-wrapper d-flex align-items-center">
     <a class="sidebar-brand brand-logo" href="{{ route(auth()->user()->role.'.dashboard') }}">
-    <img src="{{ asset('admin/assets/images/Logo C24-text.png') }}" 
-         alt="logo"
-         style="max-height:55px; width:auto; object-fit:contain;">
-</a>
-    <a class="sidebar-brand brand-logo-mini pl-4 pt-3" href="{{ route(auth()->user()->role.'.dashboard') }}">
+      <img src="{{ asset('admin/assets/images/Logo C24-text.png') }}" alt="logo">
+    </a>
+    <a class="sidebar-brand brand-logo-mini" href="{{ route(auth()->user()->role.'.dashboard') }}">
       <img src="{{ asset('admin/assets/images/logo C24.png') }}" alt="logo"/>
     </a>
   </div>
@@ -22,7 +20,7 @@ $role = auth()->user()->role;
 
   <ul class="nav">
 
-    {{-- PROFILE --}}
+    {{-- PROFILE
     <li class="nav-item nav-profile">
       <a href="#" class="nav-link">
         <div class="nav-profile-image">
@@ -35,7 +33,7 @@ $role = auth()->user()->role;
           <span class="font-weight-normal">{{ ucfirst($role) }}</span>
         </div>
       </a>
-    </li>
+    </li> --}}
 
     {{-- DASHBOARD --}}
     <li class="nav-item">
@@ -165,22 +163,58 @@ $role = auth()->user()->role;
 @endif
 
 <style>
-.sidebar-brand-wrapper{
-height:80px !important;
-padding:10px 0;
-}
-
-.sidebar .brand-logo{
+/* wrapper logo */
+.sidebar .sidebar-brand-wrapper{
+height:120px !important;
 display:flex;
 align-items:center;
-justify-content:center;
-width:100%;
+justify-content:flex-start;
+padding-left:1px;
 }
 
+/* logo normal */
 .sidebar .brand-logo img{
-height:60px !important;
+height:170px !important;
 width:auto !important;
-max-width:none !important;
+max-width:220px !important;
 object-fit:contain;
+}
+
+/* saat sidebar minimal */
+.sidebar-icon-only .sidebar .brand-logo{
+display:none;
+}
+
+/* logo mini */
+.sidebar .brand-logo-mini img{
+height:72px !important;
+width:auto !important;
+object-fit:contain;
+}
+
+/* ===== FIX POSISI LOGO SAAT SIDEBAR MINIMAL ===== */
+.sidebar-icon-only .sidebar .sidebar-brand-wrapper{
+display:flex !important;
+justify-content:center !important;
+align-items:center !important;
+padding:0 !important;
+}
+
+/* link logo mini */
+.sidebar-icon-only .sidebar .brand-logo-mini{
+display:flex !important;
+justify-content:center !important;
+align-items:center !important;
+width:100% !important;
+margin:0 !important;
+padding:0 !important;
+}
+
+/* gambar logo mini */
+.sidebar-icon-only .sidebar .brand-logo-mini img{
+display:block;
+margin:auto !important;
+height:30px !important;
+width:auto !important;
 }
 </style>

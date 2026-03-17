@@ -29,12 +29,15 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return auth()->user()->role === 'admin'
-                ? redirect()->route('admin.dashboard')
-                : redirect()->route('kasir.dashboard');
+            $role = auth()->user()->role;
+
+            return match ($role) {
+                'admin'   => redirect()->route('admin.dashboard'),
+                'kasir'   => redirect()->route('kasir.dashboard'),
+                'kurir'   => redirect()->route('kurir.dashboard'),
+                default   => abort(403),
+            };
         }
-
-
 
         return back()->withErrors([
             'email' => 'Email atau password salah',

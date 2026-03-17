@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Manajemen Harga')
+@section('title','Manajemen Harga')
 
 @section('content')
 
@@ -8,59 +8,59 @@
     <h3 class="page-title">Manajemen Harga</h3>
 </div>
 
+<div class="row mb-3">
+    <div class="col-md-6">
+        <a href="{{ route('manajemen.harga.create') }}" class="btn btn-primary">
+            <i class="mdi mdi-plus"></i> Tambah Harga
+        </a>
+    </div>
+</div>
+
+{{-- FILTER TABS (disamakan dengan pemesanan) --}}
+<div class="order-tabs mb-4">
+
+<a href="{{ route('manajemen.harga.index') }}"
+   class="tab {{ !request('kategori') ? 'active' : '' }}">
+   Semua
+</a>
+
+<a href="{{ route('manajemen.harga.index',['kategori'=>'laundry']) }}"
+   class="tab {{ request('kategori')=='laundry' ? 'active' : '' }}">
+   Laundry
+</a>
+
+<a href="{{ route('manajemen.harga.index',['kategori'=>'jasa']) }}"
+   class="tab {{ request('kategori')=='jasa' ? 'active' : '' }}">
+   Jasa
+</a>
+
+</div>
+
 <div class="row">
 <div class="col-lg-12 grid-margin stretch-card">
-<div class="card">
 
+<div class="card">
 <div class="card-body">
 
-{{-- HEADER --}}
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="card-title mb-0">Daftar Harga</h4>
-
-    <a href="{{ route('manajemen.harga.create') }}" class="btn btn-primary btn-sm">
-        <i class="mdi mdi-plus"></i> Tambah Harga
-    </a>
-</div>
-
-{{-- FILTER --}}
-<div class="mb-3">
-
-    <a href="{{ route('manajemen.harga.index') }}"
-       class="btn btn-sm {{ !request('kategori') ? 'btn-info' : 'btn-outline-secondary' }}">
-        Semua
-    </a>
-
-    <a href="{{ route('manajemen.harga.index', ['kategori' => 'laundry']) }}"
-       class="btn btn-sm {{ request('kategori') == 'laundry' ? 'btn-info' : 'btn-outline-secondary' }}">
-        Laundry
-    </a>
-
-    <a href="{{ route('manajemen.harga.index', ['kategori' => 'jasa']) }}"
-       class="btn btn-sm {{ request('kategori') == 'jasa' ? 'btn-info' : 'btn-outline-secondary' }}">
-        Jasa
-    </a>
-
-</div>
-
-{{-- TABLE --}}
 <div class="table-responsive">
 
-<table class="table table-bordered table-striped" id="tableHarga">
+<table class="table table-striped" id="tableHarga">
+
 <thead>
 <tr>
-    <th>No</th>
-    <th>Kategori</th>
-    <th>Jenis Layanan</th>
-    <th>Satuan</th>
-    <th>Jarak</th>
-    <th>Harga</th>
-    <th>Status</th>
-    <th class="text-center" style="width:120px">Aksi</th>
+<th>No</th>
+<th>Kategori</th>
+<th>Jenis Layanan</th>
+<th>Satuan</th>
+<th>Jarak</th>
+<th>Harga</th>
+<th>Status</th>
+<th class="text-center">Aksi</th>
 </tr>
 </thead>
 
 <tbody>
+
 @forelse ($harga as $item)
 
 <tr>
@@ -85,54 +85,52 @@
 
 <td>
 <span class="badge {{ $item->is_active ? 'badge-success' : 'badge-danger' }}">
-    {{ $item->is_active ? 'Aktif' : 'Nonaktif' }}
+{{ $item->is_active ? 'Aktif' : 'Nonaktif' }}
 </span>
 </td>
 
 <td class="text-center align-middle">
-<div class="aksi-btn justify-content-center">
 
 <a href="{{ route('manajemen.harga.edit', $item->id) }}"
-   class="btn btn-warning btn-sm">
+   class="btn btn-sm btn-outline-primary">
    <i class="mdi mdi-pencil"></i>
 </a>
 
 <form action="{{ route('manajemen.harga.destroy', $item->id) }}"
       method="POST"
-      class="d-inline-flex"
+      style="display:inline;"
       onsubmit="return confirm('Yakin hapus data harga ini?')">
 
 @csrf
 @method('DELETE')
 
-<button class="btn btn-danger btn-sm">
+<button class="btn btn-sm btn-outline-danger">
 <i class="mdi mdi-delete"></i>
 </button>
 
 </form>
-</div>
+
 </td>
 
 </tr>
 
 @empty
+
 <tr>
-<td colspan="8" class="text-center text-muted">Belum ada data harga</td>
-<td style="display:none"></td>
-<td style="display:none"></td>
-<td style="display:none"></td>
-<td style="display:none"></td>
-<td style="display:none"></td>
-<td style="display:none"></td>
-<td style="display:none"></td>
+<td colspan="8" class="text-center text-muted">
+Belum ada data harga
+</td>
+</tr>
+
 @endforelse
+
 </tbody>
 </table>
 
 </div>
+</div>
+</div>
 
-</div>
-</div>
 </div>
 </div>
 
@@ -155,21 +153,43 @@ $(document).ready(function(){
 
 @endpush
 
+@push('styles')
 <style>
-#tableHarga td:last-child{
-width:120px;
-text-align:center;
-}
 
-.aksi-btn{
-display:flex;
-justify-content:center;
-align-items:center;
-gap:8px;
-}
+    .order-tabs{
+    display:flex;
+    gap:25px;
+    border-bottom:2px solid #e2e8f0;
+    padding-bottom:8px;
+    }
 
-.aksi-btn form{
-margin:0;
-display:flex;
-}
-</style>
+    .order-tabs .tab{
+    text-decoration:none;
+    font-weight:600;
+    font-size:14px;
+    color:#6c757d;
+    padding-bottom:6px;
+    position:relative;
+    }
+
+    .order-tabs .tab.active{
+    color:#4B49AC;
+    }
+
+    .order-tabs .tab.active::after{
+    content:'';
+    position:absolute;
+    left:0;
+    bottom:-10px;
+    width:100%;
+    height:3px;
+    background:#4B49AC;
+    border-radius:3px;
+    }
+
+    .order-tabs .tab:hover{
+    color:#4B49AC;
+    }
+
+    </style>
+@endpush

@@ -22,46 +22,47 @@ $countNotif = $notifikasiOrder->count();
       <i class="mdi mdi-menu"></i>
     </button>
     @endif
-    <ul class="navbar-nav">
+    
+    @if($role === 'kasir')
+    <div class="kasir-logo">
+    <a href="{{ route($role.'.dashboard') }}">
+    <img src="{{ asset('admin/assets/images/Logo C24-text.png') }}" style="height:90px;">
+    </a>
+    </div>
+    @endif
+    <ul class="navbar-nav kasir-menu">
 
       @if($role === 'kasir')
 
-      <li class="nav-item d-flex align-items-center mr-3">
-      <a href="{{ route($role.'.dashboard') }}">
-      <img src="{{ asset('admin/assets/images/Logo C24-text.png') }}"
-          style="height:110px;">
+      <li class="nav-item">
+      <a class="nav-link" href="{{ route($role.'.dashboard') }}">
+      <i class="mdi mdi-home"></i> Beranda
       </a>
       </li>
 
-        <li class="nav-item">
-        <a class="nav-link" href="{{ route($role.'.dashboard') }}">
-        <i class="mdi mdi-home"></i> Beranda
-        </a>
-        </li>
+      <li class="nav-item">
+      <a class="nav-link" href="{{ route('reservasi.create') }}">
+      <i class="mdi mdi-calendar-plus"></i> Reservasi
+      </a>
+      </li>
 
-        <li class="nav-item">
-        <a class="nav-link" href="{{ route('reservasi.create') }}">
-        <i class="mdi mdi-calendar-plus"></i> Reservasi
-        </a>
-        </li>
+      <li class="nav-item">
+      <a class="nav-link" href="{{ route('pemesanan.index') }}">
+      <i class="mdi mdi-package-variant"></i> Input Order
+      </a>
+      </li>
 
-        <li class="nav-item">
-        <a class="nav-link" href="{{ route('pemesanan.index') }}">
-        <i class="mdi mdi-package-variant"></i> Input Order
-        </a>
-        </li>
+      <li class="nav-item">
+      <a class="nav-link" href="{{ route($role.'.lacak.index') }}">
+      <i class="mdi mdi-update"></i> Proses Order
+      </a>
+      </li>
 
-        <li class="nav-item">
-        <a class="nav-link" href="{{ route($role.'.lacak.index') }}">
-        <i class="mdi mdi-update"></i> Proses Order
-        </a>
-        </li>
-
-        <li class="nav-item">
-        <a class="nav-link" href="{{ route($role.'.riwayat.index') }}">
-        <i class="mdi mdi-history"></i> Riwayat
-        </a>
-        </li>
+      <li class="nav-item">
+      <a class="nav-link" href="{{ route($role.'.riwayat.index') }}">
+      <i class="mdi mdi-history"></i> Riwayat
+      </a>
+      </li>
 
       @endif
       <li class="nav-item dropdown">
@@ -173,7 +174,7 @@ $countNotif = $notifikasiOrder->count();
       <li class="nav-item dropdown d-none d-xl-flex border-0">
         <a class="nav-link dropdown-toggle" id="languageDropdown" href="#" data-toggle="dropdown">
           <i class="mdi mdi-earth"></i> English </a>
-        <div class="dropdown-menu navbar-dropdown" aria-labelledby="languageDropdown">
+        <div class="dropdown-menu navbar-dropdown w-100" aria-labelledby="languageDropdown">
           <a class="dropdown-item" href="#"> French </a>
           <a class="dropdown-item" href="#"> Spain </a>
           <a class="dropdown-item" href="#"> Latin </a>
@@ -190,7 +191,7 @@ $countNotif = $notifikasiOrder->count();
               {{ $user->name }} ({{ ucfirst($role) }})
           </span>
         </a>
-        <div class="dropdown-menu navbar-dropdown w-100" aria-labelledby="profileDropdown">
+        <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
           <a class="dropdown-item" href="{{ route($role.'.dashboard') }}">
             <i class="mdi mdi-view-dashboard mr-2 text-success"></i> Dashboard
           </a>
@@ -279,4 +280,120 @@ border-right:none !important;
 .navbar-kasir .navbar-nav .nav-link{
 border-right:none !important;
 }
+
+@if($role === 'kasir')
+
+.navbar-kasir .navbar-nav{
+display:flex;
+align-items:center;
+justify-content:center;
+flex:1;
+margin-left:0;
+}
+@endif
+
+@if($role === 'kasir')
+
+.navbar-kasir .nav-item:first-child{
+margin-left:20px;
+}
+@endif
+
+.navbar-nav-right .dropdown-menu{
+min-width:100px;
+} 
+
+@if($role === 'kasir')
+
+.navbar-kasir .nav-item{
+border-right:none !important;
+}
+
+.navbar-kasir .nav-link{
+border-right:none !important;
+}
+
+@endif
+
+@if($role === 'kasir')
+
+.kasir-menu{
+flex:1;
+display:flex;
+justify-content:center;
+align-items:center;
+gap:25px;
+}
+
+@endif
+
+@if($role === 'kasir')
+
+.navbar-kasir .navbar-nav .nav-item{
+border:none !important;
+}
+
+@endif
+
+.nav-profile .dropdown-menu{
+right:0;
+left:auto;
+min-width:180px;
+}
+
+.navbar-kasir .navbar-menu-wrapper{
+display:flex;
+align-items:center;
+}
+
+.navbar-kasir{
+height:70px;
+}
+
+@if($role === 'kasir')
+
+.kasir-logo{
+margin-left:50px;
+display:flex;
+align-items:center;
+}
+
+.kasir-menu{
+flex:1;
+display:flex;
+justify-content:center;
+align-items:center;
+gap:25px;
+}
+
+.navbar-kasir .nav-item{
+border:none !important;
+}
+
+.nav-profile .dropdown-menu{
+right:0;
+left:auto;
+min-width:180px;
+}
+
+@endif
+
+@if($role === 'kasir')
+
+/* menu tetap satu baris */
+.kasir-menu{
+flex:1;
+display:flex;
+justify-content:center;
+align-items:center;
+gap:25px;
+flex-wrap:nowrap;
+}
+
+/* text menu tidak boleh turun baris */
+.kasir-menu .nav-link{
+white-space:nowrap;
+}
+
+@endif
 </style>

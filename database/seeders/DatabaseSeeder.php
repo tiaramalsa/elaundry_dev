@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
             CustomerSeeder::class,
             OutletSeeder::class,
             KasirSeeder::class,
+            KurirSeeder::class,
         ]);
     }
 
