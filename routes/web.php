@@ -83,6 +83,15 @@ Route::middleware(['auth', 'role:kurir'])
 
         Route::get('/dashboard', [KurirController::class, 'index'])
             ->name('dashboard');
+
+        Route::get('/tugas', [KurirController::class, 'tugas'])
+            ->name('tugas');
+
+        Route::get('/riwayat', [KurirController::class, 'riwayat'])
+            ->name('riwayat');
+
+        Route::get('/profile', [KurirController::class, 'profile'])
+            ->name('profile');
     });
 
 // Route::get('/admin/dashboard', [DashboardController::class, 'index'])

@@ -17,7 +17,7 @@ $countNotif = $notifikasiOrder->count();
   <div class="navbar-menu-wrapper d-flex align-items-stretch justify-content-between
 @if($role === 'kasir') pl-0 @endif">
     <a class="navbar-brand brand-logo-mini align-self-center d-lg-none" href="index.html"><img src="{{ asset('admin/assets/images/logo-mini.svg') }}" alt="logo" /></a>
-    @if($role !== 'kasir')
+    @if($role !== 'kasir' && $role !== 'kurir')
     <button class="navbar-toggler navbar-toggler align-self-center mr-2" type="button" data-toggle="minimize">
       <i class="mdi mdi-menu"></i>
     </button>
@@ -30,7 +30,7 @@ $countNotif = $notifikasiOrder->count();
     </a>
     </div>
     @endif
-    <ul class="navbar-nav kasir-menu">
+    <ul class="navbar-nav main-menu">
 
       @if($role === 'kasir')
 
@@ -121,7 +121,7 @@ $countNotif = $notifikasiOrder->count();
 
         </div>
       </li>
-      @if($role !== 'kasir')
+      @if($role !== 'kasir' && $role !== 'kurir')
         <li class="nav-item dropdown d-none d-sm-flex">
         <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown">
           <i class="mdi mdi-email-outline"></i>
@@ -154,7 +154,7 @@ $countNotif = $notifikasiOrder->count();
         </div>
       </li>
       @endif
-      @if($role !== 'kasir')
+      @if($role !== 'kasir' && $role !== 'kurir')
       <li class="nav-item nav-search border-0 ml-1 ml-md-3 ml-lg-5 d-none d-md-flex">
         <form class="nav-link form-inline mt-2 mt-md-0">
           <div class="input-group">
@@ -168,9 +168,48 @@ $countNotif = $notifikasiOrder->count();
         </form>
       </li>
       @endif
+
+      <!-- KURIR -->
+      @if($role === 'kurir')
+      <li class="nav-item">
+          <a class="nav-link" href="{{ route('kurir.dashboard') }}">
+              <i class="mdi mdi-home"></i> Beranda
+          </a>
+      </li>
+
+      <li class="nav-item">
+          <a class="nav-link" href="{{ route('kurir.tugas') }}">
+              <i class="mdi mdi-truck-delivery"></i> Tugas
+          </a>
+      </li>
+
+      <li class="nav-item">
+          <a class="nav-link" href="{{ route('kurir.riwayat') }}">
+              <i class="mdi mdi-history"></i> Riwayat
+          </a>
+      </li>
+
+      <li class="nav-item">
+          <a class="nav-link" href="{{ route('kurir.riwayat') }}">
+              <i class="mdi mdi-history"></i> Riwayat
+          </a>
+      </li>
+
+      @endif
     </ul>
+
+    <!-- {{-- MENU KURIR DESKTOP --}}
+      @if($role === 'kurir')
+      <div class="kurir-desktop-menu">
+          <a href="{{ route('kurir.dashboard') }}">Home</a>
+          <a href="#">Tugas</a>
+          <a href="#">Riwayat</a>
+          <a href="#">Profile</a>
+      </div>
+      @endif -->
+
     <ul class="navbar-nav navbar-nav-right ml-lg-auto">
-      @if($role !== 'kasir')
+      @if($role !== 'kasir' && $role !== 'kurir')
       <li class="nav-item dropdown d-none d-xl-flex border-0">
         <a class="nav-link dropdown-toggle" id="languageDropdown" href="#" data-toggle="dropdown">
           <i class="mdi mdi-earth"></i> English </a>
@@ -396,4 +435,102 @@ white-space:nowrap;
 }
 
 @endif
+
+/* MENU KURIR DESKTOP */
+.kurir-desktop-menu {
+    display: none; /* default sembunyi */
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+    justify-content: space-around;
+    align-items: center;
+    display: flex;
+}
+
+.kurir-desktop-menu a {
+    text-decoration: none;
+    color: #666;
+    font-size: 14px;
+    text-align: center;
+}
+
+@media (max-width: 767px) {
+    .kurir-desktop-menu {
+        display: none; /* sembunyi mobile */
+    }
+}
+
+@media (min-width: 768px) {
+    .kurir-desktop-menu {
+        display: flex; /* tampil desktop */
+    }
+}
+
+/* KURIR */
+.main-menu{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:25px;
+}
+
+.main-menu .nav-link{
+    display:flex;
+    align-items:center;
+    height:60px;
+    white-space:nowrap;
+}
+
+.main-menu .nav-link i{
+    margin-right:6px;
+}
+
+@if($role === 'kurir')
+.navbar{
+    background:#000;
+}
+@endif
+
+@if($role === 'kurir')
+
+.sidebar{
+    display:none !important;
+}
+
+.page-body-wrapper{
+    margin-left:0 !important;
+    padding-left:0 !important;
+}
+
+.main-panel{
+    margin-left:0 !important;
+    width:100% !important;
+}
+
+.navbar{
+    left:0 !important;
+    width:100% !important;
+}
+
+@endif
+
+@if($role === 'kurir')
+
+.main-menu{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:30px;
+}
+
+.navbar-nav-right{
+    margin-left:auto;
+}
+
+@endif
+
+
+
 </style>

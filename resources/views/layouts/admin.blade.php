@@ -19,9 +19,8 @@
         }
 
         .container-scroller{
-            min-height: 100vh;
-            display: flex;
-        }
+    min-height: 100vh;
+}
 
         .sidebar{
             width: 260px;
@@ -32,17 +31,20 @@
             flex: 1;
             display: flex;
             flex-direction: column;
+            position: relative; /* 🔥 TAMBAH */
         }
 
         .main-panel{
             flex: 1;
             display: flex;
             flex-direction: column;
+            position: relative; /* 🔥 TAMBAH */
         }
 
         .content-wrapper{
             flex: 1;
             width: 100%;
+            padding-bottom: 90px; /* 🔥 WAJIB */
         }
 
         .navbar{
@@ -92,6 +94,19 @@
 
 @endif
 
+@if(auth()->user()->role === 'kurir')
+.content-wrapper{
+    padding-bottom:80px !important;
+}
+@endif
+
+@media (max-width: 767px) {
+    nav.navbar {
+        position: absolute;
+        top: -100px;
+    }
+}
+
     </style>
 
 </head>
@@ -102,9 +117,9 @@
     {{-- SIDEBAR --}}
     @php $role = auth()->user()->role; @endphp
 
-    @if($role !== 'kasir')
+    @if(auth()->user()->role === 'admin')
     @include('layouts.partials.sidebar')
-    @endif
+@endif
 
     <div class="container-fluid page-body-wrapper">
 
@@ -121,10 +136,16 @@
 
             {{-- FOOTER --}}
             @include('layouts.partials.footer')
-        </div>
 
+        </div>
+            
     </div>
 </div>
+
+{{-- BOTTOM NAV KHUSUS KURIR --}}
+            @if(auth()->user()->role === 'kurir')
+                @include('layouts.partials.bottom-nav')
+            @endif
 
 {{-- JS --}}
 <script src="{{ asset('admin/assets/vendors/js/vendor.bundle.base.js') }}"></script>
