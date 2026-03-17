@@ -9,6 +9,7 @@ use App\Models\HistoryPemesanan;
 use App\Models\TrackPemesanan;
 use App\Models\Harga;
 use App\Models\Promo;
+use App\Models\Outlet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -166,6 +167,7 @@ class PemesananController extends Controller
                 'status_proses'  => 'diterima',
                 'status_bayar'   => 'belum',
                 'detail_layanan' => json_encode($detail),
+                'tipe_pemesanan' => 'offline', // TAMBAHKAN INI
             ]);
 
             $linkMaps = "https://www.google.com/maps?q={$request->latitude},{$request->longitude}";

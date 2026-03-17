@@ -7,22 +7,22 @@
 
 {{-- ================= RINGKASAN HARI INI ================= --}}
 <div class="stats-grid">
-    <div class="stat-card">
+    <div class="stat-card blue">
         <p>Pesanan Hari Ini</p>
         <h2>{{ $totalPesanan }}</h2>
     </div>
 
-    <div class="stat-card">
+    <div class="stat-card green">
         <p>Total Transaksi Hari Ini</p>
         <h2>Rp {{ number_format($totalTransaksi,0,',','.') }}</h2>
     </div>
 
-    <div class="stat-card">
+    <div class="stat-card red">
         <p>Belum Dibayar</p>
         <h2>{{ $belumDibayar }}</h2>
     </div>
 
-    <div class="stat-card">
+    <div class="stat-card orange">
         <p>Pesanan Selesai</p>
         <h2>{{ $pesananSelesai }}</h2>
     </div>
@@ -431,6 +431,49 @@ html, body {
 
 .content {
     overflow-x: hidden;
+}
+
+.stat-card{
+    border-radius:12px;
+    padding:20px;
+    color:white;
+}
+
+/* PESANAN */
+.stat-card.blue{
+    background: linear-gradient(135deg,#3b82f6,#1e3a8a);
+}
+
+/* TRANSAKSI */
+.stat-card.green{
+    background: linear-gradient(135deg,#10b981,#047857);
+}
+
+/* BELUM BAYAR */
+.stat-card.red{
+    background: linear-gradient(135deg,#ef4444,#991b1b);
+}
+
+/* SELESAI */
+.stat-card.orange{
+    background: linear-gradient(135deg,#f59e0b,#b45309);
+}
+
+.stat-card p{
+    color:rgba(255,255,255,0.8);
+}
+
+.stat-card h2{
+    color:white;
+}
+
+.stat-card{
+    transition:0.25s;
+}
+
+.stat-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 8px 20px rgba(0,0,0,0.15);
 }
 
 </style>
