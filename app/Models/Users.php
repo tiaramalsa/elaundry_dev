@@ -18,4 +18,9 @@ class Users extends Authenticatable
         'role',
         'no_telp',
     ];
+
+        public function kurir()
+    {
+        return $this->hasOne(Kurir::class);
+    }
 }

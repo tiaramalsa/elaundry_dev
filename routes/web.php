@@ -27,6 +27,9 @@ Route::post('/register', [AuthController::class, 'register']);
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::post('/update-password', [AuthController::class, 'updatePassword'])
+    ->name('password.update');
+
 // DASHBOARD
 // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::middleware(['auth', 'role:admin'])
@@ -92,6 +95,10 @@ Route::middleware(['auth', 'role:kurir'])
 
         Route::get('/profile', [KurirController::class, 'profile'])
             ->name('profile');
+        Route::get('/profile/edit', [KurirController::class, 'editProfile'])
+            ->name('profile.edit');
+        Route::post('/profile/update', [KurirController::class, 'updateProfile'])
+            ->name('profile.update');
         Route::post('/ambil/{id}', [KurirController::class, 'ambil'])->name('ambil');
         Route::post('/antar/{id}', [KurirController::class, 'antar'])->name('antar');
     });

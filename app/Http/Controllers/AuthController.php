@@ -72,4 +72,26 @@ class AuthController extends Controller
 
         return redirect()->route('login');
     }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|confirmed|min:6',
+        ]);
+
+        $user = Auth::user();
+
+        // cek password lama
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->with('error', 'Password lama salah');
+        }
+
+        // update password baru
+        $user->update([
+            'password' => Hash::make($request->password)
+        ]);
+
+        return back()->with('success', 'Password berhasil diubah');
+    }
 }
