@@ -79,80 +79,87 @@ class KurirController extends Controller
         ));
     }
 
-        public function editProfile()
-        {
-            $user = auth()->user();
-            $kurir = $user->kurir;
+    public function editProfile()
+    {
+        $user = auth()->user();
+        $kurir = $user->kurir;
 
-            if (!$kurir) {
-                $kurir = \App\Models\Kurir::create([
-                    'user_id' => $user->id,
-                    'id_kurir' => 'KURIR-' . rand(1000,9999)
-                ]);
+        if (!$kurir) {
+            $kurir = \App\Models\Kurir::create([
+                'user_id' => $user->id,
+                'id_kurir' => 'KURIR-' . rand(1000,9999)
+            ]);
+        }
+
+        return view('kurir.profile.edit', compact('user','kurir'));
+    }
+        
+
+    public function updateProfile(Request $request)
+    {
+        $user = auth()->user();
+        $kurir = $user->kurir;
+
+        // VALIDASI
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'no_hp' => 'nullable|string|max:20',
+            'alamat' => 'nullable|string',
+
+            'id_kurir' => 'required|string|max:50',
+            'status' => 'required|in:aktif,tidak_aktif',
+            'bergabung_sejak' => 'nullable|date',
+            'plat_nomor' => 'nullable|string|max:20',
+            'jenis_kendaraan' => 'nullable|string|max:50',
+
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        // =========================
+        // UPDATE USER
+        // =========================
+        $user->update([
+            'name' => $request->name,
+            'no_hp' => $request->no_hp,
+            'alamat' => $request->alamat,
+        ]);
+
+        // =========================
+        // HANDLE FOTO
+        // =========================
+        if ($request->hasFile('foto')) {
+
+            // hapus foto lama (biar ga numpuk)
+            if ($kurir && $kurir->foto) {
+                Storage::disk('public')->delete($kurir->foto);
             }
 
-            return view('kurir.profile.edit', compact('user','kurir'));
-        }
-            
+            $path = $request->file('foto')->store('kurir', 'public');
 
-        public function updateProfile(Request $request)
-{
-    $user = auth()->user();
-    $kurir = $user->kurir;
-
-    // VALIDASI
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'no_hp' => 'nullable|string|max:20',
-        'alamat' => 'nullable|string',
-
-        'id_kurir' => 'required|string|max:50',
-        'status' => 'required|in:aktif,tidak_aktif',
-        'bergabung_sejak' => 'nullable|date',
-        'plat_nomor' => 'nullable|string|max:20',
-        'jenis_kendaraan' => 'nullable|string|max:50',
-
-        'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-    ]);
-
-    // =========================
-    // UPDATE USER
-    // =========================
-    $user->update([
-        'name' => $request->name,
-        'no_hp' => $request->no_hp,
-        'alamat' => $request->alamat,
-    ]);
-
-    // =========================
-    // HANDLE FOTO
-    // =========================
-    if ($request->hasFile('foto')) {
-
-        // hapus foto lama (biar ga numpuk)
-        if ($kurir && $kurir->foto) {
-            Storage::disk('public')->delete($kurir->foto);
+            $kurir->foto = $path;
         }
 
-        $path = $request->file('foto')->store('kurir', 'public');
+        // =========================
+        // UPDATE DATA KURIR
+        // =========================
+        $kurir->update([
+            'id_kurir' => $request->id_kurir,
+            'status' => $request->status,
+            'bergabung_sejak' => $request->bergabung_sejak,
+            'plat_nomor' => $request->plat_nomor,
+            'jenis_kendaraan' => $request->jenis_kendaraan,
+            'foto' => $kurir->foto, // penting!
+        ]);
 
-        $kurir->foto = $path;
+        return redirect()->route('profile')
+            ->with('success', 'Profile berhasil diupdate!');
     }
 
-    // =========================
-    // UPDATE DATA KURIR
-    // =========================
-    $kurir->update([
-        'id_kurir' => $request->id_kurir,
-        'status' => $request->status,
-        'bergabung_sejak' => $request->bergabung_sejak,
-        'plat_nomor' => $request->plat_nomor,
-        'jenis_kendaraan' => $request->jenis_kendaraan,
-        'foto' => $kurir->foto, // penting!
-    ]);
+    public function detail($id)
+    {
+        $order = Pemesanan::with('customer')->findOrFail($id);
 
-    return redirect()->route('profile')
-        ->with('success', 'Profile berhasil diupdate!');
-}
+        return view('kurir.tugas.show', compact('order'));
+    }
 }
 

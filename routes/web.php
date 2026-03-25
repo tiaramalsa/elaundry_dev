@@ -101,6 +101,7 @@ Route::middleware(['auth', 'role:kurir'])
             ->name('profile.update');
         Route::post('/ambil/{id}', [KurirController::class, 'ambil'])->name('ambil');
         Route::post('/antar/{id}', [KurirController::class, 'antar'])->name('antar');
+        Route::get('/detail/{id}', [KurirController::class, 'detail'])->name('detail');
     });
 
 // Route::get('/admin/dashboard', [DashboardController::class, 'index'])
