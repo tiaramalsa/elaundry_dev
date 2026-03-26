@@ -4,6 +4,7 @@
 
 @section('content')
 
+
 <div class="container-fluid" style="max-width:600px;margin:auto;">
 
     <!-- HEADER -->
@@ -18,11 +19,56 @@
                 {{ $order->customer->alamat }}
             </p>
 
+            @php
+                $statusText = match($order->status_proses) {
+                    'menunggu_pickup' => 'Menunggu Pickup',
+                    'sudah_diambil' => 'Sudah Dijemput',
+                    'diterima', 'dicuci', 'dikeringkan', 'disetrika' => 'Sedang Diproses',
+                    'siap_antar' => 'Siap Diantar',
+                    'sedang_diantar' => 'Sedang Diantar',
+                    'selesai' => 'Selesai',
+                    default => '-'
+                };
+            @endphp
+
             <span class="badge badge-primary">
-                {{ $order->status_proses }}
+                {{ $statusText }}
             </span>
 
         </div>
+    </div>
+
+    <div class="card border-0 shadow-sm mb-3">
+        <div class="card-body">
+
+            <h6 class="mb-3 font-weight-bold">Detail Order</h6>
+
+            <p><b>Nama:</b> {{ $order->customer->nama_lengkap }}</p>
+
+            <p>
+            <b>No HP:</b> 
+            <a href="https://wa.me/{{ $order->customer->no_telp }}" target="_blank">
+                {{ $order->customer->no_telp }}
+            </a>
+            </p>
+
+            <p><b>Alamat:</b> {{ $order->customer->alamat }}</p>
+
+            <p><b>Catatan:</b> {{ $order->catatan_khusus ?? '-' }}</p>
+
+            <p><b>Jenis Laundry:</b></p>
+
+            @php
+                $layanans = json_decode($order->detail_layanan, true);
+            @endphp
+
+            @forelse($layanans as $item)
+                <div class="layanan-item">
+                    {{ $item['kode_layanan'] }} ({{ $item['qty'] }}x)
+                </div>
+            @empty
+                <p>-</p>
+            @endforelse
     </div>
 
     <!-- TIMELINE -->
@@ -32,15 +78,19 @@
             <h6 class="mb-3 font-weight-bold">Progress</h6>
 
             <ul class="timeline">
-                <li class="{{ $order->status_proses == 'pickup' ? 'active' : '' }}">
+
+                <li class="{{ in_array($order->status_proses, ['menunggu_pickup','sudah_diambil']) ? 'active' : '' }}">
                     Pickup
                 </li>
-                <li class="{{ $order->status_proses == 'proses' ? 'active' : '' }}">
+
+                <li class="{{ in_array($order->status_proses, ['diterima','dicuci','dikeringkan','disetrika']) ? 'active' : '' }}">
                     Diproses
                 </li>
-                <li class="{{ $order->status_proses == 'antar' ? 'active' : '' }}">
+
+                <li class="{{ in_array($order->status_proses, ['siap_antar','sedang_diantar','selesai']) ? 'active' : '' }}">
                     Diantar
                 </li>
+
             </ul>
 
         </div>
@@ -63,42 +113,63 @@
     </div>
 
     <!-- ACTION -->
-<div class="card border-0 shadow-sm">
-    <div class="card-body">
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
 
-        <!-- NAVIGASI -->
-        <a href="https://www.google.com/maps?q={{ $order->latitude }},{{ $order->longitude }}"
-           class="btn btn-dark w-100 mb-2">
-           📍 Navigasi
-        </a>
+            <!-- NAVIGASI -->
+            <a href="https://www.google.com/maps?q={{ $order->latitude }},{{ $order->longitude }}"
+            class="btn btn-dark w-100 mb-2">
+            📍 Navigasi
+            </a>
 
-        <!-- AKSI UTAMA -->
-        @if($order->status_proses == 'pickup')
-        <form method="POST" action="{{ route('kurir.ambil', $order->id_pemesanan) }}">
-            @csrf
-            <button class="btn btn-success w-100 mb-2">
-                ✅ Ambil Laundry
-            </button>
-        </form>
-        @endif
+            <!-- AKSI UTAMA -->
 
-        @if($order->status_proses == 'antar')
-        <form method="POST" action="{{ route('kurir.antar', $order->id_pemesanan) }}">
-            @csrf
-            <button class="btn btn-primary w-100 mb-2">
-                🚚 Antar Laundry
-            </button>
-        </form>
-        @endif
+            @if($order->status_proses == 'pickup')
+            <form method="POST" action="{{ route('kurir.ambil', $order->id_pemesanan) }}">
+                @csrf
+                <button class="btn btn-success w-100 mb-2">
+                    ✅ Ambil Laundry
+                </button>
+            </form>
+            @endif
 
-        <!-- 🔥 BUTTON KEMBALI -->
-        <a href="{{ route('kurir.tugas') }}"
-           class="btn btn-outline-secondary w-100">
-           ⬅️ Kembali
-        </a>
+            @if($order->status_proses == 'antar')
+            <form method="POST" action="{{ route('kurir.antar', $order->id_pemesanan) }}">
+                @csrf
+                <button class="btn btn-primary w-100 mb-2">
+                    🚚 Antar Laundry
+                </button>
+            </form>
+            @endif
 
+            <!-- 🔥 TAMBAHAN BARU TARUH DI SINI -->
+
+            @if($order->status_proses == 'siap_antar')
+            <form method="POST" action="{{ route('kurir.sedang.antar', $order->id_pemesanan) }}">
+                @csrf
+                <button class="btn btn-warning w-100 mb-2">
+                    🚚 Sedang Diantar
+                </button>
+            </form>
+            @endif
+
+            @if($order->status_proses == 'sedang_diantar')
+            <form method="POST" action="{{ route('kurir.antar', $order->id_pemesanan) }}">
+                @csrf
+                <button class="btn btn-primary w-100 mb-2">
+                    ✅ Sudah Sampai
+                </button>
+            </form>
+            @endif
+
+            <!-- 🔥 BUTTON KEMBALI -->
+            <a href="{{ route('kurir.tugas') }}"
+            class="btn btn-outline-secondary w-100">
+            ⬅️ Kembali
+            </a>
+
+        </div>
     </div>
-</div>
 
 </div>
 

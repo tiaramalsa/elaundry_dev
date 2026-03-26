@@ -72,4 +72,9 @@ class Pemesanan extends Model
         return $this->belongsTo(Promo::class, 'id_promo', 'id_promo');
     }
 
+    public function getLayananAttribute()
+    {
+        return array_filter(array_map('trim', explode(',', $this->jenis_layanan)));
+    }
+
 }

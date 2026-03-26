@@ -27,6 +27,31 @@
                 {{ Str::limit($item->customer->alamat, 70) }}
             </p>
 
+            <p class="mb-1">
+                📞 {{ $item->customer->no_telp }}
+            </p>
+
+            <p class="small">
+                Status: 
+                @switch($item->status_proses)
+                    @case('menunggu_pickup')
+                        Belum diambil
+                        @break
+
+                    @case('sudah_diambil')
+                        Sudah diambil
+                        @break
+
+                    @case('siap_antar')
+                        Siap diantar
+                        @break
+
+                    @case('sedang_diantar')
+                        Sedang diantar
+                        @break
+                @endswitch
+            </p>
+
             <!-- ACTION DALAM CARD -->
             <div class="d-flex mt-3">
                 <a href="https://www.google.com/maps?q={{ $item->latitude }},{{ $item->longitude }}"
@@ -35,12 +60,18 @@
                    📍 Maps
                 </a>
 
-                <form method="POST" action="{{ route('kurir.ambil', $item->id_pemesanan) }}" class="flex-fill">
+                @if($item->status_proses == 'menunggu_pickup')
+                <form method="POST" action="{{ route('kurir.ambil', $item->id_pemesanan) }}">
                     @csrf
                     <button class="btn btn-success w-100 btn-kurir">
                         Ambil
                     </button>
                 </form>
+                @else
+                <button class="btn btn-secondary w-100 btn-kurir" disabled>
+                    Sudah Diambil
+                </button>
+                @endif
             </div>
 
         </div>

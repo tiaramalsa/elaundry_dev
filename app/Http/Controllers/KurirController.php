@@ -18,15 +18,23 @@ class KurirController extends Controller
     public function tugas()
     {
         // 📥 Pickup (ambil laundry)
-        $pickup = \App\Models\Pemesanan::where('jenis_pengambilan', 'pickup_kurir')
-            ->where('status_proses', 'menunggu_pickup')
+        $pickup = Pemesanan::where('jenis_pengambilan', 'pickup_kurir')
+            ->whereIn('status_proses', [
+                'menunggu_pickup',
+                'sudah_diambil',
+                'diterima',
+                'dicuci',
+                'dikeringkan',
+                'disetrika'
+            ])
             ->get();
 
-        // 📦 Delivery (antar laundry)
-        $delivery = \App\Models\Pemesanan::where('jenis_pengambilan', 'pickup_kurir')
-            ->where('status_proses', 'siap_antar')
+        $delivery = Pemesanan::where('jenis_pengambilan', 'pickup_kurir')
+            ->whereIn('status_proses', [
+                'siap_antar',
+                'sedang_diantar'
+            ])
             ->get();
-
         return view('kurir.tugas.index', compact('pickup', 'delivery'));
     }
 
@@ -39,6 +47,17 @@ class KurirController extends Controller
         ]);
 
         return back()->with('success', 'Laundry berhasil diambil');
+    }
+
+    public function sedangAntar($id)
+    {
+        $data = Pemesanan::findOrFail($id);
+
+        $data->update([
+            'status_proses' => 'sedang_diantar'
+        ]);
+
+        return back();
     }
 
     public function antar($id)

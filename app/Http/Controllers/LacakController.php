@@ -165,21 +165,28 @@ class LacakController extends Controller
         }
 
         $next = match ($data->status_proses) {
-            'diterima'    => 'dicuci',
-            'dicuci'      => 'dikeringkan',
-            'dikeringkan' => 'disetrika',
-            'disetrika'   => 'selesai',
-             default      => null,
+
+            // 🔥 TAMBAHAN UNTUK KURIR FLOW
+            'menunggu_pickup' => 'diterima',
+            'sudah_diambil'   => 'diterima',
+
+            // 🔥 FLOW ADMIN
+            'diterima'        => 'dicuci',
+            'dicuci'          => 'dikeringkan',
+            'dikeringkan'     => 'disetrika',
+            'disetrika'       => 'siap_antar',
+
+            default => null,
         };
 
         if (!$next) {
-            return back();
+            return back()->with('error', 'Status tidak bisa lanjut');
         }
 
         $data->update([
             'status_proses' => $next
         ]);
 
-        return back();
+        return back()->with('success', 'Status berhasil diupdate');
     }
 }
