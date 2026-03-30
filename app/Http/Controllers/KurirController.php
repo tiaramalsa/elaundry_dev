@@ -18,15 +18,23 @@ class KurirController extends Controller
     public function tugas()
     {
         // 📥 Pickup (ambil laundry)
-        $pickup = \App\Models\Pemesanan::where('jenis_pengambilan', 'pickup_kurir')
-            ->where('status_proses', 'menunggu_pickup')
+        $pickup = Pemesanan::where('jenis_pengambilan', 'pickup_kurir')
+            ->whereIn('status_proses', [
+                'menunggu_pickup',
+                'sudah_diambil',
+                'diterima',
+                'dicuci',
+                'dikeringkan',
+                'disetrika'
+            ])
             ->get();
 
-        // 📦 Delivery (antar laundry)
-        $delivery = \App\Models\Pemesanan::where('jenis_pengambilan', 'pickup_kurir')
-            ->where('status_proses', 'siap_antar')
+        $delivery = Pemesanan::where('jenis_pengambilan', 'pickup_kurir')
+            ->whereIn('status_proses', [
+                'siap_antar',
+                'sedang_diantar'
+            ])
             ->get();
-
         return view('kurir.tugas.index', compact('pickup', 'delivery'));
     }
 
@@ -39,6 +47,17 @@ class KurirController extends Controller
         ]);
 
         return back()->with('success', 'Laundry berhasil diambil');
+    }
+
+    public function sedangAntar($id)
+    {
+        $data = Pemesanan::findOrFail($id);
+
+        $data->update([
+            'status_proses' => 'sedang_diantar'
+        ]);
+
+        return back();
     }
 
     public function antar($id)
@@ -79,21 +98,21 @@ class KurirController extends Controller
         ));
     }
 
-        public function editProfile()
-        {
-            $user = auth()->user();
-            $kurir = $user->kurir;
+    public function editProfile()
+    {
+        $user = auth()->user();
+        $kurir = $user->kurir;
 
-            if (!$kurir) {
-                $kurir = \App\Models\Kurir::create([
-                    'user_id' => $user->id,
-                    'id_kurir' => 'KURIR-' . rand(1000,9999)
-                ]);
-            }
-
-            return view('kurir.profile.edit', compact('user','kurir'));
+        if (!$kurir) {
+            $kurir = \App\Models\Kurir::create([
+                'user_id' => $user->id,
+                'id_kurir' => 'KURIR-' . rand(1000,9999)
+            ]);
         }
-            
+
+        return view('kurir.profile.edit', compact('user','kurir'));
+    }
+    
 
         public function updateProfile(Request $request)
         {
@@ -136,30 +155,40 @@ class KurirController extends Controller
     // =========================
     if ($request->hasFile('foto')) {
 
-        // hapus foto lama (biar ga numpuk)
+        // hapus foto lama
         if ($kurir && $kurir->foto) {
             Storage::disk('public')->delete($kurir->foto);
         }
 
-        $path = $request->file('foto')->store('kurir', 'public');
-
-        $kurir->foto = $path;
+        // simpan foto baru
+        $path = $request->file('foto')->store('foto_kurir', 'public');
+    } else {
+        $path = $kurir->foto;
     }
 
-    // =========================
-    // UPDATE DATA KURIR
-    // =========================
-    $kurir->update([
-        'id_kurir' => $request->id_kurir,
-        'status' => $request->status,
-        'bergabung_sejak' => $request->bergabung_sejak,
-        'plat_nomor' => $request->plat_nomor,
-        'jenis_kendaraan' => $request->jenis_kendaraan,
-        'foto' => $kurir->foto, // penting!
-    ]);
+        // =========================
+        // UPDATE DATA KURIR
+        // =========================
+        $kurir->update([
+            'id_kurir' => $request->id_kurir,
+            'status' => $request->status,
+            'bergabung_sejak' => $request->bergabung_sejak,
+            'plat_nomor' => $request->plat_nomor,
+            'jenis_kendaraan' => $request->jenis_kendaraan,
+            'foto' => $path, // penting!
+        ]);
+
+        return redirect()->route('profile')
+            ->with('success', 'Profile berhasil diupdate!');
+    }
+
+    public function detail($id)
+    {
+        $order = Pemesanan::with('customer')->findOrFail($id);
 
     return redirect()->route('kurir.profile')
     ->with('success', 'Profile berhasil diupdate!');
 }
+        
 }
 
