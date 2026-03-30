@@ -265,7 +265,8 @@ $countNotif = $notifikasiOrder->count();
 
   .navbar-nav .nav-link{
     font-weight:500;
-    padding:0 18px;
+    padding:0 10px;
+    font-size:14px;
     display:flex;
     align-items:center;
     height:60px;
@@ -472,7 +473,7 @@ white-space:nowrap;
     display:flex;
     justify-content:center;
     align-items:center;
-    gap:25px;
+    gap:12px;
 }
 
 .main-menu .nav-link{
