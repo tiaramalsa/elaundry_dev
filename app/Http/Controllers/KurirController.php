@@ -116,14 +116,14 @@ class KurirController extends Controller
 
         public function updateProfile(Request $request)
         {
-        $user = auth()->user();
-        $kurir = $user->kurir;
+            $user = auth()->user();
+            $kurir = $user->kurir;
 
-        if (!$kurir) {
-            $kurir = Kurir::create([
-                'user_id' => $user->id,
-                'id_kurir' => $request->id_kurir ?? 'KURIR-' . rand(1000,9999)
-            ]);
+            if (!$kurir) {
+                $kurir = Kurir::create([
+                    'user_id' => $user->id,
+                    'id_kurir' => $request->id_kurir ?? 'KURIR-' . rand(1000,9999)
+                ]);
         }
 
         // VALIDASI
@@ -186,9 +186,8 @@ class KurirController extends Controller
     {
         $order = Pemesanan::with('customer')->findOrFail($id);
 
-    return redirect()->route('kurir.profile')
-    ->with('success', 'Profile berhasil diupdate!');
-}
+        return view('kurir.tugas.show', compact('order'));
+    }
         
 }
 

@@ -61,12 +61,28 @@ rows="3"
 required></textarea>
 </div>
 
-<div class="form-group mt-3">
-    <label><strong>Metode Pengambilan</strong></label>
-    <select name="jenis_pengambilan" class="form-control" required>
-        <option value="ambil_sendiri">Ambil Sendiri</option>
-        <option value="pickup_kurir">Jemput Kurir</option>
-    </select>
+<div class="col-md-12 mt-3">
+
+    <div class="metode-wrapper">
+
+        <label class="metode-card">
+            <input type="radio" name="jenis_pengambilan" value="ambil_sendiri" required>
+            <div class="metode-content">
+                <span class="metode-title">Ambil Sendiri</span>
+                <small>Datang ke outlet</small>
+            </div>
+        </label>
+
+        <label class="metode-card">
+            <input type="radio" name="jenis_pengambilan" value="pickup_kurir">
+            <div class="metode-content">
+                <span class="metode-title">Jemput Kurir</span>
+                <small>Kurir ke lokasi</small>
+            </div>
+        </label>
+
+    </div>
+
 </div>
 
 </div>
@@ -667,12 +683,31 @@ rows="3"></textarea>
     }
 </script>
 
+{{-- Hide Map Sesuai Metode Pengambilan --}}
+<script>
+document.querySelectorAll('input[name="jenis_pengambilan"]')
+.forEach(radio => {
+    radio.addEventListener('change', function() {
+
+        const map = document.getElementById('map');
+
+        if (this.value === 'ambil_sendiri') {
+            map.style.display = 'none';
+        } else {
+            map.style.display = 'block';
+        }
+    });
+});
+</script>
+    
+
 {{-- Tutup Modal --}}
 <script>
     function closeModal() {
         document.getElementById('successModal').style.display = 'none';
     }
 </script>
+
 <style>
     .modal-overlay {
         position: fixed;
@@ -824,6 +859,52 @@ rows="3"></textarea>
         background: #dc2626;
         color: white;
         transform: scale(1.05);
+    }
+
+    /* Metode Pengambilan */
+    .metode-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        width: 100%; 
+        margin-top: 5px;
+    }
+
+    .metode-card {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 18px;
+        border: 2px solid #e5e7eb;
+        border-radius: 14px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        width: 100%; /* WAJIB */
+        min-height: 70px; /* biar tinggi kayak input */
+        box-sizing: border-box; /* biar ga overflow */
+    }
+
+    .metode-card input {
+        transform: scale(1.4);
+        flex-shrink: 0; /* biar ga ke-push */
+    }
+
+    .metode-content {
+        flex: 1; 
+        display: flex;
+        flex-direction: column;
+    }
+    .metode-title {
+        font-size: 14px;
+        font-weight: 500; /* lebih soft dari bold */
+        color: #111827;
+    }
+
+    .metode-content small {
+        margin-top: 2px;
+        color: #6b7280;
+        font-size: 12px;
     }
 </style>
 
