@@ -12,6 +12,17 @@
 
 <h4 class="card-title font-weight-bold">Edit Profile</h4>
 
+{{-- 🔥 ERROR VALIDATION --}}
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
 <form action="{{ route('kurir.profile.update') }}" method="POST" enctype="multipart/form-data">
 @csrf
 
@@ -24,7 +35,7 @@
 
 <div class="form-group">
 <label class="font-weight-bold">Nama</label>
-<input type="text" name="name" class="form-control" value="{{ $user->name }}">
+<input type="text" name="nama" class="form-control" value="{{ old('nama', $user->nama) }}">
 </div>
 
 <div class="form-group">
@@ -34,12 +45,12 @@
 
 <div class="form-group">
 <label class="font-weight-bold">No HP</label>
-<input type="text" name="no_hp" class="form-control" value="{{ $user->no_hp }}">
+<input type="text" name="no_telp" class="form-control" value="{{ old('no_telp', $user->no_telp) }}">
 </div>
 
 <div class="form-group">
 <label class="font-weight-bold">Alamat</label>
-<textarea name="alamat" class="form-control">{{ $user->alamat }}</textarea>
+<textarea name="alamat" class="form-control">{{ old('alamat', $user->alamat) }}</textarea>
 </div>
 
 <div class="form-group">
@@ -61,13 +72,13 @@
 
 <div class="form-group">
 <label class="font-weight-bold">ID Kurir</label>
-<input type="text" name="id_kurir" class="form-control" value="{{ $kurir->id_kurir }}">
+<input type="text" name="id_kurir" class="form-control" value="{{ old('id_kurir', $kurir->id_kurir ?? '') }}">
 </div>
 
 <div class="form-group">
 <label class="font-weight-bold">Status</label>
 <select name="status" class="form-control">
-    <option value="aktif" {{ $kurir->status == 'aktif' ? 'selected' : '' }}>Aktif</option>
+    <option value="aktif" {{ old('status', $kurir->status ?? '') == 'aktif' ? 'selected' : '' }}>Aktif</option>
     <option value="tidak_aktif" {{ $kurir->status == 'tidak_aktif' ? 'selected' : '' }}>Tidak Aktif</option>
 </select>
 </div>

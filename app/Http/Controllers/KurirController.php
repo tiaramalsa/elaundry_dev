@@ -63,7 +63,7 @@ class KurirController extends Controller
                         ->count();
 
         $totalDiambil = Pemesanan::where('kurir_id', $user->id)
-                        ->where('status_proses','diambil')
+                        ->where('status_proses','sudah_diambil')
                         ->count();
 
         $orderHariIni = Pemesanan::where('kurir_id', $user->id)
@@ -96,31 +96,38 @@ class KurirController extends Controller
             
 
         public function updateProfile(Request $request)
-{
-    $user = auth()->user();
-    $kurir = $user->kurir;
+        {
+        $user = auth()->user();
+        $kurir = $user->kurir;
 
-    // VALIDASI
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'no_hp' => 'nullable|string|max:20',
-        'alamat' => 'nullable|string',
+        if (!$kurir) {
+            $kurir = Kurir::create([
+                'user_id' => $user->id,
+                'id_kurir' => $request->id_kurir ?? 'KURIR-' . rand(1000,9999)
+            ]);
+        }
 
-        'id_kurir' => 'required|string|max:50',
-        'status' => 'required|in:aktif,tidak_aktif',
-        'bergabung_sejak' => 'nullable|date',
-        'plat_nomor' => 'nullable|string|max:20',
-        'jenis_kendaraan' => 'nullable|string|max:50',
+        // VALIDASI
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'no_telp' => 'nullable|string|max:20',
+            'alamat' => 'nullable|string',
 
-        'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-    ]);
+            'id_kurir' => 'required|string|max:50',
+            'status' => 'required|in:aktif,tidak_aktif',
+            'bergabung_sejak' => 'nullable|date',
+            'plat_nomor' => 'nullable|string|max:20',
+            'jenis_kendaraan' => 'nullable|string|max:50',
+
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
+        ]);
 
     // =========================
     // UPDATE USER
     // =========================
     $user->update([
-        'name' => $request->name,
-        'no_hp' => $request->no_hp,
+        'nama' => $request->nama,
+        'no_telp' => $request->no_telp,
         'alamat' => $request->alamat,
     ]);
 
@@ -151,8 +158,8 @@ class KurirController extends Controller
         'foto' => $kurir->foto, // penting!
     ]);
 
-    return redirect()->route('profile')
-        ->with('success', 'Profile berhasil diupdate!');
+    return redirect()->route('kurir.profile')
+    ->with('success', 'Profile berhasil diupdate!');
 }
 }
 

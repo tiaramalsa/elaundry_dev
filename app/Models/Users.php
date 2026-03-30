@@ -17,6 +17,7 @@ class Users extends Authenticatable
         'password',
         'role',
         'no_telp',
+        
     ];
 
         public function kurir()

@@ -25,9 +25,9 @@
 
 <h5 class="mb-3">Data Diri</h5>
 
-<p><span class="font-weight-bold">Nama :</span> {{ $user->name }}</p>
+<p><span class="font-weight-bold">Nama :</span> {{ $user->nama }}</p>
 <p><span class="font-weight-bold">Email :</span> {{ $user->email }}</p>
-<p><span class="font-weight-bold">No HP :</span> {{ $user->no_hp ?? '-' }}</p>
+<p><span class="font-weight-bold">No HP :</span> {{ $user->no_telp ?? '-' }}</p>
 <p><span class="font-weight-bold">Alamat :</span> {{ $user->alamat ?? '-' }}</p>
 
 <div class="mt-2">
