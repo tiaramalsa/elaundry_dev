@@ -14,98 +14,125 @@
     @stack('styles')
 
     <style>
-        html, body {
-            height: 100%;
+        /* GENERAL */
+        .content-wrapper {
+            padding-bottom: 90px;
         }
 
-        .container-scroller{
-            min-height: 100vh;
+        /* =========================
+        KASIR & KURIR MODE
+        ========================= */
+        @if(auth()->user()->role === 'kasir' || auth()->user()->role === 'kurir')
+
+        .sidebar {
+            display: none !important;
         }
 
-        .sidebar{
-            width: 260px;
-            min-height: 100vh;
+        .page-body-wrapper {
+            margin-left: 0 !important;
+            padding-left: 0 !important;
+            width: 100% !important;
         }
 
-        .page-body-wrapper{
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            position: relative; /* 🔥 TAMBAH */
+        .main-panel {
+            width: 100% !important;
+            margin-left: 0 !important;
+            max-width: 100% !important;
+            flex: 1 1 100% !important;
         }
 
-        .main-panel{
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            position: relative; /* 🔥 TAMBAH */
+        .container-fluid.page-body-wrapper {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
         }
 
-        .content-wrapper{
-            flex: 1;
-            width: 100%;
-            padding-bottom: 90px; /* 🔥 WAJIB */
+        .navbar {
+            width: 100% !important;
+            left: 0 !important;
+            padding-right: 0 !important;
         }
 
-        .navbar{
-            width: 100%;
-        }
-
-        /* FIX NAVBAR KASIR */
-        @if(auth()->user()->role === 'kasir')
-
-        .container-fluid.page-body-wrapper{
-            margin-left:0 !important;
-            padding-left:0 !important;
-        }
-
-        .page-body-wrapper{
-            margin-left:0 !important;
-        }
-
-        .sidebar{
-            display:none !important;
-        }
-
-        .navbar{
-            left:0 !important;
-            width:100% !important;
-        }
-
-        .main-panel{
-            margin-left:0 !important;
-            width:100% !important;
-        }
-
-        /* TAMBAHAN FIX */
-        .container-scroller{
-            display:block !important;
-        }
-
-        .page-body-wrapper{
-            width:100% !important;
-        }
-
-        .navbar{
-            position:fixed;
-            left:0 !important;
-            width:100% !important;
+        body:not(.sidebar-icon-only) .main-panel {
+            margin-left: 0 !important;
         }
 
         @endif
 
-        @if(auth()->user()->role === 'kurir')
-        .content-wrapper{
-            padding-bottom:80px !important;
+        /* =========================
+        NAVBAR UNIVERSAL FIX
+        ========================= */
+
+        /* wrapper utama */
+        .navbar-menu-wrapper {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* LEFT */
+        .nav-left {
+            min-width: 150px;
+        }
+
+        /* CENTER MENU */
+        .main-menu {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+        }
+
+        /* MENU ITEM */
+        .main-menu .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            height: 60px;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        /* RIGHT */
+        .nav-right {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        .navbar-menu-wrapper {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding-right: 15px; /* opsional biar ga nempel banget */
+        }
+
+        /* PROFILE */
+        .nav-profile {
+            margin-right: 10px;
+        }
+
+        /* HAPUS GARIS ANEH */
+        .navbar .nav-item,
+        .navbar .nav-link {
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        /* FIX DROPDOWN KE KANAN */
+        .navbar-nav-right .dropdown-menu,
+        .nav-right .dropdown-menu {
+            right: 0;
+            left: auto;
+        }
+
+        /* DARK MODE UNTUK KASIR & KURIR */
+        @if(auth()->user()->role === 'kasir' || auth()->user()->role === 'kurir')
+        .navbar {
+            background: #000;
         }
         @endif
-
-        @media (max-width: 767px) {
-            nav.navbar {
-                position: absolute;
-                top: -100px;
-            }
-        }
 
     </style>
 
@@ -148,14 +175,14 @@
         @endif
 
     {{-- JS --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('admin/assets/vendors/js/vendor.bundle.base.js') }}"></script>
-    <script src="{{ asset('admin/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="{{ asset('admin/assets/js/off-canvas.js') }}"></script>
     <script src="{{ asset('admin/assets/js/hoverable-collapse.js') }}"></script>
     <script src="{{ asset('admin/assets/js/misc.js') }}"></script>
+
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
 

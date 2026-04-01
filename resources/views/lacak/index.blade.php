@@ -8,6 +8,7 @@
 
 @section('content')
 
+<div class="page-lacak">
 <h3 class="page-title mb-4">Proses Order</h3>
 
 {{-- ================= DASHBOARD STATUS ================= --}}
@@ -183,12 +184,24 @@ $id = $p->source === 'pemesanan'
 @csrf
 <input type="hidden" name="source" value="{{ $p->source ?? '' }}">
 
+@php
+$isPickup = $p->jenis_pengambilan === 'pickup_kurir';
+@endphp
+
 <button
-type="submit"
-class="btn {{ $p->status_proses === 'disetrika' ? 'btn-success' : 'btn-warning' }} btn-sm">
+    type="submit"
+    class="btn btn-sm
+    {{ $isPickup && $p->status_proses === 'menunggu_pickup'
+        ? 'btn-primary'
+        : ($p->status_proses === 'disetrika' ? 'btn-success' : 'btn-warning') }}">
 
-{{ $p->status_proses === 'disetrika' ? 'Selesai' : 'Next' }}
-
+    @if($isPickup && $p->status_proses === 'menunggu_pickup')
+        Jemput
+    @elseif($p->status_proses === 'disetrika')
+        Selesai
+    @else
+        Proses
+    @endif
 </button>
 
 </form>
@@ -217,141 +230,151 @@ Tidak ada data
 
 </div>
 </div>
-
+</div>
 @endsection
 
 <style>
     /* ===== FILTER LAYOUT ===== */
-.filter-row{
-display:flex;
-align-items:flex-end;
-gap:14px;
-flex-wrap:wrap;
-overflow-x:auto;
-}
+    .filter-row{
+    display:flex;
+    align-items:flex-end;
+    gap:14px;
+    flex-wrap:wrap;
+    overflow-x:auto;
+    }
 
-/* ===== SEMUA INPUT FILTER ===== */
-.filter-row select,
-.filter-row input{
-height:36px;
-padding:0px 10px;
-border:1px solid #d1d5db;
-border-radius:6px;
-background:#fff;
-font-size:13px;
-box-sizing:border-box;
-flex:1;
-min-width:140px;
-}
+    /* ===== SEMUA INPUT FILTER ===== */
+    .page-lacak .filter-row select,
+    .page-lacak .filter-row input{
+    height:36px;
+    padding:0px 10px;
+    border:1px solid #d1d5db;
+    border-radius:6px;
+    background:#fff;
+    font-size:13px;
+    box-sizing:border-box;
+    flex:1;
+    min-width:140px;
+    }
 
-.filter-row select{
-text-overflow:ellipsis;
-white-space:nowrap;
-overflow:hidden;
-color:#9ca3af;
-}
+    .filter-row select{
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    overflow:hidden;
+    color:#9ca3af;
+    }
 
-.filter-row select:valid{
-color:#111827;
-}
+    .filter-row select:valid{
+    color:#111827;
+    }
 
-/* placeholder input biasa */
-.filter-row input::placeholder{
-color:#9ca3af;
-}
+    /* placeholder input biasa */
+    .filter-row input::placeholder{
+    color:#9ca3af;
+    }
 
-/* saat user mengetik */
-.filter-row input:focus::placeholder{
-color:#cbd5f5;
-}
+    /* saat user mengetik */
+    .filter-row input:focus::placeholder{
+    color:#cbd5f5;
+    }
 
-/* ukuran masing-masing filter */
-/* OUTLET */
-.filter-row select[name="outlet_id"]{
-width:160px;
-}
+    /* ukuran masing-masing filter */
+    /* OUTLET */
+    .filter-row select[name="outlet_id"]{
+    width:160px;
+    }
 
-/* TIPE */
-.filter-row select[name="tipe_pemesanan"]{
-width:140px;
-}
+    /* TIPE */
+    .filter-row select[name="tipe_pemesanan"]{
+    width:140px;
+    }
 
-/* PROSES */
-.filter-row select[name="status"]{
-width:120px;
-}
+    /* PROSES */
+    .filter-row select[name="status"]{
+    width:120px;
+    }
 
-/* DATE */
-.filter-row input[type="date"]{
-width:150px;
-}
+    /* DATE */
+    .filter-row input[type="date"]{
+    width:150px;
+    }
 
-/* BUTTON */
-.btn-apply{
-height:40px;
-padding:0 18px;
-white-space:nowrap;
-}
+    /* BUTTON */
+    .btn-apply{
+    height:40px;
+    padding:0 18px;
+    white-space:nowrap;
+    }
 
-/* ===== BUTTON ===== */
-.filter-action{
-display:flex;
-align-items:center;
-}
+    /* ===== BUTTON ===== */
+    .filter-action{
+    display:flex;
+    align-items:center;
+    }
 
-/* DATE FIELD */
-.date-field{
-position:relative;
-flex:1;
-width:160px;
-padding-top:6px; /* ruang untuk label */
-}
+    /* DATE FIELD */
+    .date-field{
+    position:relative;
+    flex:1;
+    width:160px;
+    padding-top:6px; /* ruang untuk label */
+    }
 
-.date-field input{
-width:100%;
-height:36px;
-padding:10px 8px 4px 8px;
-border:1px solid #d1d5db;
-border-radius:6px;
-font-size:13px;
-background:#fff;
-box-sizing:border-box;
-}
+    .date-field input{
+    width:100%;
+    height:36px;
+    padding:10px 8px 4px 8px;
+    border:1px solid #d1d5db;
+    border-radius:6px;
+    font-size:13px;
+    background:#fff;
+    box-sizing:border-box;
+    }
 
-.date-field label{
-position:absolute;
-top:0;
-left:10px;
-background:#fff;
-padding:0 4px;
-font-size:10px;
-color:#64748b;
-line-height:1;
-pointer-events:none;
-}
+    .date-field label{
+    position:absolute;
+    top:0;
+    left:10px;
+    background:#fff;
+    padding:0 4px;
+    font-size:10px;
+    color:#64748b;
+    line-height:1;
+    pointer-events:none;
+    }
 
-.filter-row{
-display:flex;
-align-items:flex-end;
-gap:10px;
-flex-wrap:nowrap;
-}
+    .filter-row{
+    display:flex;
+    align-items:flex-end;
+    gap:10px;
+    flex-wrap:nowrap;
+    }
 
-.btn-apply{
-height:px36;
-padding:0 18px;
-border:none;
-border-radius:6px;
-background:#4f46e5;
-color:white;
-font-weight:500;
-cursor:pointer;
-flex:0;
-}
+    .btn-apply{
+    height:px36;
+    padding:0 18px;
+    border:none;
+    border-radius:6px;
+    background:#4f46e5;
+    color:white;
+    font-weight:500;
+    cursor:pointer;
+    flex:0;
+    }
 
-.btn-apply:hover{
-background:#4338ca;
-}
+    .btn-apply:hover{
+    background:#4338ca;
+    }
+
+    /* Header kolom aksi */
+    #table-lacak th.aksi-col {
+        text-align: center !important;
+    }
+
+    /* Isi kolom aksi */
+    #table-lacak td.aksi-col {
+        text-align: center !important;
+    }
 
 </style>
 

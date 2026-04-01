@@ -18,6 +18,11 @@ $countNotif = $notifikasiOrder->count();
 @if($role === 'kasir') pl-0 @endif">
     <a class="navbar-brand brand-logo-mini align-self-center d-lg-none" href="index.html"><img src="{{ asset('admin/assets/images/logo-mini.svg') }}" alt="logo" /></a>
     @if($role !== 'kasir' && $role !== 'kurir')
+    <div class="app-logo">
+        <a href="{{ route($role.'.dashboard') }}">
+            <img src="{{ asset('admin/assets/images/Logo C24-text.png') }}" style="height:70px;">
+        </a>
+    </div>
     <button class="navbar-toggler navbar-toggler align-self-center mr-2" type="button" data-toggle="minimize">
       <i class="mdi mdi-menu"></i>
     </button>
@@ -171,27 +176,32 @@ $countNotif = $notifikasiOrder->count();
 
       <!-- KURIR -->
       @if($role === 'kurir')
+
       <li class="nav-item">
           <a class="nav-link" href="{{ route('kurir.dashboard') }}">
-              <i class="mdi mdi-home"></i> Beranda
+              <i class="mdi mdi-view-dashboard"></i>
+              <span>Beranda</span>
           </a>
       </li>
 
       <li class="nav-item">
           <a class="nav-link" href="{{ route('kurir.tugas') }}">
-              <i class="mdi mdi-truck-delivery"></i> Tugas
+              <i class="mdi mdi-truck-fast"></i>
+              <span>Tugas</span>
           </a>
       </li>
 
       <li class="nav-item">
           <a class="nav-link" href="{{ route('kurir.riwayat.index') }}">
-              <i class="mdi mdi-history"></i> Riwayat
+              <i class="mdi mdi-clipboard-text-clock"></i>
+              <span>Riwayat</span>
           </a>
       </li>
 
       <li class="nav-item">
           <a class="nav-link" href="{{ route('kurir.profile') }}">
-              <i class="mdi mdi-account-circle"></i> Profile
+              <i class="mdi mdi-account"></i>
+              <span>Profile</span>
           </a>
       </li>
 
@@ -278,260 +288,295 @@ $countNotif = $notifikasiOrder->count();
 
     @endif
 
-.navbar-kasir{
-left:0 !important;
-width:100vw !important;
-background:#000;
-}
-
-.navbar-kasir .navbar-menu-wrapper{
-width:100% !important;
-max-width:100% !important;
-flex:1;
-}
-
-.navbar-kasir .navbar-nav{
-margin-left:0 !important;
-}
-
-@if($role === 'kasir')
-
-.main-panel{
-    margin-left:0 !important;
-    width:100% !important;
-}
-
-.page-body-wrapper{
-    padding-left:0 !important;
-}
-
-@endif
-
-.navbar-kasir .navbar-nav{
-display:flex;
-align-items:center;
-margin-left:30px;
-}
-
-.navbar-kasir .nav-item{
-border-right:none !important;
-}
-
-.navbar-kasir .navbar-nav .nav-link{
-border-right:none !important;
-}
-
-@if($role === 'kasir')
-
-.navbar-kasir .navbar-nav{
-display:flex;
-align-items:center;
-justify-content:center;
-flex:1;
-margin-left:0;
-}
-@endif
-
-@if($role === 'kasir')
-
-.navbar-kasir .nav-item:first-child{
-margin-left:20px;
-}
-@endif
-
-.navbar-nav-right .dropdown-menu{
-min-width:100px;
-} 
-
-@if($role === 'kasir')
-
-.navbar-kasir .nav-item{
-border-right:none !important;
-}
-
-.navbar-kasir .nav-link{
-border-right:none !important;
-}
-
-@endif
-
-@if($role === 'kasir')
-
-.kasir-menu{
-flex:1;
-display:flex;
-justify-content:center;
-align-items:center;
-gap:25px;
-}
-
-@endif
-
-@if($role === 'kasir')
-
-.navbar-kasir .navbar-nav .nav-item{
-border:none !important;
-}
-
-@endif
-
-.nav-profile .dropdown-menu{
-right:0;
-left:auto;
-min-width:180px;
-}
-
-.navbar-kasir .navbar-menu-wrapper{
-display:flex;
-align-items:center;
-}
-
-.navbar-kasir{
-height:70px;
-}
-
-@if($role === 'kasir')
-
-.kasir-logo{
-margin-left:50px;
-display:flex;
-align-items:center;
-}
-
-.kasir-menu{
-flex:1;
-display:flex;
-justify-content:center;
-align-items:center;
-gap:25px;
-}
-
-.navbar-kasir .nav-item{
-border:none !important;
-}
-
-.nav-profile .dropdown-menu{
-right:0;
-left:auto;
-min-width:180px;
-}
-
-@endif
-
-@if($role === 'kasir')
-
-/* menu tetap satu baris */
-.kasir-menu{
-flex:1;
-display:flex;
-justify-content:center;
-align-items:center;
-gap:25px;
-flex-wrap:nowrap;
-}
-
-/* text menu tidak boleh turun baris */
-.kasir-menu .nav-link{
-white-space:nowrap;
-}
-
-@endif
-
-/* MENU KURIR DESKTOP */
-.kurir-desktop-menu {
-    display: none; /* default sembunyi */
-    background: #fff;
-    border-bottom: 1px solid #ddd;
-    padding: 10px 0;
-    justify-content: space-around;
-    align-items: center;
-    display: flex;
-}
-
-.kurir-desktop-menu a {
-    text-decoration: none;
-    color: #666;
-    font-size: 14px;
-    text-align: center;
-}
-
-@media (max-width: 767px) {
-    .kurir-desktop-menu {
-        display: none; /* sembunyi mobile */
-    }
-}
-
-@media (min-width: 768px) {
-    .kurir-desktop-menu {
-        display: flex; /* tampil desktop */
-    }
-}
-
-/* KURIR */
-.main-menu{
-    flex:1;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:12px;
-}
-
-.main-menu .nav-link{
-    display:flex;
-    align-items:center;
-    height:60px;
-    white-space:nowrap;
-}
-
-.main-menu .nav-link i{
-    margin-right:6px;
-}
-
-@if($role === 'kurir')
-.navbar{
-    background:#000;
-}
-@endif
-
-@if($role === 'kurir')
-
-.sidebar{
-    display:none !important;
-}
-
-.page-body-wrapper{
-    margin-left:0 !important;
-    padding-left:0 !important;
-}
-
-.main-panel{
-    margin-left:0 !important;
-    width:100% !important;
-}
-
-.navbar{
+  .navbar-kasir{
     left:0 !important;
+    width:100vw !important;
+    background:#000;
+    }
+
+    .navbar-kasir .navbar-menu-wrapper{
     width:100% !important;
-}
+    max-width:100% !important;
+    flex:1;
+    }
 
-@endif
+    .navbar-kasir .navbar-nav{
+    margin-left:0 !important;
+    }
 
-@if($role === 'kurir')
+    @if($role === 'kasir')
 
-.main-menu{
+    .main-panel{
+        margin-left:0 !important;
+        width:100% !important;
+    }
+
+    .page-body-wrapper{
+        padding-left:0 !important;
+    }
+
+    @endif
+
+    .navbar-kasir .navbar-nav{
+    display:flex;
+    align-items:center;
+    margin-left:30px;
+    }
+
+    .navbar-kasir .nav-item{
+    border-right:none !important;
+    }
+
+    .navbar-kasir .navbar-nav .nav-link{
+    border-right:none !important;
+    }
+
+    @if($role === 'kasir')
+
+    .navbar-kasir .navbar-nav{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex:1;
+    margin-left:0;
+    }
+    @endif
+
+    @if($role === 'kasir')
+
+    .navbar-kasir .nav-item:first-child{
+    margin-left:20px;
+    }
+    @endif
+
+    .navbar-nav-right .dropdown-menu{
+    min-width:100px;
+    } 
+
+    @if($role === 'kasir')
+
+    .navbar-kasir .nav-item{
+    border-right:none !important;
+    }
+
+    .navbar-kasir .nav-link{
+    border-right:none !important;
+    }
+
+    @endif
+
+    @if($role === 'kasir')
+
+    .kasir-menu{
     flex:1;
     display:flex;
     justify-content:center;
     align-items:center;
-    gap:30px;
-}
+    gap:25px;
+    }
 
-.navbar-nav-right{
-    margin-left:auto;
-}
+    @endif
 
-@endif
+    @if($role === 'kasir')
+
+    .navbar-kasir .navbar-nav .nav-item{
+    border:none !important;
+    }
+
+    @endif
+
+    .nav-profile .dropdown-menu{
+    right:0;
+    left:auto;
+    min-width:180px;
+    }
+
+    .navbar-kasir .navbar-menu-wrapper{
+    display:flex;
+    align-items:center;
+    }
+
+    .navbar-kasir{
+    height:70px;
+    }
+
+    @if($role === 'kasir')
+
+    .kasir-logo{
+    margin-left:50px;
+    display:flex;
+    align-items:center;
+    }
+
+    .kasir-menu{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:25px;
+    }
+
+    .navbar-kasir .nav-item{
+    border:none !important;
+    }
+
+    .nav-profile .dropdown-menu{
+    right:0;
+    left:auto;
+    min-width:180px;
+    }
+
+    @endif
+
+    @if($role === 'kasir')
+
+    /* menu tetap satu baris */
+    .kasir-menu{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:25px;
+    flex-wrap:nowrap;
+    }
+
+    /* text menu tidak boleh turun baris */
+    .kasir-menu .nav-link{
+    white-space:nowrap;
+    }
+
+    @endif
+
+    /* MENU KURIR DESKTOP */
+    .kurir-desktop-menu {
+        display: none; /* default sembunyi */
+        background: #fff;
+        border-bottom: 1px solid #ddd;
+        padding: 10px 0;
+        justify-content: space-around;
+        align-items: center;
+        display: flex;
+    }
+
+    .kurir-desktop-menu a {
+        text-decoration: none;
+        color: #666;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    @media (max-width: 767px) {
+        .kurir-desktop-menu {
+            display: none; /* sembunyi mobile */
+        }
+    }
+
+    @media (min-width: 768px) {
+        .kurir-desktop-menu {
+            display: flex; /* tampil desktop */
+        }
+    }
+
+    /* KURIR */
+    .main-menu{
+        flex:1;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        gap:12px;
+    }
+
+    .main-menu .nav-link{
+        display:flex;
+        align-items:center;
+        height:60px;
+        white-space:nowrap;
+    }
+
+    .main-menu .nav-link i{
+        margin-right:6px;
+    }
+
+    @if($role === 'kurir')
+    .navbar{
+        background:#000;
+    }
+    @endif
+
+    @if($role === 'kurir')
+
+    .sidebar{
+        display:none !important;
+    }
+
+    .page-body-wrapper{
+        margin-left:0 !important;
+        padding-left:0 !important;
+    }
+
+    .main-panel{
+        margin-left:0 !important;
+        width:100% !important;
+    }
+
+    .navbar{
+        left:0 !important;
+        width:100% !important;
+    }
+
+    @endif
+
+    @if($role === 'kurir')
+
+    .main-menu{
+        flex:1;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        gap:30px;
+    }
+
+    .navbar-nav-right{
+        margin-left:auto;
+    }
+
+    /* ICON NAVBAR */
+    .main-menu .nav-link i {
+        font-size: 18px;
+        margin-right: 6px;
+    }
+
+    /* TEXT + ICON RAPI */
+    .main-menu .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    /* HOVER EFFECT (biar lebih hidup) */
+    .main-menu .nav-link:hover {
+        color: #4B49AC;
+    }
+
+    /* FIX NAVBAR CENTER PERFECT */
+    .navbar-menu-wrapper {
+        display: flex;
+        align-items: center;
+    }
+
+    .main-menu {
+        flex: 1;
+        display: flex;
+        justify-content: center; /* 🔥 center beneran */
+        align-items: center;
+    }
+
+    .navbar-nav-right {
+        margin-left: auto; /* 🔥 dorong ke kanan */
+    }
+
+    @endif
 
 
 
-</style>
+  </style>

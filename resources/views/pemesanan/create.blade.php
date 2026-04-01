@@ -7,7 +7,7 @@
 @section('title','Pemesanan Laundio')
 
 @section('content')
-
+<div class="page-input-order">
 <div class="form-row">
 <div class="col-lg-12 form-grid-margin stretch-card">
 
@@ -220,6 +220,7 @@ rows="3"></textarea>
 </div>
 </div>
 </div>
+</div>
 
 <!-- Nota -->
 <script>
@@ -339,6 +340,7 @@ rows="3"></textarea>
             <div class="col-md-2">
                 <input type="number"
                     class="form-control"
+                    step="0.1"
                     min="1"
                     value="1"
                     oninput="hitungRow(${rowIndex})"
@@ -380,10 +382,16 @@ rows="3"></textarea>
     function hitungRow(i) {
 
         const select = document.getElementById(`layanan_${i}`);
-        const harga = parseInt(select.selectedOptions[0]?.dataset.harga || 0);
-        const qty = parseInt(document.getElementById(`qty_${i}`).value || 0);
+        const harga = parseFloat(select.selectedOptions[0]?.dataset.harga || 0);
 
-        const total = harga * qty;
+        let qtyInput = document.getElementById(`qty_${i}`).value || "0";
+
+        // support koma
+        qtyInput = qtyInput.replace(',', '.');
+
+        const qty = parseFloat(qtyInput);
+
+        const total = harga * (isNaN(qty) ? 0 : qty);
 
         document.getElementById(`total_${i}`).value = formatRupiah(total);
 
@@ -399,7 +407,7 @@ rows="3"></textarea>
             if (!totalField) continue;
 
             const value = totalField.value.replace(/[^\d]/g,'');
-            total += parseInt(value || 0);
+            total += parseFloat(value || 0);
         }
 
         document.getElementById('grand-total')
@@ -434,7 +442,7 @@ rows="3"></textarea>
 
             detail.push({
                 kode_layanan: select.value,
-                qty: qty.value
+                qty: parseFloat(qty.value.replace(',', '.')) || 0
             });
         }
 
@@ -689,24 +697,36 @@ document.querySelectorAll('input[name="jenis_pengambilan"]')
 .forEach(radio => {
     radio.addEventListener('change', function() {
 
-        const map = document.getElementById('map');
+        // tetap tampil, cuma logika ongkir saja nanti di backend
+        console.log("Metode:", this.value);
 
-        if (this.value === 'ambil_sendiri') {
-            map.style.display = 'none';
-        } else {
-            map.style.display = 'block';
-        }
     });
 });
 </script>
     
 
 {{-- Tutup Modal --}}
-<script>
-    function closeModal() {
-        document.getElementById('successModal').style.display = 'none';
-    }
-</script>
+    <script>
+        const modal = document.getElementById('successModal');
+        const modalBox = modal.querySelector('.modal-box');
+        const btnNota = document.getElementById('btnNota');
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        // ✅ Klik luar modal = close
+        modal.addEventListener('click', function(e) {
+            if (!modalBox.contains(e.target)) {
+                closeModal();
+            }
+        });
+
+        // ✅ Klik tombol unduh nota = close
+        btnNota.addEventListener('click', function() {
+            closeModal();
+        });
+    </script>
 
 <style>
     .modal-overlay {
@@ -783,7 +803,9 @@ document.querySelectorAll('input[name="jenis_pengambilan"]')
         color: #6b7280;
     }
 
-    input, select, textarea {
+    .page-input-order input,
+    .page-input-order select,
+    .page-input-order textarea {
         padding: 9px 12px;
         border: 1px solid #e5e7eb;
         border-radius: 10px;

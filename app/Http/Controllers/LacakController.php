@@ -34,7 +34,9 @@ class LacakController extends Controller
             ]);
         }
 
-        $pemesanans = $query->get()
+        $pemesanans = $query
+        ->orderByDesc('tanggal_masuk')
+        ->get()
         ->map(function ($p) {
 
             $p->source = 'pemesanan';
@@ -82,7 +84,6 @@ class LacakController extends Controller
         */
         $pemesanans = $pemesanans
             ->merge($reservasis)
-            ->sortByDesc('tanggal_masuk')
             ->values();
 
 
@@ -164,13 +165,23 @@ class LacakController extends Controller
             abort(404);
         }
 
+        // ✅ KHUSUS FLOW KURIR (INI YANG DITAMBAH)
+        if (
+            $data->jenis_pengambilan === 'pickup_kurir' &&
+            $data->status_proses === 'menunggu_pickup'
+        ) {
+            $data->update([
+                'status_proses' => 'sudah_diambil'
+            ]);
+
+            return back()->with('success', 'Kurir berhasil ditugaskan');
+        }
+
+        // 🔥 FLOW NORMAL
         $next = match ($data->status_proses) {
 
-            // 🔥 TAMBAHAN UNTUK KURIR FLOW
-            'menunggu_pickup' => 'diterima',
             'sudah_diambil'   => 'diterima',
 
-            // 🔥 FLOW ADMIN
             'diterima'        => 'dicuci',
             'dicuci'          => 'dikeringkan',
             'dikeringkan'     => 'disetrika',

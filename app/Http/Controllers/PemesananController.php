@@ -97,24 +97,24 @@ class PemesananController extends Controller
             $jarak = 0;
             $ongkir = 0;
 
-            if ($request->jenis_pengambilan === 'pickup_kurir') {
+            if ($request->latitude && $request->longitude) {
 
-                if ($request->latitude && $request->longitude) {
+                $outlet = \App\Models\Outlet::find($request->id_outlet);
 
-                    $outlet = \App\Models\Outlet::find($request->id_outlet);
+                if ($outlet && $outlet->latitude && $outlet->longitude) {
 
-                    if ($outlet && $outlet->latitude && $outlet->longitude) {
+                    // ✅ HITUNG JARAK SELALU
+                    $jarak = $this->hitungJarak(
+                        $outlet->latitude,
+                        $outlet->longitude,
+                        $request->latitude,
+                        $request->longitude
+                    );
 
-                        $jarak = $this->hitungJarak(
-                            $outlet->latitude,
-                            $outlet->longitude,
-                            $request->latitude,
-                            $request->longitude
-                        );
-
+                    // ✅ ONGKIR HANYA JIKA PICKUP
+                    if ($request->jenis_pengambilan === 'pickup_kurir') {
                         $tarifPerKm = 2000;
                         $ongkir = round($jarak) * $tarifPerKm;
-
                         $totalFinal += $ongkir;
                     }
                 }
