@@ -137,6 +137,13 @@ $role = auth()->user()->role;
               Karyawan
             </a>
           </li>
+
+          <li class="nav-item">
+              <a class="nav-link {{ request()->routeIs('cetak.*') ? 'active' : '' }}"
+                href="{{ route('cetak.index') }}">
+                  Cetak
+              </a>
+          </li>
         </ul>
       </div>
     </li>

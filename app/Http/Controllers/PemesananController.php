@@ -9,6 +9,7 @@ use App\Models\HistoryPemesanan;
 use App\Models\TrackPemesanan;
 use App\Models\Harga;
 use App\Models\Promo;
+use App\Models\Cetak;
 use App\Models\Outlet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -240,7 +241,9 @@ class PemesananController extends Controller
         $pemesanan = Pemesanan::with(['customer','outlet','promo'])
             ->findOrFail($id);
 
-        return view('pemesanan.nota', compact('pemesanan'));
+        $setting = Cetak::first();
+
+        return view('pemesanan.nota', compact('pemesanan', 'setting'));
     }
 
     public function updateStatus(Request $request, $id)

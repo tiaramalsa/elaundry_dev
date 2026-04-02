@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pemesanan;
+use App\Models\Harga;
 use Illuminate\Http\Request;
 
 class RiwayatController extends Controller
@@ -27,8 +28,15 @@ class RiwayatController extends Controller
             ->orderByDesc('tanggal_masuk')
             ->get();
 
-        return view('riwayat.index', compact('pemesanans'));
-    }
+        // ✅ TAMBAHAN TOTAL
+        $totalKeseluruhan = $pemesanans->sum('total_harga');
+
+        $layanans = Harga::where('is_active', 1)
+                ->orderBy('nama_layanan')
+                ->get();
+
+        return view('riwayat.index', compact('pemesanans','totalKeseluruhan','layanans'));
+            }
 
     public function download($id)
     {

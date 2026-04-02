@@ -17,6 +17,7 @@ use App\Http\Controllers\ManajemenUserController;
 use App\Http\Controllers\KasirController;
 use App\Http\Controllers\KasirDashboardController;
 use App\Http\Controllers\KurirController;
+use App\Http\Controllers\PengaturanCetakController;
 
 //AUTH
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -221,6 +222,18 @@ Route::prefix('pengaturan/karyawan')->name('karyawan.')->group(function () {
 
     Route::put('/{id}', [KaryawanController::class, 'update'])->name('update');
     Route::delete('/{id}', [KaryawanController::class, 'destroy'])->name('destroy');
+});
+
+// PENGATURAN CETAK
+Route::prefix('pengaturan/cetak')->name('cetak.')->group(function () {
+
+    Route::get('/', [PengaturanCetakController::class, 'index'])->name('index');
+    Route::get('/create', [PengaturanCetakController::class, 'create'])->name('create');
+    Route::post('/store', [PengaturanCetakController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [PengaturanCetakController::class, 'edit'])->name('edit');
+    Route::put('/update/{id}', [PengaturanCetakController::class, 'update'])->name('update');
+    Route::get('/show/{id}', [PengaturanCetakController::class, 'show'])->name('show');
+    Route::get('/toggle/{id}', [PengaturanCetakController::class, 'toggle'])->name('toggle');
 });
 
 

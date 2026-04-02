@@ -11,7 +11,6 @@
         }
 
         #nota{
-            width:80mm;
             padding:6px;
         }
 
@@ -40,14 +39,26 @@
 
 <body>
 
-<div id="nota">
+@php
+$width = isset($setting) && $setting->custom_width
+    ? $setting->custom_width . 'mm'
+    : ((isset($setting) && $setting->tipe_kertas == '53mm') ? '53mm' : '80mm');
+@endphp
+
+<div id="nota" style="width: {{ $width }};">
 
     <!-- HEADER -->
     <div class="center">
-        <div class="bold">{{ $pemesanan->outlet->nama_outlet ?? 'LAUNDIO' }}</div>
-        {{ $pemesanan->outlet->jalan ?? '' }}<br>
+
+    @if(isset($setting) && $setting->show_logo)
+        <img src="{{ asset('admin/assets/images/logo-nota.png') }}"
+     style="width:120px; display:block; margin:0 auto 2px; filter: grayscale(100%); contrast(200%);">
+    @endif
+
+        <div class="bold">{{ $setting->nama_toko ?? 'LAUNDIO' }}</div>
+        {{ $setting->alamat ?? '' }}<br>
         {{ $pemesanan->outlet->kota_kab ?? '' }}<br>
-        Telp: {{ $pemesanan->outlet->no_telp ?? '-' }}
+        Telp: {{ $setting->telepon ?? '-' }}
     </div>
 
     <div class="line"></div>
@@ -60,7 +71,7 @@
         <div>No HP   : {{ $pemesanan->customer->no_telp ?? '-' }}</div>
     </div>
 
-    @if($pemesanan->latitude && $pemesanan->longitude)
+    @if(isset($setting) && $setting->show_maps && $pemesanan->latitude && $pemesanan->longitude)
         <div class="small">
             Lokasi :
             <a href="https://www.google.com/maps?q={{ $pemesanan->latitude }},{{ $pemesanan->longitude }}"
@@ -174,9 +185,9 @@
 
     <!-- FOOTER -->
     <div class="center small">
-        Terima kasih 🙏 <br>
+        {{ $setting->footer ?? 'Terima kasih 🙏' }} <br>
         Bersih Tak Kenal Waktu<br><br>
-        Jam: 08.00 - 21.00<br>
+        Jam: {{ $setting->jam_buka ?? '-' }}<br>
         WA: {{ $pemesanan->outlet->no_telp ?? '-' }}
     </div>
 

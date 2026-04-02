@@ -27,35 +27,36 @@ $role = auth()->user()->role;
 
 <option value="">Jenis Layanan</option>
 
-<option value="cuci"
-{{ request('layanan')=='cuci'?'selected':'' }}>
-Cuci
+@foreach($layanans as $l)
+<option value="{{ $l->kode_layanan }}"
+    {{ request('layanan') == $l->kode_layanan ? 'selected' : '' }}>
+    {{ $l->nama_layanan }}
 </option>
-
-<option value="setrika"
-{{ request('layanan')=='setrika'?'selected':'' }}>
-Setrika
-</option>
-
-<option value="cuci_setrika"
-{{ request('layanan')=='cuci_setrika'?'selected':'' }}>
-Cuci Setrika
-</option>
-
-<option value="sprei"
-{{ request('layanan')=='sprei'?'selected':'' }}>
-Sprei
-</option>
+@endforeach
 
 </select>
 </div>
 
-<div class="col-md-4">
-<input
-type="date"
-name="from"
-value="{{ request('from') }}"
-class="form-control">
+<div class="col-md-4 d-flex gap-2">
+
+    <div class="date-field">
+        <label>Tanggal Mulai</label>
+        <input 
+            type="date" 
+            name="from" 
+            value="{{ request('from') }}" 
+            required>
+    </div>
+
+    <div class="date-field">
+        <label>Tanggal Selesai</label>
+        <input 
+            type="date" 
+            name="to" 
+            value="{{ request('to') }}" 
+            required>
+    </div>
+
 </div>
 
 <div class="col-md-4">
@@ -195,6 +196,9 @@ Tidak ada data
 </tbody>
 
 </table>
+<div id="custom-total-box" class="total-box mt-3">
+    Total: Rp {{ number_format($totalKeseluruhan,0,',','.') }}
+</div>
 
 </div>
 </div>
@@ -205,6 +209,83 @@ Tidak ada data
 
 @endsection
 
+<style>
+    .d-flex{
+        display: flex;
+    }
+
+    .gap-2{
+        gap: 10px;
+    }
+
+    .date-field{
+        position: relative;
+        flex: 1; /* biar 2 field bagi rata */
+        min-width: 140px;
+    }
+
+    .date-field input{
+        width: 100%;
+        height: 42px;
+        padding: 14px 10px 6px 10px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 13px;
+        background: #fff;
+        box-sizing: border-box;
+    }
+
+    .date-field label{
+    position: absolute;
+    top: -6px;
+    left: 10px;
+    background: #fff;
+    padding: 0 5px;
+    font-size: 10px;
+    color: #64748b;
+    line-height: 1;
+    pointer-events: none;
+}
+
+.date-field input:focus{
+    border-color: #6366f1;
+    outline: none;
+} 
+
+/* total */
+.total-box{
+    background: #14b8a6;
+    color: white;
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    width: 100%;
+}
+
+/* export excel */
+.dataTables_length,
+.dt-buttons {
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.dt-buttons .btn {
+    margin-left: 10px;
+}
+
+.dt-button.btn-success {
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+    color: #fff !important;
+}
+
+.dt-button.btn-success:hover {
+    background-color: #218838 !important;
+    border-color: #1e7e34 !important;
+}
+</style>
 
 @push('scripts')
 
@@ -212,7 +293,25 @@ Tidak ada data
 
 $(document).ready(function(){
 
-$('#table-riwayat').DataTable();
+    if ($.fn.DataTable.isDataTable('#table-riwayat')) {
+        $('#table-riwayat').DataTable().destroy();
+    }
+
+    $('#table-riwayat').DataTable({
+        dom: '<"d-flex justify-content-between align-items-center mb-3"<"d-flex align-items-center gap-2"lB><"ml-auto"f>>rt<"bottom"ip><"clear">',
+
+        infoCallback: function(settings, start, end, max, total, pre) {
+    return "Showing " + start + " to " + end + " of " + total + " entries";
+},
+
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                text: 'Export Excel',
+                className: 'btn btn-success btn-sm'
+            }
+        ]
+    });
 
 });
 
