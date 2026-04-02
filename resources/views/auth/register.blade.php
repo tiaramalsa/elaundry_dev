@@ -8,7 +8,7 @@
 <div class="auth-left">
 
 <div class="logo">
-🧺 Laundio
+    <img src="{{ asset('admin/assets/images/Logo C24-text.png') }}" alt="Logo" class="logo-img">
 </div>
 
 <div class="auth-title">
@@ -30,7 +30,6 @@ Buat akun baru untuk menggunakan sistem manajemen laundry
 
 <div class="form-grid">
 
-{{-- NAMA --}}
 <div class="form-group">
 <input
 type="text"
@@ -42,7 +41,6 @@ required
 >
 </div>
 
-{{-- NO TELP --}}
 <div class="form-group">
 <input
 type="text"
@@ -54,7 +52,6 @@ required
 >
 </div>
 
-{{-- EMAIL --}}
 <div class="form-group form-group-full">
 <input
 type="email"
@@ -66,7 +63,6 @@ required
 >
 </div>
 
-{{-- PASSWORD --}}
 <div class="form-group">
 <input 
 type="password"
@@ -77,7 +73,6 @@ required
 >
 </div>
 
-{{-- KONFIRMASI PASSWORD --}}
 <div class="form-group">
 <input
 type="password"
@@ -122,5 +117,21 @@ Sudah punya akun?
 </div>
 
 </div>
+
+<style>
+.logo {
+    position: relative;
+    height: 60px; /* jangan terlalu kecil */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px; /* kasih jarak ke bawah */
+}
+
+.logo-img {
+    height: 200px;
+    margin-top: -20px;
+}
+</style>
 
 @endsection

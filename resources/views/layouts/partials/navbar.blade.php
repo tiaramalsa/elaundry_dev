@@ -16,25 +16,27 @@ $countNotif = $notifikasiOrder->count();
 @if($role === 'kasir') navbar-kasir @endif">
   <div class="navbar-menu-wrapper d-flex align-items-stretch justify-content-between
 @if($role === 'kasir') pl-0 @endif">
-    <a class="navbar-brand brand-logo-mini align-self-center d-lg-none" href="index.html"><img src="{{ asset('admin/assets/images/logo-mini.svg') }}" alt="logo" /></a>
-    @if($role !== 'kasir' && $role !== 'kurir')
-    <div class="app-logo">
-        <a href="{{ route($role.'.dashboard') }}">
-            <img src="{{ asset('admin/assets/images/Logo C24-text.png') }}" style="height:70px;">
-        </a>
-    </div>
-    <button class="navbar-toggler navbar-toggler align-self-center mr-2" type="button" data-toggle="minimize">
-      <i class="mdi mdi-menu"></i>
-    </button>
-    @endif
+    @if($role === 'admin')
+      <button class="navbar-toggler navbar-toggler align-self-center mr-2" type="button" data-toggle="minimize">
+          <i class="mdi mdi-menu"></i>
+      </button>
+      @endif
     
     @if($role === 'kasir')
-    <div class="kasir-logo">
-    <a href="{{ route($role.'.dashboard') }}">
-    <img src="{{ asset('admin/assets/images/Logo C24-text.png') }}" style="height:90px;">
-    </a>
-    </div>
+      <div class="kasir-logo">
+        <a href="{{ route($role.'.dashboard') }}">
+        <img src="{{ asset('admin/assets/images/Logo C24-text.png') }}" style="height:90px;">
+        </a>
+      </div>
     @endif
+
+    @if($role === 'kurir')
+      <div class="kurir-logo">
+          <a href="{{ route($role.'.dashboard') }}">
+              <img src="{{ asset('admin/assets/images/Logo C24-text.png') }}" style="height:90px;">
+          </a>
+      </div>
+      @endif
     <ul class="navbar-nav main-menu">
 
       @if($role === 'kasir')
@@ -577,6 +579,16 @@ $countNotif = $notifikasiOrder->count();
 
     @endif
 
+    .kurir-logo {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      margin-left: 20px;
+    }
 
+    .kurir-logo img {
+        height: 65px; /* kecilin biar ga berat ke bawah */
+        transform: translateY(-4px); /* naik dikit */
+    }
 
   </style>

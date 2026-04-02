@@ -8,7 +8,7 @@
 <div class="auth-left">
 
 <div class="logo">
-🧺 Laundio
+    <img src="{{ asset('admin/assets/images/Logo C24-text.png') }}" alt="Logo" class="logo-img">
 </div>
 
 <div class="auth-title">
@@ -54,14 +54,12 @@ Login
 
 </form>
 
-{{-- REGISTER CTA --}}
 <div class="auth-register">
 Belum punya akun?
-<a href="{{ route('register') }}">Daftar sekarang</a>
+<a href="{{ route('register') }}">Register sekarang</a>
 </div>
 
 </div>
-
 
 {{-- RIGHT SIDE --}}
 <div class="auth-right">
@@ -82,5 +80,20 @@ Belum punya akun?
 </div>
 
 </div>
+
+<style>
+.logo {
+    position: relative;
+    height: 80px; /* container tetap */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-img {
+    position: absolute;
+    height: 250px; /* lebih besar dari container */
+}
+</style>
 
 @endsection

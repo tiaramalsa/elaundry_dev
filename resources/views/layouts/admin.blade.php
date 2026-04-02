@@ -135,6 +135,55 @@
         }
         @endif
 
+        /* =========================
+            NAVBAR SLIDER (ALL ROLE)
+            ========================= */
+
+            @media (max-width: 991px) {
+
+                .main-menu {
+                    overflow-x: auto;
+                    flex-wrap: nowrap;
+                    justify-content: flex-start; /* jangan center biar bisa geser */
+                    gap: 20px;
+                    padding: 0 10px;
+
+                    -webkit-overflow-scrolling: touch; /* smooth iOS */
+                    scroll-behavior: smooth;
+                }
+
+                /* hide scrollbar */
+                .main-menu::-webkit-scrollbar {
+                    display: none;
+                }
+
+                .main-menu {
+                    -ms-overflow-style: none;
+                    scrollbar-width: none;
+                }
+
+                /* item jangan mengecil */
+                .main-menu .nav-item {
+                    flex: 0 0 auto;
+                }
+
+                /* spacing biar enak */
+                .main-menu .nav-link {
+                    padding: 0 10px;
+                    font-size: 13px;
+                }
+            }
+
+            @media (max-width: 991px) {
+                .main-menu {
+                    scroll-snap-type: x mandatory;
+                }
+
+                .main-menu .nav-item {
+                    scroll-snap-align: start;
+                }
+            }
+
     </style>
 
 </head>
@@ -189,6 +238,19 @@
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <script>
+    document.getElementById('toggleSidebar')?.addEventListener('click', function () {
+
+        const sidebar = document.querySelector('.sidebar');
+
+        if (!sidebar) return;
+
+        // toggle class manual
+        sidebar.classList.toggle('active');
+
+    });
+    </script>
 
     @stack('scripts')
 
