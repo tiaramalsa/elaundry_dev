@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Pemesanan;
 use App\Models\Harga;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Cetak;
 
 class RiwayatController extends Controller
 {
@@ -36,14 +38,14 @@ class RiwayatController extends Controller
                 ->get();
 
         return view('riwayat.index', compact('pemesanans','totalKeseluruhan','layanans'));
-            }
+    }
 
     public function download($id)
     {
-        $pemesanan = Pemesanan::findOrFail($id);
+        $pemesanan = Pemesanan::with(['customer','outlet','promo'])->findOrFail($id);
+        $setting = Cetak::first();
 
-        // sementara dummy (nanti bisa PDF)
-        return response()->json($pemesanan);
+        return view('riwayat.nota', compact('pemesanan','setting'));
     }
 
     public function destroy($id)

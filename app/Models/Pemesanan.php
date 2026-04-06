@@ -77,4 +77,9 @@ class Pemesanan extends Model
         return array_filter(array_map('trim', explode(',', $this->jenis_layanan)));
     }
 
+    public function kurir()
+    {
+        return $this->belongsTo(User::class, 'id_kurir');
+    }
+
 }

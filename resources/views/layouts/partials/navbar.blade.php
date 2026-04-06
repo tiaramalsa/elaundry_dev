@@ -99,7 +99,7 @@ $countNotif = $notifikasiOrder->count();
           <div class="preview-item-content">
 
           <p class="mb-0 font-weight-medium">
-          Order #{{ $order->id }}
+          Order {{ $order->no_order }}
           </p>
 
           <p class="text-small text-muted mb-0">

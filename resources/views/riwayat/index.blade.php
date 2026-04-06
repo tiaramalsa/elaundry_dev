@@ -138,47 +138,38 @@ Belum Bayar
 </td>
 
 <td class="text-center">
+    <div class="action-wrapper">
 
-<div class="d-flex justify-content-center align-items-center">
+        @if(in_array(auth()->user()->role, ['admin','kasir']))
+        <a
+            href="{{ route(auth()->user()->role.'.riwayat.download',$p->id_pemesanan) }}"
+            class="btn btn-sm btn-outline-primary action-btn"
+            title="Unduh">
+            <i class="mdi mdi-download"></i>
+        </a>
+        @endif
 
-@if(auth()->user()->role === 'admin')
+        @if(auth()->user()->role === 'admin')
+        <form
+            method="POST"
+            action="{{ route('admin.riwayat.destroy',$p->id_pemesanan) }}"
+            onsubmit="return confirm('Hapus riwayat ini?')"
+            class="d-inline">
 
-<a
-href="{{ route('admin.riwayat.download',$p->id_pemesanan) }}"
-class="btn btn-sm btn-outline-primary mr-2"
-title="Unduh">
+            @csrf
+            @method('DELETE')
 
-<i class="mdi mdi-download"></i>
+            <button
+                type="submit"
+                class="btn btn-sm btn-outline-danger action-btn"
+                title="Hapus">
+                <i class="mdi mdi-delete"></i>
+            </button>
 
-</a>
+        </form>
+        @endif
 
-@endif
-
-
-@if(auth()->user()->role === 'admin')
-
-<form
-method="POST"
-action="{{ route('admin.riwayat.destroy',$p->id_pemesanan) }}"
-onsubmit="return confirm('Hapus riwayat ini?')">
-
-@csrf
-@method('DELETE')
-
-<button
-class="btn btn-sm btn-outline-danger"
-title="Hapus">
-
-<i class="mdi mdi-delete"></i>
-
-</button>
-
-</form>
-
-@endif
-
-</div>
-
+    </div>
 </td>
 
 </tr>
@@ -225,14 +216,14 @@ Tidak ada data
     }
 
     .date-field input{
-        width: 100%;
-        height: 42px;
-        padding: 14px 10px 6px 10px;
-        border: 1px solid #d1d5db;
-        border-radius: 8px;
-        font-size: 13px;
-        background: #fff;
-        box-sizing: border-box;
+    width: 100%;
+    height: 42px;
+    padding: 14px 10px 6px 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 13px;
+    background: #fff;
+    box-sizing: border-box;
     }
 
     .date-field label{
@@ -285,6 +276,7 @@ Tidak ada data
     background-color: #218838 !important;
     border-color: #1e7e34 !important;
 }
+
 </style>
 
 @push('scripts')

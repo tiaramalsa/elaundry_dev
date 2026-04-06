@@ -135,6 +135,7 @@
 
 <thead>
 <tr>
+<th style="display:none;">Tanggal</th>
 <th>No Order</th>
 <th>Nama</th>
 <th>Payment</th>
@@ -149,7 +150,7 @@
 @forelse($pemesanans as $p)
 
 <tr>
-
+<td style="display:none;">{{ $p->tanggal_masuk }}</td>
 <td>{{ $p->no_order }}</td>
 <td>{{ $p->customer->nama_lengkap ?? '-' }}</td>
 
@@ -191,17 +192,23 @@ $isPickup = $p->jenis_pengambilan === 'pickup_kurir';
 <button
     type="submit"
     class="btn btn-sm
-    {{ $isPickup && $p->status_proses === 'menunggu_pickup'
-        ? 'btn-primary'
-        : ($p->status_proses === 'disetrika' ? 'btn-success' : 'btn-warning') }}">
+    {{
+        $isPickup && $p->status_proses === 'menunggu_pickup' ? 'btn-primary' :
+        ($p->status_proses === 'siap_antar' ? 'btn-info' :
+        ($p->status_proses === 'disetrika' ? 'btn-success' :
+        'btn-warning'))
+    }}">
 
     @if($isPickup && $p->status_proses === 'menunggu_pickup')
         Jemput
+    @elseif($p->status_proses === 'siap_antar')
+        Antar
     @elseif($p->status_proses === 'disetrika')
         Selesai
     @else
         Proses
     @endif
+
 </button>
 
 </form>
@@ -389,8 +396,9 @@ $('#table-lacak').DataTable().destroy();
 
 $('#table-lacak').DataTable({
 autoWidth:false,
+order: [[0, 'desc']],
 columnDefs:[
-{ width:"220px", targets:0 },
+{ targets: 0, visible: false },
 { width:"120px", targets:1 },
 { width:"120px", targets:2 },
 { width:"120px", targets:3 },

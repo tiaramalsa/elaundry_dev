@@ -43,7 +43,8 @@ class KurirController extends Controller
         $data = Pemesanan::findOrFail($id);
 
         $data->update([
-            'status_proses' => 'sudah_diambil'
+            'status_proses' => 'sudah_diambil',
+            'id_kurir' => auth()->id()
         ]);
 
         return back()->with('success', 'Laundry berhasil diambil');
@@ -187,6 +188,23 @@ class KurirController extends Controller
         $order = Pemesanan::with('customer')->findOrFail($id);
 
         return view('kurir.tugas.show', compact('order'));
+    }
+
+    public function riwayat(Request $request)
+    {
+        $query = Pemesanan::with(['customer','historyPemesanan'])
+            ->where('id_kurir', auth()->id());
+
+        if ($request->from && $request->to) {
+            $query->whereBetween('tanggal_masuk', [
+                $request->from,
+                $request->to
+            ]);
+        }
+
+        $pemesanans = $query->latest()->get();
+
+        return view('kurir.riwayat.index', compact('pemesanans'));
     }
         
 }

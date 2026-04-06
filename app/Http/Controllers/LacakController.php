@@ -17,7 +17,8 @@ class LacakController extends Controller
     public function index(Request $request)
     {
         // Query Pemesanan
-        $query = Pemesanan::with('customer');
+        $query = Pemesanan::with('customer')
+            ->where('status_proses', '!=', 'selesai');
 
         if ($request->outlet_id) {
             $query->where('outlet_id', $request->outlet_id);
@@ -61,6 +62,7 @@ class LacakController extends Controller
 
         // Query Reservasi
         $reservasis = Reservasi::with('customer')
+            ->where('status_proses', '!=', 'selesai')
             ->when($request->outlet_id, fn($q) =>
                 $q->where('outlet_id', $request->outlet_id)
             )
@@ -84,6 +86,7 @@ class LacakController extends Controller
         */
         $pemesanans = $pemesanans
             ->merge($reservasis)
+            ->sortByDesc('tanggal_masuk')
             ->values();
 
 
@@ -186,6 +189,7 @@ class LacakController extends Controller
             'dicuci'          => 'dikeringkan',
             'dikeringkan'     => 'disetrika',
             'disetrika'       => 'siap_antar',
+            'siap_antar'      => 'selesai',
 
             default => null,
         };
