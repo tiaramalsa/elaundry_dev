@@ -55,7 +55,8 @@ class KurirController extends Controller
         $data = Pemesanan::findOrFail($id);
 
         $data->update([
-            'status_proses' => 'sedang_diantar'
+            'status_proses' => 'sedang_diantar',
+            'id_kurir' => auth()->id()
         ]);
 
         return back();
@@ -66,7 +67,8 @@ class KurirController extends Controller
         $data = Pemesanan::findOrFail($id);
 
         $data->update([
-            'status_proses' => 'selesai'
+            'status_proses' => 'selesai',
+            'id_kurir' => auth()->id()
         ]);
 
         return back();
@@ -78,15 +80,15 @@ class KurirController extends Controller
         $kurir = $user->kurir;
 
         // Statistik (opsional, sesuaikan fieldmu)
-        $totalDiantar = Pemesanan::where('kurir_id', $user->id)
+        $totalDiantar = Pemesanan::where('id_kurir', $user->id)
                         ->where('status_proses','selesai')
                         ->count();
 
-        $totalDiambil = Pemesanan::where('kurir_id', $user->id)
+        $totalDiambil = Pemesanan::where('id_kurir', $user->id)
                         ->where('status_proses','sudah_diambil')
                         ->count();
 
-        $orderHariIni = Pemesanan::where('kurir_id', $user->id)
+        $orderHariIni = Pemesanan::where('id_kurir', $user->id)
                         ->whereDate('created_at', now())
                         ->count();
 

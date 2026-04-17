@@ -99,7 +99,10 @@
                 <div class="row">
                     @forelse($delivery as $item)
                     <div class="col-12 col-md-6 mb-3">
-                        <div class="card kurir-card delivery-card h-100">
+
+                        <div class="card kurir-card delivery-card h-100 cursor-pointer"
+                            data-url="{{ route('kurir.detail', $item->id_pemesanan) }}">
+
                             <div class="card-body">
 
                                 <div class="d-flex justify-content-between">
@@ -114,22 +117,27 @@
                                 </p>
 
                                 <div class="d-flex mt-3">
+
                                     <a href="https://www.google.com/maps?q={{ $item->latitude }},{{ $item->longitude }}"
-                                       target="_blank"
-                                       class="btn btn-light flex-fill mr-2 btn-kurir">
-                                       📍 Maps
+                                    target="_blank"
+                                    onclick="event.stopPropagation()"
+                                    class="btn btn-light flex-fill mr-2 btn-kurir">
+                                    📍 Maps
                                     </a>
 
                                     <form method="POST" action="{{ route('kurir.antar', $item->id_pemesanan) }}" class="flex-fill">
                                         @csrf
-                                        <button class="btn btn-primary w-100 btn-kurir">
+                                        <button class="btn btn-primary w-100 btn-kurir"
+                                            onclick="event.stopPropagation()">
                                             Antar
                                         </button>
                                     </form>
+
                                 </div>
 
                             </div>
                         </div>
+
                     </div>
                     @empty
                     <div class="col-12 text-center text-muted">Tidak ada delivery</div>

@@ -53,8 +53,8 @@ Filter
 @forelse($pemesanans as $p)
 
 @php
-$history = $p->historyPemesanan->last();
-$pembayaran = optional($history)->pembayaran ?? 'belum_bayar';
+$history = optional($p->historyPemesanan)->last();
+$pembayaran = $history->pembayaran ?? 'belum_bayar';
 @endphp
 
 <tr>
@@ -82,7 +82,7 @@ Rp {{ number_format($p->total_harga ?? 0,0,',','.') }}
 </td>
 
 <td>
-@if($p->jenis_pengambilan == 'pickup')
+@if($p->jenis_pengambilan == 'pickup_kurir')
 <span class="badge badge-primary">Pickup</span>
 @else
 <span class="badge badge-success">Delivery</span>
@@ -116,7 +116,7 @@ Tidak ada riwayat tugas
 @push('scripts')
 <script>
 $(document).ready(function(){
-    $('#table-riwayat').DataTable();
+    //$('#table-riwayat').DataTable();
 });
 </script>
 @endpush

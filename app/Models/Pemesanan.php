@@ -34,7 +34,8 @@ class Pemesanan extends Model
         'total_akhir',
         'status_proses',
         'status_bayar',
-        'jenis_pengambilan'
+        'jenis_pengambilan',
+        'id_kurir'
         ];
 
     public function customer()
