@@ -31,12 +31,12 @@ class OutletController extends Controller
             'kode_pos' => 'required',
             'email' => 'required|email',
             'website' => 'nullable|url',
+            'latitude' => 'required',
+            'longitude' => 'required',
             ]);
 
             try {
-            Outlet::create($validated + $request->only([
-                'kode_pos','email','website'
-            ]));
+            Outlet::create($validated);
 
             return redirect()
                 ->route('outlet.index')
@@ -64,7 +64,11 @@ class OutletController extends Controller
     {
         $outlet = Outlet::findOrFail($id);
 
-        $outlet->update($request->all());
+        $outlet->update($request->only([
+            'nama_outlet','jalan','kelurahan','kecamatan','kota_kab',
+            'provinsi','kode_pos','email','no_telp','website',
+            'latitude','longitude'
+        ]));
 
         return redirect()->route('outlet.show', $id)->with('success', 'Outlet berhasil diupdate');
     }

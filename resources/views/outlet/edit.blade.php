@@ -71,6 +71,24 @@
            value="{{ $outlet->kode_pos }}">
 </div>
 
+<!-- LATITUDE -->
+<div class="form-group">
+    <label>Latitude</label>
+    <input type="text"
+           name="latitude"
+           class="form-control"
+           value="{{ $outlet->latitude }}">
+</div>
+
+<!-- LONGTITUDE -->
+<div class="form-group">
+    <label>Longitude</label>
+    <input type="text"
+           name="longitude"
+           class="form-control"
+           value="{{ $outlet->longitude }}">
+</div>
+
 {{-- TELEPON --}}
 <div class="form-group">
     <label>No Telepon</label>

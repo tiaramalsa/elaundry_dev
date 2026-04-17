@@ -71,6 +71,11 @@
             {{ $outlet->kelurahan }}, {{ $outlet->kecamatan }} <br>
             {{ $outlet->kota_kab }}, {{ $outlet->provinsi }} <br>
             Kode Pos: {{ $outlet->kode_pos }}
+            <strong>Koordinat</strong>
+            <div class="mt-2">
+                Lat: {{ $outlet->latitude }} <br>
+                Long: {{ $outlet->longitude }}
+            </div>
         </div>
     </div>
 

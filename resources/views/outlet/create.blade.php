@@ -37,32 +37,48 @@
 
     <div class="col-12 mb-3">
         <label class="form-label">Jalan</label>
-        <input type="text" name="jalan" class="form-control" placeholder="Jalan">
+        <input type="text" name="jalan" class="form-control">
     </div>
 
     <div class="col-md-6 mb-3">
         <label class="form-label">Desa / Kelurahan</label>
-        <input type="text" name="kelurahan" class="form-control" placeholder="Desa / Kelurahan">
+        <input type="text" name="kelurahan" class="form-control">
     </div>
 
     <div class="col-md-6 mb-3">
         <label class="form-label">Kecamatan</label>
-        <input type="text" name="kecamatan" class="form-control" placeholder="Kecamatan">
+        <input type="text" name="kecamatan" class="form-control">
     </div>
 
     <div class="col-md-4 mb-3">
         <label class="form-label">Kota / Kabupaten</label>
-        <input type="text" name="kota_kab" class="form-control" placeholder="Kota / Kabupaten">
+        <input type="text" name="kota_kab" class="form-control">
     </div>
 
     <div class="col-md-4 mb-3">
         <label class="form-label">Provinsi</label>
-        <input type="text" name="provinsi" class="form-control" placeholder="Provinsi">
+        <input type="text" name="provinsi" class="form-control">
     </div>
 
     <div class="col-md-4 mb-3">
         <label class="form-label">Kode Pos</label>
-        <input type="text" name="kode_pos" class="form-control" placeholder="Kode Pos">
+        <input type="text" name="kode_pos" class="form-control">
+    </div>
+
+</div>
+
+{{-- LOKASI KOORDINAT --}}
+<h5 class="section-title">Lokasi (Koordinat)</h5>
+<div class="row mb-4">
+
+    <div class="col-md-6 mb-3">
+        <label class="form-label">Latitude</label>
+        <input type="text" name="latitude" class="form-control" placeholder="-6.xxxxx">
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <label class="form-label">Longitude</label>
+        <input type="text" name="longitude" class="form-control" placeholder="110.xxxxx">
     </div>
 
 </div>
